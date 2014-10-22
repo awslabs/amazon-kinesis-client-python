@@ -182,10 +182,11 @@ if __name__ == '__main__':
         name          = PACKAGE_NAME,
         version       = PACKAGE_VERSION,
         description   = 'A python interface for the Amazon Kinesis Client Library MultiLangDaemon',
-        license       = 'asl',
+        license       = 'Amazon Software License',
         packages      = [PACKAGE_NAME, 'samples'],
         scripts       = glob.glob('samples/*py'),
         package_data  = {
+            ''           : ['*.txt', '*.md'],
             PACKAGE_NAME : ['jars/*'],
             'samples'    : ['sample.properties'],
         },
