@@ -13,6 +13,7 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 '''
+from __future__ import print_function
 import sys, random, time, argparse
 from boto import kinesis
 
@@ -46,10 +47,10 @@ def wait_for_stream(conn, stream_name):
     SLEEP_TIME_SECONDS = 3
     status = get_stream_status(conn, stream_name)
     while status != 'ACTIVE':
-        print '{stream_name} has status: {status}, sleeping for {secs} seconds'.format(
+        print('{stream_name} has status: {status}, sleeping for {secs} seconds'.format(
                 stream_name = stream_name,
                 status      = status,
-                secs        = SLEEP_TIME_SECONDS)
+                secs        = SLEEP_TIME_SECONDS))
         time.sleep(SLEEP_TIME_SECONDS) # sleep for 3 seconds
         status = get_stream_status(conn, stream_name)
 
@@ -69,7 +70,7 @@ def put_words_in_stream(conn, stream_name, words):
     for w in words:
         try:
             conn.put_record(stream_name, w, w)
-            print "Put word: " + w + " into stream: " + stream_name
+            print("Put word: " + w + " into stream: " + stream_name)
         except Exception as e:
             sys.stderr.write("Encountered an exception while trying to put a word: "
                              + w + " into stream: " + stream_name + " exception was: " + str(e))
@@ -93,7 +94,7 @@ def put_words_in_stream_periodically(conn, stream_name, words, period_seconds):
     '''
     while True:
         put_words_in_stream(conn, stream_name, words)
-        print "Sleeping for {period_seconds} seconds".format(period_seconds=period_seconds)
+        print("Sleeping for {period_seconds} seconds".format(period_seconds=period_seconds))
         time.sleep(period_seconds)
 
 if __name__ == '__main__':
@@ -123,12 +124,12 @@ echo "WORD1\\nWORD2\\nWORD3" | sample_wordputter.py -s STREAM_NAME -p 3
     Getting a connection to Amazon Kinesis will require that you have your credentials available to
     one of the standard credentials providers.
     '''
-    print "Connecting to stream: {s} in {r}".format(s=stream_name, r=args.region)
+    print("Connecting to stream: {s} in {r}".format(s=stream_name, r=args.region))
     conn = kinesis.connect_to_region(region_name = args.region)
     try:
         status = get_stream_status(conn, stream_name)
         if 'DELETING' == status:
-            print 'The stream: {s} is being deleted, please rerun the script.'.format(s=stream_name)
+            print('The stream: {s} is being deleted, please rerun the script.'.format(s=stream_name))
             sys.exit(1)
         elif 'ACTIVE' != status:
             wait_for_stream(conn, stream_name)
@@ -138,7 +139,7 @@ echo "WORD1\\nWORD2\\nWORD3" | sample_wordputter.py -s STREAM_NAME -p 3
         wait_for_stream(conn, stream_name)
     # Now the stream should exist
     if len(args.words) == 0:
-        print 'No -w options provided. Waiting on input from STDIN'
+        print('No -w options provided. Waiting on input from STDIN')
         words = [l.strip() for l in sys.stdin.readlines() if l.strip() != '']
     else:
         words = args.words

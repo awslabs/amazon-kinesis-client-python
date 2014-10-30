@@ -13,6 +13,7 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 '''
+from __future__ import print_function
 from amazon_kclpy import kcl
 from glob import glob
 import os, argparse, sys, samples
@@ -140,11 +141,11 @@ if __name__ == '__main__':
 
     # Print what the asked for
     if args.print_classpath:
-        print get_kcl_classpath(args.properties, args.paths)
+        print(get_kcl_classpath(args.properties, args.paths))
     elif args.print_command:
         if args.java and args.properties:
             multi_lang_daemon_class = 'com.amazonaws.services.kinesis.multilang.MultiLangDaemon'
-            print get_kcl_app_command(args.java, multi_lang_daemon_class, args.properties, paths=args.paths)
+            print(get_kcl_app_command(args.java, multi_lang_daemon_class, args.properties, paths=args.paths))
         else:
             sys.stderr.write("Must provide arguments: --java and --properties\n")
             parser.print_usage()
