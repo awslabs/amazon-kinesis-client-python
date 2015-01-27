@@ -1,5 +1,5 @@
 """
-Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
 You may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ permissions and limitations under the License.
 """
 from __future__ import print_function
 from setuptools import setup
-import os, urllib, sys, glob
+import os, sys, glob
 from setuptools import Command
 from setuptools.command.install import install
 
@@ -46,7 +46,7 @@ to rerun the install command.
 '''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.0.0'
+PACKAGE_VERSION = '1.1.0'
 PYTHON_REQUIREMENTS = [
             'boto',
             # argparse is part of python2.7 but must be declared for python2.6

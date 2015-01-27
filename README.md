@@ -1,11 +1,17 @@
 # Amazon Kinesis Client Library for Python
 
-This package provides an interface to the KCL MultiLangDaemon, which is part of the
-[Amazon Kinesis Client Library][kinesis-github]. This interface manages the
-interaction with the MultiLangDaemon so that developers can focus on
+This package provides an interface to the Amazon Kinesis Client Library (KCL) MultiLangDaemon,
+which is part of the [Amazon KCL for Java][kinesis-github].
+Developers can use the [Amazon KCL][amazon-kcl] to build distributed applications that
+process streaming data reliably at scale. The [Amazon KCL][amazon-kcl] takes care of
+many of the complex tasks associated with distributed computing, such as load-balancing
+across multiple instances, responding to instance failures, checkpointing processed records,
+and reacting to changes in stream volume.
+This interface manages the interaction with the MultiLangDaemon so that developers can focus on
 implementing their record processor executable. A record processor executable
 typically looks something like:
 
+```python
     #!env python
     from amazon_kclpy import kcl
     import json, base64
@@ -24,6 +30,7 @@ typically looks something like:
     if __name__ == "__main__":
         kclprocess = kcl.KCLProcess(RecordProcessor())
         kclprocess.run()
+```
 
 ## Before You Get Started
 
@@ -43,8 +50,8 @@ For questions regarding Amazon Kinesis Service and the client libraries please v
 ## Running the Sample
 
 Using the `amazon_kclpy` package requires the MultiLangDaemon which is provided
-by the java KCL. These jars will be downloaded automatically by the `install`
-command, but you can explicitly download them with the `download_jars` command.
+by the [Amazon KCL for Java][kinesis-github]. These jars will be downloaded automatically
+by the `install` command, but you can explicitly download them with the `download_jars` command.
 From the root of this repo, run:
 
     python setup.py download_jars
@@ -59,20 +66,20 @@ This will create an Amazon Kinesis stream called words and put the words
 specified by the -w options into the stream once each. Use -p SECONDS to
 indicate a period over which to repeatedly put these words.
 
-Now we would like to run a python KCL application that reads records from
-the stream we just created, but first take a look in the samples directory,
+Now we would like to run an Amazon KCL for Python application that reads records
+from the stream we just created, but first take a look in the samples directory,
 you'll find a file called sample.properties, cat that file:
 
     cat samples/sample.properties
 
 You'll see several properties defined there. `executableName` indicates the
 executable for the MultiLangDaemon to run, `streamName` is the Kinesis stream
-to read from, `appName` is the KCL application name to use which will be the
-name of an Amazon DynamoDB table that gets created by the KCL,
-`initialPositionInStream` tells the KCL how to start reading from shards upon
+to read from, `appName` is the Amazon KCL application name to use which will be the
+name of an Amazon DynamoDB table that gets created by the Amazon KCL,
+`initialPositionInStream` tells the Amazon KCL how to start reading from shards upon
 a fresh startup. To run the sample application you can use a helper script
 included in this package. Note you must provide a path to java (version 1.7
-or greater) to run the KCL.
+or greater) to run the Amazon KCL.
 
     amazon_kclpy_helper.py --print_command \
         --java <path-to-java> --properties samples/sample.properties
@@ -106,12 +113,42 @@ app. Note the version of java that ships with Amazon Linux can be found at
 
     pip install amazon_kclpy
 
+## Under the Hood - What You Should Know about Amazon KCL's [MultiLangDaemon][multi-lang-daemon]
+Amazon KCL for Python uses [Amazon KCL for Java][kinesis-github] internally. We have implemented
+a Java-based daemon, called the *MultiLangDaemon* that does all the heavy lifting. Our approach
+has the daemon spawn the user-defined record processor script/program as a sub-process. The
+*MultiLangDaemon* communicates with this sub-process over standard input/output using a simple
+protocol, and therefore the record processor script/program can be written in any language.
+
+At runtime, there will always be a one-to-one correspondence between a record processor, a child process,
+and an [Amazon Kinesis Shard][amazon-kinesis-shard]. The *MultiLangDaemon* will make sure of
+that, without any need for the developer to intervene.
+
+In this release, we have abstracted these implementation details away and exposed an interface that enables
+you to focus on writing record processing logic in Python. This approach enables [Amazon KCL][amazon-kcl] to
+be language agnostic, while providing identical features and similar parallel processing model across
+all languages.
+
+## See Also
+* [Developing Consumer Applications for Amazon Kinesis Using the Amazon Kinesis Client Library][amazon-kcl]
+* The [Amazon KCL for Java][kinesis-github]
+* The [Amazon KCL for Ruby][amazon-kinesis-ruby-github]
+* The [Amazon Kinesis Documentation][amazon-kinesis-docs]
+* The [Amazon Kinesis Forum][kinesis-forum]
+
 ## Release Notes
+### Release 1.1.0 (January 27, 2015)
+* **Python 3 support** All Python files are compatible with Python 3
 ### Release 1.0.0 (October 21, 2014)
 * **amazon_kclpy** module exposes an interface to allow implementation of record processor executables that are compatible with the MultiLangDaemon
 * **samples** module provides a sample putter application using [boto][boto] and a sample processing app using `amazon_kclpy`
 
+[amazon-kinesis-shard]: http://docs.aws.amazon.com/kinesis/latest/dev/key-concepts.html
+[amazon-kinesis-docs]: http://aws.amazon.com/documentation/kinesis/
+[amazon-kcl]: http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-record-processor-app.html
+[multi-lang-daemon]: https://github.com/awslabs/amazon-kinesis-client/blob/master/src/main/java/com/amazonaws/services/kinesis/multilang/package-info.java
 [kinesis]: http://aws.amazon.com/kinesis
+[amazon-kinesis-ruby-github]: https://github.com/awslabs/amazon-kinesis-client-ruby
 [kinesis-github]: https://github.com/awslabs/amazon-kinesis-client
 [boto]: http://boto.readthedocs.org/en/latest/
 [DefaultAWSCredentialsProviderChain]: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html

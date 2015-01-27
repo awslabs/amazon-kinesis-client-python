@@ -1,5 +1,5 @@
 '''
-Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
 You may not use this file except in compliance with the License.
@@ -120,20 +120,15 @@ class Checkpointer(object):
 
     def _get_action(self):
         '''
-        Safely loops over lines from input until it gets a json message.
+        Gets the next json message from STDIN
 
         :rtype: dict
         :return: A dictionary object that indicates what action this processor should take next. For example
             {"action" : "initialize", "shardId" : "shardId-000001"} would indicate that this processor should
             invoke the initialize method of the inclosed RecordProcessor object.
         '''
-        action = None
-        while None == action:
-            try:
-                line = self.io_handler.read_line()
-                action = self.io_handler.load_action(line)
-            except:
-                self.io_handler.write_error("Could not understand line read from input: {line}".format(line=line))
+        line = self.io_handler.read_line()
+        action = self.io_handler.load_action(line)
         return action
 
     def checkpoint(self, sequenceNumber=None):
