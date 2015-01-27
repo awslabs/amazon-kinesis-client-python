@@ -1,5 +1,5 @@
 """
-Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
 You may not use this file except in compliance with the License.
@@ -12,10 +12,18 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 """
+from __future__ import print_function
 from setuptools import setup
-import os, urllib, sys, glob
+import os, sys, glob
 from setuptools import Command
 from setuptools.command.install import install
+
+try:
+    # Python 3
+    from urllib.request import urlretrieve
+except ImportError:
+    # Python 2
+    from urllib import urlretrieve
 
 '''
 This script modifies the basic setuptools by adding some functionality to the standard
@@ -38,7 +46,7 @@ to rerun the install command.
 '''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.0.0'
+PACKAGE_VERSION = '1.1.0'
 PYTHON_REQUIREMENTS = [
             'boto',
             # argparse is part of python2.7 but must be declared for python2.6
@@ -88,19 +96,19 @@ class MavenJarDownloader:
         '''
         Downloads a file at the url to the destination.
         '''
-        print 'Attempting to retrieve remote jar {url}'.format(url=url)
+        print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
-            urllib.urlretrieve(url, dest)
-            print 'Saving {url} -> {dest}'.format(url=url, dest=dest)
+            urlretrieve(url, dest)
+            print('Saving {url} -> {dest}'.format(url=url, dest=dest))
         except:
-            print 'Failed to retrieve {url}'.format(url=url)
+            print('Failed to retrieve {url}'.format(url=url))
             return
 
     def download_files(self):
         for package in self.packages:
             dest = os.path.join(self.destdir, self.package_destination(package[1], package[2]))
             if os.path.isfile(dest):
-                print 'Skipping download of {dest}'.format(dest=dest)
+                print('Skipping download of {dest}'.format(dest=dest))
             else:
                 url = self.package_url(package[0], package[1], package[2])
                 self.download_file(url, dest)
@@ -122,13 +130,13 @@ class DownloadJarsCommand(Command):
         '''
         downloader = MavenJarDownloader()
         downloader.download_files()
-        print '''
+        print('''
 Now you should run:
 
     python setup.py install
 
 Which will finish the installation.
-'''
+''')
 
 class InstallThenCheckForJars(install):
 
@@ -175,7 +183,7 @@ Which will download the required jars and rerun the install.
             install.run(self)
         missing_jars = downloader.missing_jars()
         if len(missing_jars) > 0:
-            print self.warning_string(missing_jars)
+            print(self.warning_string(missing_jars))
 
 if __name__ == '__main__':
     setup(

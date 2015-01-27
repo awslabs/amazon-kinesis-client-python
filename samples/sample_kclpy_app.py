@@ -1,6 +1,6 @@
 #!env python
 '''
-Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
 You may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 '''
+from __future__ import print_function
 import sys, time, json, base64
 from amazon_kclpy import kcl
 
@@ -59,7 +60,7 @@ class RecordProcessor(kcl.RecordProcessorBase):
                     A ShutdownException indicates that this record processor should be shutdown. This is due to
                     some failover event, e.g. another MultiLangDaemon has taken the lease for this shard.
                     '''
-                    print 'Encountered shutdown execption, skipping checkpoint'
+                    print('Encountered shutdown execption, skipping checkpoint')
                     return
                 elif 'ThrottlingException' == e.value:
                     '''
@@ -70,7 +71,7 @@ class RecordProcessor(kcl.RecordProcessorBase):
                         sys.stderr.write('Failed to checkpoint after {n} attempts, giving up.\n'.format(n=n))
                         return
                     else:
-                        print 'Was throttled while checkpointing, will attempt again in {s} seconds'.format(s=self.SLEEP_SECONDS)
+                        print('Was throttled while checkpointing, will attempt again in {s} seconds'.format(s=self.SLEEP_SECONDS))
                 elif 'InvalidStateException' == e.value:
                     sys.stderr.write('MultiLangDaemon reported an invalid state while checkpointing.\n')
                 else: # Some other error
@@ -146,10 +147,10 @@ class RecordProcessor(kcl.RecordProcessorBase):
                 # Checkpointing with no parameter will checkpoint at the
                 # largest sequence number reached by this processor on this
                 # shard id
-                print 'Was told to terminate, will attempt to checkpoint.'
+                print('Was told to terminate, will attempt to checkpoint.')
                 self.checkpoint(checkpointer, None)
             else: # reason == 'ZOMBIE'
-                print 'Shutting down due to failover. Will not checkpoint.'
+                print('Shutting down due to failover. Will not checkpoint.')
         except:
             pass
 
