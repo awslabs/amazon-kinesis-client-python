@@ -139,6 +139,7 @@ all languages.
 ## Release Notes
 ### Release 1.1.0 (January 27, 2015)
 * **Python 3 support** All Python files are compatible with Python 3
+
 ### Release 1.0.0 (October 21, 2014)
 * **amazon_kclpy** module exposes an interface to allow implementation of record processor executables that are compatible with the MultiLangDaemon
 * **samples** module provides a sample putter application using [boto][boto] and a sample processing app using `amazon_kclpy`
