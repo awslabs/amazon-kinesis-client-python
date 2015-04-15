@@ -1,5 +1,5 @@
 #!env python
-'''
+"""
 Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
@@ -12,14 +12,18 @@ or in the "license" file accompanying this file. This file is distributed
 on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
-'''
+"""
 from __future__ import print_function
 from amazon_kclpy import kcl
 from glob import glob
-import os, argparse, sys, samples
+import os
+import argparse
+import sys
+import samples
+
 
 def get_dir_of_file(f):
-    '''
+    """
     Returns the absolute path to the directory containing the specified file.
 
     :type f: str
@@ -27,29 +31,32 @@ def get_dir_of_file(f):
 
     :rtype:  str
     :return: The absolute path of the directory represented by the relative path provided.
-    '''
+    """
     return os.path.dirname(os.path.abspath(f))
 
+
 def get_kcl_dir():
-    '''
+    """
     Returns the absolute path to the dir containing the amazon_kclpy.kcl module.
 
     :rtype: str
     :return: The absolute path of the KCL package. 
-    '''
+    """
     return get_dir_of_file(kcl.__file__)
 
+
 def get_kcl_jar_path():
-    '''
+    """
     Returns the absolute path to the KCL jars needed to run an Amazon KCLpy app.
 
     :rtype: str
     :return: The absolute path of the KCL jar files needed to run the MultiLangDaemon.
-    '''
+    """
     return ':'.join(glob(os.path.join(get_kcl_dir(), 'jars', '*jar')))
 
+
 def get_kcl_classpath(properties=None, paths=[]):
-    '''
+    """
     Generates a classpath that includes the location of the kcl jars, the
     properties file and the optional paths.
 
@@ -62,7 +69,7 @@ def get_kcl_classpath(properties=None, paths=[]):
     :rtype: str
     :return: A java class path that will allow your properties to be found and the MultiLangDaemon and its deps and
         any custom paths you provided.
-    '''
+    """
     # First make all the user provided paths absolute
     paths = [os.path.abspath(p) for p in paths]
     # We add our paths after the user provided paths because this permits users to
@@ -75,8 +82,9 @@ def get_kcl_classpath(properties=None, paths=[]):
         paths.append(dir_of_file)
     return ":".join([p for p in paths if p != ''])
 
+
 def get_kcl_app_command(java, multi_lang_daemon_class, properties, paths=[]):
-    '''
+    """
     Generates a command to run the MultiLangDaemon.
 
     :type java: str
@@ -93,13 +101,13 @@ def get_kcl_app_command(java, multi_lang_daemon_class, properties, paths=[]):
 
     :rtype: str
     :return: A command that will run the MultiLangDaemon with your properties and custom paths and java.
-    '''
+    """
     return "{java} -cp {cp} {daemon} {props}".format(java=java,
-                                    cp = get_kcl_classpath(properties, paths),
-                                    daemon = multi_lang_daemon_class,
-                                    # Just need the basename becasue the path is added to the classpath
-                                    props = os.path.basename(properties))
-'''
+                                                     cp=get_kcl_classpath(properties, paths),
+                                                     daemon=multi_lang_daemon_class,
+                                                     # Just need the basename becasue the path is added to the classpath
+                                                     props=os.path.basename(properties))
+"""
 This script provides two utility functions:
 
     --print_classpath - which prints a java class path. It optionally takes --properties
@@ -110,14 +118,14 @@ This script provides two utility functions:
     --print_command - which prints a command to run an Amazon KCLpy application. It requires a --java
     and --properties argument and optionally takes any number of --path arguments to prepend
     to the classpath that it generates for the command.
-'''
+"""
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("A script for generating a command to run an Amazon KCLpy app")
     parser.add_argument("--print_classpath", dest="print_classpath", action="store_true",
-                        default = False,
+                        default=False,
                         help="Print a java class path.\noptional arguments: --path")
     parser.add_argument("--print_command", dest="print_command", action="store_true",
-                        default = False,
+                        default=False,
                         help="Print a command for running an Amazon KCLpy app.\nrequired "
                         + "args: --java --properties\noptional args: --classpath")
     parser.add_argument("-j", "--java", dest="java",
