@@ -1,5 +1,5 @@
 # Copied from README, so that this information is also accessible in the sphinx docs.
-'''
+"""
 Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
@@ -36,4 +36,4 @@ looks something like::
     if __name__ == "__main__":
         kclprocess = kcl.KCLProcess(RecordProcessor())
         kclprocess.run()
-'''
+"""
