@@ -175,7 +175,7 @@ class RecordProcessorBase(object):
         :type shard_id: str
         :param shard_id: The shard id that this processor is going to be working on.
         '''
-        return
+        raise NotImplementedError
 
     @abc.abstractmethod
     def process_records(self, records, checkpointer):
@@ -192,7 +192,7 @@ class RecordProcessorBase(object):
         :type checkpointer: amazon_kclpy.kcl.Checkpointer
         :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
         '''
-        return
+        raise NotImplementedError
 
     @abc.abstractmethod
     def shutdown(self, checkpointer, reason):
@@ -210,7 +210,7 @@ class RecordProcessorBase(object):
             shard so that this processor will be shutdown and new processor(s) will be created to for the child(ren) of
             this shard.
         '''
-        return
+        raise NotImplementedError
 
 class MalformedAction(Exception):
     '''
