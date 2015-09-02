@@ -54,7 +54,7 @@ PYTHON_REQUIREMENTS = [
         ]
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.2.0'),
+        ('com.amazonaws', 'amazon-kinesis-client', '1.6.0'),
         ('com.fasterxml.jackson.core', 'jackson-core', '2.1.1'),
         ('org.apache.httpcomponents', 'httpclient', '4.2'),
         ('org.apache.httpcomponents', 'httpcore', '4.2'),
