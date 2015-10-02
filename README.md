@@ -137,6 +137,9 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 1.2.0
+* Updated dependency to Amazon KCL version 1.6.1
+
 ### Release 1.1.0 (January 27, 2015)
 * **Python 3 support** All Python files are compatible with Python 3
 
