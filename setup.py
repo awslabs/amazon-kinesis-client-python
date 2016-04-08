@@ -49,9 +49,9 @@ JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
 PACKAGE_VERSION = '1.2.0'
 PYTHON_REQUIREMENTS = [
             'boto',
-            # argparse is part of python2.7 but must be declared for python2.6
-            'argparse',
-        ]
+]
+if sys.version_info < (2,7):
+    PYTHON_REQUIREMENTS.append('argparse')
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
         ('com.amazonaws', 'amazon-kinesis-client', '1.6.1'),
