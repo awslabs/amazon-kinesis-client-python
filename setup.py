@@ -209,7 +209,7 @@ if __name__ == '__main__':
         install_requires = PYTHON_REQUIREMENTS,
         cmdclass={
             'download_jars': DownloadJarsCommand,
-            'install': InstallThenCheckForJars,
+            # 'install': InstallThenCheckForJars,
         },
         url = "https://github.com/awslabs/amazon-kinesis-client-python",
         keywords = "amazon kinesis client library python",
