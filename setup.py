@@ -46,7 +46,7 @@ to rerun the install command.
 '''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.2.0'
+PACKAGE_VERSION = '1.2.0.monetate1'
 PYTHON_REQUIREMENTS = [
             'boto',
             # argparse is part of python2.7 but must be declared for python2.6
@@ -209,9 +209,9 @@ if __name__ == '__main__':
         install_requires = PYTHON_REQUIREMENTS,
         cmdclass={
             'download_jars': DownloadJarsCommand,
-            'install': InstallThenCheckForJars,
+            # 'install': InstallThenCheckForJars,
         },
-        url = "https://github.com/awslabs/amazon-kinesis-client-python",
+        url = "https://github.com/monetate/amazon-kinesis-client-python",
         keywords = "amazon kinesis client library python",
         zip_safe      = False,
         )
