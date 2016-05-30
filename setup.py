@@ -46,7 +46,8 @@ to rerun the install command.
 '''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.2.0'
+PACKAGE_VERSION = '1.3.0'
+AWS_JAVA_SDK_VER = '1.10.61'
 PYTHON_REQUIREMENTS = [
             'boto',
             # argparse is part of python2.7 but must be declared for python2.6
@@ -54,13 +55,13 @@ PYTHON_REQUIREMENTS = [
         ]
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.6.1'),
-        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-core', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-kms', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-s3', '1.10.20'),
+        ('com.amazonaws', 'amazon-kinesis-client', '1.6.3'),
+        ('com.amazonaws', 'aws-java-sdk-cloudwatch', AWS_JAVA_SDK_VER),
+        ('com.amazonaws', 'aws-java-sdk-core', AWS_JAVA_SDK_VER),
+        ('com.amazonaws', 'aws-java-sdk-dynamodb', AWS_JAVA_SDK_VER),
+        ('com.amazonaws', 'aws-java-sdk-kinesis', AWS_JAVA_SDK_VER),
+        ('com.amazonaws', 'aws-java-sdk-kms', AWS_JAVA_SDK_VER),
+        ('com.amazonaws', 'aws-java-sdk-s3', AWS_JAVA_SDK_VER),
         ('com.fasterxml.jackson.core', 'jackson-annotations', '2.5.0'),
         ('com.fasterxml.jackson.core', 'jackson-core', '2.5.3'),
         ('com.fasterxml.jackson.core', 'jackson-databind', '2.5.3'),
