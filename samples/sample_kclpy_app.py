@@ -14,8 +14,11 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 '''
 from __future__ import print_function
-import sys, time, json, base64
+import sys
+import time
+import base64
 from amazon_kclpy import kcl
+
 
 class RecordProcessor(kcl.RecordProcessorBase):
     '''
@@ -54,28 +57,24 @@ class RecordProcessor(kcl.RecordProcessorBase):
             try:
                 checkpointer.checkpoint(sequence_number)
                 return
-            except kcl.CheckpointError as e:
-                if 'ShutdownException' == e.value:
-                    '''
-                    A ShutdownException indicates that this record processor should be shutdown. This is due to
-                    some failover event, e.g. another MultiLangDaemon has taken the lease for this shard.
-                    '''
-                    print('Encountered shutdown execption, skipping checkpoint')
+            except kcl.ShutdownException:
+                '''
+                A ShutdownException indicates that this record processor should be shutdown. This is due to
+                some failover event, e.g. another MultiLangDaemon has taken the lease for this shard.
+                '''
+                print('Encountered shutdown execption, skipping checkpoint')
+                return
+            except kcl.InvalidStateException:
+                sys.stderr.write('MultiLangDaemon reported an invalid state while checkpointing.\n')
+            except kcl.ThrottlingException:
+                if self.CHECKPOINT_RETRIES - 1 == n:
+                    sys.stderr.write('Failed to checkpoint after {n} attempts, giving up.\n'.format(n=n))
                     return
-                elif 'ThrottlingException' == e.value:
-                    '''
-                    A ThrottlingException indicates that one of our dependencies is is over burdened, e.g. too many
-                    dynamo writes. We will sleep temporarily to let it recover.
-                    '''
-                    if self.CHECKPOINT_RETRIES - 1 == n:
-                        sys.stderr.write('Failed to checkpoint after {n} attempts, giving up.\n'.format(n=n))
-                        return
-                    else:
-                        print('Was throttled while checkpointing, will attempt again in {s} seconds'.format(s=self.SLEEP_SECONDS))
-                elif 'InvalidStateException' == e.value:
-                    sys.stderr.write('MultiLangDaemon reported an invalid state while checkpointing.\n')
-                else: # Some other error
-                    sys.stderr.write('Encountered an error while checkpointing, error was {e}.\n'.format(e=e))
+                else:
+                    print('Was throttled while checkpointing, will attempt again in {s} seconds'.format(s=self.SLEEP_SECONDS))
+            except kcl.CheckpointError as e:
+                sys.stderr.write('Encountered an error while checkpointing, error was {e}.\n'.format(e=e))
+
             time.sleep(self.SLEEP_SECONDS)
 
     def process_record(self, data, partition_key, sequence_number):
@@ -118,7 +117,7 @@ class RecordProcessor(kcl.RecordProcessorBase):
                 seq = int(seq)
                 key = record.get('partitionKey')
                 self.process_record(data, key, seq)
-                if self.largest_seq == None or seq > self.largest_seq:
+                if self.largest_seq is None or seq > self.largest_seq:
                     self.largest_seq = seq
             # Checkpoints every 60 seconds
             if time.time() - self.last_checkpoint_time > self.CHECKPOINT_FREQ_SECONDS:
@@ -149,7 +148,7 @@ class RecordProcessor(kcl.RecordProcessorBase):
                 # shard id
                 print('Was told to terminate, will attempt to checkpoint.')
                 self.checkpoint(checkpointer, None)
-            else: # reason == 'ZOMBIE'
+            else:  # reason == 'ZOMBIE'
                 print('Shutting down due to failover. Will not checkpoint.')
         except:
             pass
