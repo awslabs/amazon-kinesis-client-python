@@ -46,7 +46,7 @@ to rerun the install command.
 '''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.2.0'
+PACKAGE_VERSION = '1.3.0'
 PYTHON_REQUIREMENTS = [
             'boto',
             # argparse is part of python2.7 but must be declared for python2.6
@@ -54,24 +54,25 @@ PYTHON_REQUIREMENTS = [
         ]
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.6.1'),
-        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-core', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-kms', '1.10.20'),
-        ('com.amazonaws', 'aws-java-sdk-s3', '1.10.20'),
-        ('com.fasterxml.jackson.core', 'jackson-annotations', '2.5.0'),
-        ('com.fasterxml.jackson.core', 'jackson-core', '2.5.3'),
-        ('com.fasterxml.jackson.core', 'jackson-databind', '2.5.3'),
+        ('com.amazonaws', 'amazon-kinesis-client', '1.6.4'),
+        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-core', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-kms', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-s3', '1.11.14'),
+        ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
+        ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
+        ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
+        ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
         ('com.google.guava', 'guava', '18.0'),
         ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-        ('commons-codec', 'commons-codec', '1.6'),
+        ('commons-codec', 'commons-codec', '1.9'),
         ('commons-lang', 'commons-lang', '2.6'),
         ('commons-logging', 'commons-logging', '1.1.3'),
         ('joda-time', 'joda-time', '2.8.1'),
-        ('org.apache.httpcomponents', 'httpclient', '4.3.6'),
-        ('org.apache.httpcomponents', 'httpcore', '4.3.3')
+        ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
+        ('org.apache.httpcomponents', 'httpcore', '4.4.4')
         ]
 
 class MavenJarDownloader:
