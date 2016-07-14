@@ -137,6 +137,9 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 1.3.1
+* Version number increase to stay inline with PyPI.
+
 ### Release 1.3.0
 * Updated dependency to Amazon KCL version 1.6.4
 
