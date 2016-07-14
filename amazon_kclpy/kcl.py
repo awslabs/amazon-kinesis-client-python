@@ -1,5 +1,5 @@
 '''
-Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Amazon Software License (the "License").
 You may not use this file except in compliance with the License.
@@ -12,7 +12,41 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 '''
-import abc, base64, io, json, os, random, sys, time, traceback
+import abc
+import json
+import sys
+import traceback
+
+
+class CheckpointError(Exception):
+    '''
+    Error class used for wrapping exception names passed through the input file.
+    '''
+    def __init__(self, value):
+        '''
+        :type value: str
+        :param value: The name of the exception that was received while checkpointing. For more details see
+            https://github.com/awslabs/amazon-kinesis-client/tree/master/src/main/java/com/amazonaws/services/kinesis/clientlibrary/exceptions
+            Any of those exceptions' names could be returned by the MultiLangDaemon as a response to a checkpoint action.
+        '''
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
+class InvalidStateException(CheckpointError):
+    def __init__(self, value='InvalidStateException'):
+        super(self, InvalidStateException).__init__(value)
+
+
+class ShutdownException(CheckpointError):
+    pass
+
+
+class ThrottlingException(CheckpointError):
+    pass
+
 
 class _IOHandler(object):
     '''
@@ -87,22 +121,6 @@ class _IOHandler(object):
         self.write_line(json.dumps(response))
 
 
-class CheckpointError(Exception):
-    '''
-    Error class used for wrapping exception names passed through the input file.
-    '''
-    def __init__(self, value):
-        '''
-        :type value: str
-        :param value: The name of the exception that was received while checkpointing. For more details see
-            https://github.com/awslabs/amazon-kinesis-client/tree/master/src/main/java/com/amazonaws/services/kinesis/clientlibrary/exceptions
-            Any of those exceptions' names could be returned by the MultiLangDaemon as a response to a checkpoint action.
-        '''
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
 class Checkpointer(object):
     '''
     A checkpointer class which allows you to make checkpoint requests. A checkpoint marks a point in a shard
@@ -117,6 +135,15 @@ class Checkpointer(object):
             to and from the MultiLangDaemon.
         '''
         self.io_handler = io_handler
+
+    def _raise_exception_by_str(self, error):
+        exception_classes = {
+            'InvalidStateException': InvalidStateException,
+            'ShutdownException': ShutdownException,
+            'ThrottlingException': ThrottlingException
+        }
+        exception_class = exception_classes.get(error, CheckpointError)
+        raise exception_class(error)
 
     def _get_action(self):
         '''
@@ -139,12 +166,12 @@ class Checkpointer(object):
         :type sequenceNumber: str
         :param sequenceNumber: The sequence number to checkpoint at or None if you want to checkpoint at the farthest record
         '''
-        response = {"action" : "checkpoint", "checkpoint" : sequenceNumber}
+        response = {"action": "checkpoint", "checkpoint": sequenceNumber}
         self.io_handler.write_action(response)
         action = self._get_action()
         if action.get('action') == 'checkpoint':
-            if action.get('error') != None:
-                raise CheckpointError(action.get('error'))
+            if action.get('error') is not None:
+                self._raise_exception_by_str(action.get('error'))
         else:
             '''
             We are in an invalid state. We will raise a checkpoint exception
@@ -153,7 +180,8 @@ class Checkpointer(object):
             exception. Note that the documented guidance is that this exception
             is NOT retryable so the client code should exit.
             '''
-            raise CheckpointError('InvalidStateException')
+            raise InvalidStateException()
+
 
 # RecordProcessor base class
 class RecordProcessorBase(object):
@@ -212,11 +240,13 @@ class RecordProcessorBase(object):
         '''
         return
 
+
 class MalformedAction(Exception):
     '''
     Raised when an action given by the MultiLangDaemon doesn't have all the appropriate attributes.
     '''
     pass
+
 
 class KCLProcess(object):
 
@@ -282,7 +312,7 @@ class KCLProcess(object):
 
         :param response_for: Required parameter; the action that this status message is confirming completed.
         '''
-        self.io_handler.write_action({"action" : "status", "responseFor" : response_for})
+        self.io_handler.write_action({"action": "status", "responseFor": response_for})
 
     def _handle_a_line(self, line):
         '''
@@ -297,7 +327,6 @@ class KCLProcess(object):
         action = self.io_handler.load_action(line)
         self._perform_action(action)
         self._report_done(action.get('action'))
-
 
     def run(self):
         '''
@@ -314,5 +343,3 @@ class KCLProcess(object):
             line = self.io_handler.read_line()
             if line:
                 self._handle_a_line(line)
-
-
