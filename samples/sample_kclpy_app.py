@@ -74,8 +74,10 @@ class RecordProcessor(kcl.RecordProcessorBase):
                         print('Was throttled while checkpointing, will attempt again in {s} seconds'.format(s=self.SLEEP_SECONDS))
                 elif 'InvalidStateException' == e.value:
                     sys.stderr.write('MultiLangDaemon reported an invalid state while checkpointing.\n')
+                    return
                 else: # Some other error
                     sys.stderr.write('Encountered an error while checkpointing, error was {e}.\n'.format(e=e))
+                    return
             time.sleep(self.SLEEP_SECONDS)
 
     def process_record(self, data, partition_key, sequence_number):
