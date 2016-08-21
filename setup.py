@@ -14,7 +14,7 @@ permissions and limitations under the License.
 """
 from __future__ import print_function
 from setuptools import setup
-import os, sys, glob
+import os, sys, glob, errno
 from setuptools import Command
 from setuptools.command.install import install
 
@@ -107,10 +107,16 @@ class MavenJarDownloader:
         '''
         print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
+            os.makedirs(self.destdir)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+        try:
             urlretrieve(url, dest)
             print('Saving {url} -> {dest}'.format(url=url, dest=dest))
-        except:
+        except Exception as exception:
             print('Failed to retrieve {url}'.format(url=url))
+            print(exception)
             return
 
     def download_files(self):
