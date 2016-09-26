@@ -12,7 +12,9 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 '''
+from __future__ import absolute_import
 import abc, base64, io, json, os, random, sys, time, traceback
+import six
 
 class _IOHandler(object):
     '''
@@ -156,7 +158,7 @@ class Checkpointer(object):
             raise CheckpointError('InvalidStateException')
 
 # RecordProcessor base class
-class RecordProcessorBase(object):
+class RecordProcessorBase(six.with_metaclass(abc.ABCMeta, object)):
     '''
     Base class for implementing a record processor.A RecordProcessor processes a shard in a stream.
     Its methods will be called with this pattern:
@@ -165,7 +167,6 @@ class RecordProcessorBase(object):
     - process_records will be called zero or more times
     - shutdown will be called if this MultiLangDaemon instance loses the lease to this shard
     '''
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def initialize(self, shard_id):

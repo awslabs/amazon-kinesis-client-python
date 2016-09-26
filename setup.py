@@ -46,11 +46,12 @@ to rerun the install command.
 '''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.3.1'
+PACKAGE_VERSION = '1.4.1'
 PYTHON_REQUIREMENTS = [
             'boto',
             # argparse is part of python2.7 but must be declared for python2.6
             'argparse',
+            'six',
         ]
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
@@ -215,4 +216,13 @@ if __name__ == '__main__':
         url = "https://github.com/awslabs/amazon-kinesis-client-python",
         keywords = "amazon kinesis client library python",
         zip_safe      = False,
+        classifiers=(
+            'Intended Audience :: Developers',
+            'Intended Audience :: System Administrators',
+            'Natural Language :: English',
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 2.6',
+            'Programming Language :: Python :: 2.7',
+            'Programming Language :: Python :: 3',
+        ),
         )
