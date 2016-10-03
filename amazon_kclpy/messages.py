@@ -20,81 +20,239 @@ from datetime import timedelta
 
 class MessageDispatcher(object):
     """
-    The base class use to dispatch actions to record processors.  This allows derived classes to determine which method on the record processor they 
+    The base class use to dispatch actions to record processors.  This allows derived classes
+    to determine which method on the record processor they need to call.  Additionally classes
+    implementing this generally wrap up the parameters into them self
     """
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def dispatch(self, checkpointer, record_processor):
+        """
+        Dispatches the current message to the record processor.
+        :param amazon_kclpy.kcl.Checkpointer checkpointer: The checkpointer that can be used by the
+            record process to record its progress
+        :param amazon_kclpy.v2.processor.RecordProcessBase record_processor: The record processor
+            that will recieve, and process the message.
+        :return: Nothing
+        """
         pass
 
 
 class InitializeInput(MessageDispatcher):
-
+    """
+    Provides the necessary parameters to initialize a Record Processor
+    """
     def __init__(self, json_dict):
-        self.shard_id = json_dict["shardId"]
-        self.sequence_number = json_dict["sequenceNumber"]
-        self.sub_sequence_number = json_dict["subSequenceNumber"]
-        self.action = get_action(json_dict)
+        """
+        Configures the input, preparing it for dispatch
+        :param dict json_dict: The raw representation of the JSON data
+        """
+        self._shard_id = json_dict["shardId"]
+        self._sequence_number = json_dict["sequenceNumber"]
+        self._sub_sequence_number = json_dict["subSequenceNumber"]
+        self._action = get_action(json_dict)
+
+    @property
+    def shard_id(self):
+        """
+        The shard id that the record processor is be initialized with
+        :return: the shard id
+        :rtype: str
+        """
+        return self._shard_id
+
+    @property
+    def sequence_number(self):
+        """
+        The sequence number that this record processor will start at.  This can be None if this record processor is
+        starting on a fresh shard.
+        :return: the sequence number
+        :rtype: str or None
+        """
+        return self._sequence_number
+
+    @property
+    def sub_sequence_number(self):
+        """
+        The sub sequence number that this record processo will start at.  This will never be none,
+        but can be 0 if there was no subsequence number
+        :return: the subsequence number
+        :rtype: int
+        """
+        return self._sub_sequence_number
 
     def dispatch(self, checkpointer, record_processor):
         record_processor.initialize(self)
 
 
 class ProcessRecordsInput(MessageDispatcher):
-
+    """
+    Provides the records, and associated metadata for calls to process_records.
+    """
     def __init__(self, json_dict):
-        self.records = json_dict["records"]
-        self.millis_behind_latest = json_dict["millisBehindLatest"]
-        self.checkpointer = None
-        self.action = get_action(json_dict)
+        self._records = json_dict["records"]
+        self._millis_behind_latest = json_dict["millisBehindLatest"]
+        self._checkpointer = None
+        self._action = get_action(json_dict)
+
+    @property
+    def records(self):
+        """
+        The records that are part of this request.
+        :return: records that are part of this request
+        :rtype: Record
+        """
+        return self._records
+
+    @property
+    def millis_behind_latest(self):
+        """
+        An approximation of how far behind the current time this batch of records is
+        :return: the number of milliseconds
+        :rtype: int
+        """
+        return self._millis_behind_latest
+
+    @property
+    def checkpointer(self):
+        """
+        Provides the checkpointer that will confirm all records upto, and including this batch of records
+        :return: the checkpointer for this request
+        :rtype: amazon_kclpy.kcl.Checkpointer
+        """
+        return self._checkpointer
 
     def dispatch(self, checkpointer, record_processor):
-        self.checkpointer = checkpointer
+        self._checkpointer = checkpointer
         record_processor.process_records(self)
 
 
 class ShutdownInput(MessageDispatcher):
-
+    """
+    Used to tell the record processor it will be shutdown.
+    """
     def __init__(self, json_dict):
-        self.reason = json_dict["reason"]
-        self.checkpointer = None
-        self.action = get_action(json_dict)
+        self._reason = json_dict["reason"]
+        self._checkpointer = None
+        self._action = get_action(json_dict)
+
+    @property
+    def reason(self):
+        """
+        The reason that this record processor is being shutdown, will be one of
+        * TERMINATE
+        * ZOMBIE
+        :return: the reason for the shutdown
+        :rtype: str
+        """
+        return self._reason
+
+    @property
+    def checkpointer(self):
+        """
+        The checkpointer that can be used to checkpoint this shutdown.
+        :return: the checkpointer
+        :rtype: amazon_kclpy.kcl.Checkpointer
+        """
+        return self._checkpointer
 
     def dispatch(self, checkpointer, record_processor):
-        self.checkpointer = checkpointer
+        self._checkpointer = checkpointer
         record_processor.shutdown(self)
 
 
 class CheckpointInput(object):
-
+    """
+    Used in preparing the response back during the checkpoint process.  This shouldn't be used by record processors.
+    """
     def __init__(self, json_dict):
-        self.sequence_number = json_dict["sequenceNumber"]
-        self.sub_sequence_number = json_dict["subSequenceNumber"]
-        self.error = json_dict["error"]
+        self._sequence_number = json_dict["sequenceNumber"]
+        self._sub_sequence_number = json_dict["subSequenceNumber"]
+        self._error = json_dict["error"]
+
+    @property
+    def sequence_number(self):
+        """
+        The sequence number that record processor intends to checkpoint at.  Can be None if the default 
+        checkpoint behavior is desired.
+        :return: the sequence number
+        :rtype: str or None
+        """
+        return self._sequence_number
+
+    @property
+    def sub_sequence_number(self):
+        """
+        The sub-sequence number that the record processor intends to checkpoint at.  Can be None if 
+        the default checkpoint behavior is desired.
+        :return: the sub-sequence number
+        :rtype: int or None
+        """
+        return self._sub_sequence_number
+
+    @property
+    def error(self):
+        """
+        The error message that may have resulted from checkpointing.  This will be None if no error occurred.
+        :return: the error message
+        :rtype: str or None
+        """
+        return self._error
 
 
 class Record(object):
-
+    """
+    Represents a single record as returned by Kinesis, or Deaggregated from the Kinesis Producer Library
+    """
     def __init__(self, json_dict):
-        self.sequence_number = json_dict["sequenceNumber"]
-        self.sub_sequence_number = json_dict["subSequenceNumber"]
+        self._sequence_number = json_dict["sequenceNumber"]
+        self._sub_sequence_number = json_dict["subSequenceNumber"]
 
-        self.java_time_stamp = int(json_dict["approximateArrivalTimestamp"])
-        millis = timedelta(milliseconds=self.java_time_stamp % 1000)
-        seconds = self.java_time_stamp / 1000
-        self.approximate_arrival_timestamp = datetime.fromtimestamp(seconds) + millis
+        self._java_time_stamp = int(json_dict["approximateArrivalTimestamp"])
+        millis = timedelta(milliseconds=self._java_time_stamp % 1000)
+        seconds = self._java_time_stamp / 1000
+        self._approximate_arrival_timestamp = datetime.fromtimestamp(seconds) + millis
 
-        self.partition_key = json_dict["partitionKey"]
-        self.data = json_dict["data"]
-        self.json_dict = json_dict
+        self._partition_key = json_dict["partitionKey"]
+        self._data = json_dict["data"]
+        self._json_dict = json_dict
 
     @property
     def binary_data(self):
-        return base64.b64decode(self.data)
+        """
+        The raw binary data automatically decoded from the Base 64 representation provided by py:attr:`data`
+
+        :return: a string representing the raw bytes from
+        """
+        return base64.b64decode(self._data)
+    
+    @property
+    def sequence_number(self):
+        return self._sequence_number
+    
+    @property
+    def sub_sequence_number(self):
+        return self._sub_sequence_number
+
+    @property
+    def java_time_stamp(self):
+        return self._java_time_stamp
+
+    @property
+    def approximate_arrival_timestamp(self):
+        return self._approximate_arrival_timestamp
+
+    @property
+    def partition_key(self):
+        return self._partition_key
+
+    @property
+    def data(self):
+        return self._data
 
     def get(self, field):
-        return self.json_dict[field]
+        return self._json_dict[field]
 
 
 def get_action(dct):
