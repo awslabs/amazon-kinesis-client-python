@@ -59,8 +59,7 @@ class RecordProcessorBase(object):
         '''
         return
 
-    def _version(self):
-        return 2
+    version = 2
 
 
 class V1toV2Processor(RecordProcessorBase):

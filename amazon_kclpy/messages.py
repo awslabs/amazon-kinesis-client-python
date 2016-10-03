@@ -41,6 +41,9 @@ class MessageDispatcher(object):
         """
         pass
 
+    @abc.abstractmethod
+    def action(self):
+        pass
 
 class InitializeInput(MessageDispatcher):
     """
@@ -89,6 +92,16 @@ class InitializeInput(MessageDispatcher):
         """
         return self._sub_sequence_number
 
+    @property
+    def action(self):
+        """
+        The action that spawned this message
+
+        :return: the original action value
+        :rtype: str
+        """
+        return self._action
+
     def dispatch(self, checkpointer, record_processor):
         record_processor.initialize(self)
 
@@ -133,6 +146,16 @@ class ProcessRecordsInput(MessageDispatcher):
         """
         return self._checkpointer
 
+    @property
+    def action(self):
+        """
+        The action that spawned this message
+
+        :return: the original action value
+        :rtype: str
+        """
+        return self._action
+
     def dispatch(self, checkpointer, record_processor):
         self._checkpointer = checkpointer
         record_processor.process_records(self)
@@ -169,6 +192,16 @@ class ShutdownInput(MessageDispatcher):
         :rtype: amazon_kclpy.kcl.Checkpointer
         """
         return self._checkpointer
+
+    @property
+    def action(self):
+        """
+        The action that spawned this message
+
+        :return: the original action value
+        :rtype: str
+        """
+        return self._action
 
     def dispatch(self, checkpointer, record_processor):
         self._checkpointer = checkpointer

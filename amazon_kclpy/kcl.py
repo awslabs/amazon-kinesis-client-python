@@ -217,46 +217,39 @@ class RecordProcessorBase(object):
         '''
         return
 
-    def version(self):
-        return 1
+
+    version = 1
 
 
 class KCLProcess(object):
 
     def __init__(self, record_processor, inputfile=sys.stdin, outputfile=sys.stdout, errorfile=sys.stderr):
-        '''
-        :type record_processor: object
+        """
+        :type record_processor: RecordProcessorBase or amazon_kclpy.v2.processor.RecordProcessorBase
         :param record_processor: A record processor to use for processing a shard.
 
-        :type inputfile: file
-        :param inputfile: A file to read action messages from. Typically STDIN.
+        :param file inputfile: A file to read action messages from. Typically STDIN.
 
-        :type outputfile: file
-        :param outputfile: A file to write action messages to. Typically STDOUT.
+        :param file outputfile: A file to write action messages to. Typically STDOUT.
 
-        :type errorfile: file
-        :param errorfile: A file to write error messages to. Typically STDERR.
-        '''
+        :param file errorfile: A file to write error messages to. Typically STDERR.
+        """
         self.io_handler = _IOHandler(inputfile, outputfile, errorfile)
         self.checkpointer = Checkpointer(self.io_handler)
-        if record_processor.version() == 1:
+        if record_processor.version == 1:
             self.processor = processor.V1toV2Processor(record_processor)
         else:
             self.processor = record_processor
 
     def _perform_action(self, action):
-        # type: (amazon_kclpy.messages.MessageDispatcher)
-        '''
+        """
         Maps input action to the appropriate method of the record processor.
 
-        :type action: MessageDispatcher
-        :param action: A dictionary that represents an action to take with appropriate attributes e.g.
-            {"action":"initialize","shardId":"shardId-123"}
-            {"action":"processRecords","records":[{"data":"bWVvdw==","partitionKey":"cat","sequenceNumber":"456"}]}
-            {"action":"shutdown","reason":"TERMINATE"}
+        :type action:
+        :param MessageDispatcher action: A derivative of MessageDispatcher that will handle the provided input
 
         :raises MalformedAction: Raised if the action is missing attributes.
-        '''
+        """
 
         try:
             action.dispatch(self.checkpointer, self.processor)
