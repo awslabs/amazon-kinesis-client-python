@@ -176,20 +176,26 @@ Which will download the required jars and rerun the install.
         '''
         downloader = MavenJarDownloader()
         downloader.download_files()
-        if 'do_egg_install' in dir(install):
-            '''
-            setuptools.command.install checks if it was called
-            directly by setup or by some other code by inspecting the call
-            stack. They do this for backwards compatability.
+        # install_attr = dir(install)
+        # for attr in install_attr:
+        #     print("\tAttr: " + attr)
+        # if 'do_egg_install' in dir(install):
+        #     '''
+        #     setuptools.command.install checks if it was called
+        #     directly by setup or by some other code by inspecting the call
+        #     stack. They do this for backwards compatability.
 
-            Anyway, when "install" is overriden it calls an older form of
-            install (distutils.command.install) otherwise they call do_egg_install
-            so we try to call do_egg_install otherwise we call install normally
-            (since it should always be present).
-            '''
-            install.do_egg_install(self)
-        else:
-            install.run(self)
+        #     Anyway, when "install" is overriden it calls an older form of
+        #     install (distutils.command.install) otherwise they call do_egg_install
+        #     so we try to call do_egg_install otherwise we call install normally
+        #     (since it should always be present).
+        #     '''
+        #     print("Calling do_egg_install")
+        #     install.do_egg_install(self)
+        # else:
+        #     print("Calling run")
+        #     install.run(self)
+        install.run(self)
         missing_jars = downloader.missing_jars()
         if len(missing_jars) > 0:
             print(self.warning_string(missing_jars))
@@ -200,7 +206,7 @@ if __name__ == '__main__':
         version       = PACKAGE_VERSION,
         description   = 'A python interface for the Amazon Kinesis Client Library MultiLangDaemon',
         license       = 'Amazon Software License',
-        packages      = [PACKAGE_NAME, 'samples'],
+        packages      = [PACKAGE_NAME, PACKAGE_NAME + "/v2", 'samples'],
         scripts       = glob.glob('samples/*py'),
         package_data  = {
             ''           : ['*.txt', '*.md'],

@@ -14,10 +14,16 @@ permissions and limitations under the License.
 '''
 import abc, base64, io, json, os, random, sys, time, traceback
 
+from amazon_kclpy import dispatch
+
+from amazon_kclpy.v2 import processor
+
+from amazon_kclpy import messages
+
 class _IOHandler(object):
     '''
     Hidden class used by :class:`KCLProcess` and :class:`Checkpointer` to communicate with the input and output
-    files.
+    files.  Wheee
     '''
 
     def __init__(self, input_file, output_file, error_file):
@@ -72,10 +78,10 @@ class _IOHandler(object):
         :param line: A message line that was delivered received from the MultiLangDaemon (e.g.
             '{"action" : "initialize", "shardId" : "shardId-000001"}')
 
-        :rtype: dict
-        :return: A dictionary representing the contents of the line (e.g. {"action" : "initialize", "shardId" : "shardId-000001"})
+        :rtype: amazon_kclpy.messages.MessageDispatcher
+        :return: A callabe action class that contains the action presented in the line
         '''
-        return json.loads(line)
+        return json.loads(line, object_hook=dispatch.message_decode)
 
     def write_action(self, response):
         '''
@@ -122,16 +128,14 @@ class Checkpointer(object):
         '''
         Gets the next json message from STDIN
 
-        :rtype: dict
-        :return: A dictionary object that indicates what action this processor should take next. For example
-            {"action" : "initialize", "shardId" : "shardId-000001"} would indicate that this processor should
-            invoke the initialize method of the inclosed RecordProcessor object.
+        :rtype: object
+        :return: Either a child of MessageDispatcher, or a housekeeping object type
         '''
         line = self.io_handler.read_line()
         action = self.io_handler.load_action(line)
         return action
 
-    def checkpoint(self, sequenceNumber=None):
+    def checkpoint(self, sequenceNumber=None, subSequenceNumber=None):
         '''
         Checkpoints at a particular sequence number you provide or if no sequence number is given, the checkpoint will
         be at the end of the most recently delivered list of records
@@ -139,12 +143,12 @@ class Checkpointer(object):
         :type sequenceNumber: str
         :param sequenceNumber: The sequence number to checkpoint at or None if you want to checkpoint at the farthest record
         '''
-        response = {"action" : "checkpoint", "checkpoint" : sequenceNumber}
+        response = {"action" : "checkpoint", "sequenceNumber" : sequenceNumber, "subSequenceNumber": subSequenceNumber}
         self.io_handler.write_action(response)
         action = self._get_action()
-        if action.get('action') == 'checkpoint':
-            if action.get('error') != None:
-                raise CheckpointError(action.get('error'))
+        if isinstance(action, messages.CheckpointInput):
+            if action.error is not None:
+                raise CheckpointError(action.error)
         else:
             '''
             We are in an invalid state. We will raise a checkpoint exception
@@ -154,6 +158,7 @@ class Checkpointer(object):
             is NOT retryable so the client code should exit.
             '''
             raise CheckpointError('InvalidStateException')
+
 
 # RecordProcessor base class
 class RecordProcessorBase(object):
@@ -212,17 +217,15 @@ class RecordProcessorBase(object):
         '''
         return
 
-class MalformedAction(Exception):
-    '''
-    Raised when an action given by the MultiLangDaemon doesn't have all the appropriate attributes.
-    '''
-    pass
+    def version(self):
+        return 1
+
 
 class KCLProcess(object):
 
     def __init__(self, record_processor, inputfile=sys.stdin, outputfile=sys.stdout, errorfile=sys.stderr):
         '''
-        :type record_processor: amazon_kclpy.kcl.RecordProcessorBase
+        :type record_processor: object
         :param record_processor: A record processor to use for processing a shard.
 
         :type inputfile: file
@@ -236,13 +239,17 @@ class KCLProcess(object):
         '''
         self.io_handler = _IOHandler(inputfile, outputfile, errorfile)
         self.checkpointer = Checkpointer(self.io_handler)
-        self.processor = record_processor
+        if record_processor.version() == 1:
+            self.processor = processor.V1toV2Processor(record_processor)
+        else:
+            self.processor = record_processor
 
     def _perform_action(self, action):
+        # type: (amazon_kclpy.messages.MessageDispatcher)
         '''
         Maps input action to the appropriate method of the record processor.
 
-        :type action: dict
+        :type action: MessageDispatcher
         :param action: A dictionary that represents an action to take with appropriate attributes e.g.
             {"action":"initialize","shardId":"shardId-123"}
             {"action":"processRecords","records":[{"data":"bWVvdw==","partitionKey":"cat","sequenceNumber":"456"}]}
@@ -250,23 +257,9 @@ class KCLProcess(object):
 
         :raises MalformedAction: Raised if the action is missing attributes.
         '''
+
         try:
-            action_type = action['action']
-            if action_type == 'initialize':
-                args = (action['shardId'],)
-                f = self.processor.initialize
-            elif action_type == 'processRecords':
-                args = (action['records'], self.checkpointer)
-                f = self.processor.process_records
-            elif action_type == 'shutdown':
-                args = (self.checkpointer, action['reason'])
-                f = self.processor.shutdown
-            else:
-                raise MalformedAction("Received an action which couldn't be understood. Action was '{action}'".format(action=action))
-        except KeyError as key_error:
-            raise MalformedAction("Action {action} was expected to have key {key}".format(action=action, key=str(key_error)))
-        try:
-            f(*args)
+            action.dispatch(self.checkpointer, self.processor)
         except:
             '''
             We don't know what the client's code could raise and we have no way to recover if we let it propagate
@@ -296,7 +289,7 @@ class KCLProcess(object):
         '''
         action = self.io_handler.load_action(line)
         self._perform_action(action)
-        self._report_done(action.get('action'))
+        self._report_done(action.action)
 
 
     def run(self):
