@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Amazon Kinesis Client Library for Python documentation build configuration file, created by
-# sphinx-quickstart on Mon Oct  3 13:25:46 2016.
+# sphinx-quickstart on Mon Oct 24 12:24:53 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -18,8 +18,10 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('./amazon_kclpy/v2'))
-sys.path.insert(0, os.path.abspath('./amazon_kclpy'))
+sys.path.insert(0, os.path.abspath('../'))
+
+import amazon_kclpy
+import amazon_kclpy.v2
 
 # -- General configuration ------------------------------------------------
 
@@ -32,8 +34,8 @@ sys.path.insert(0, os.path.abspath('./amazon_kclpy'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.ifconfig',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -54,8 +56,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Amazon Kinesis Client Library for Python'
-copyright = u'2016, Amazon.com'
-author = u'Amazon.com'
+copyright = u'2016, Amazon.com, Inc.'
+author = 'Amazon.com, Inc.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -85,7 +87,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -265,7 +267,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'AmazonKinesisClientLibraryforPython.tex', u'Amazon Kinesis Client Library for Python Documentation',
-     u'pfifer', 'manual'),
+     u'Amazon.com', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

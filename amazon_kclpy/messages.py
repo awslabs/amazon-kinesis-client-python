@@ -1,17 +1,15 @@
-"""
-Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-Licensed under the Amazon Software License (the "License").
-You may not use this file except in compliance with the License.
-A copy of the License is located at
-
-http://aws.amazon.com/asl/
-
-or in the "license" file accompanying this file. This file is distributed
-on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-express or implied. See the License for the specific language governing
-permissions and limitations under the License.
-"""
+# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Amazon Software License (the "License").
+# You may not use this file except in compliance with the License.
+# A copy of the License is located at
+#
+# http://aws.amazon.com/asl/
+#
+# or in the "license" file accompanying this file. This file is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied. See the License for the specific language governing
+# permissions and limitations under the License.
 import abc
 import base64
 from datetime import datetime, timedelta
@@ -38,11 +36,16 @@ class MessageDispatcher(object):
 
         :return: Nothing
         """
-        pass
+        raise NotImplementedError
 
     @abc.abstractmethod
     def action(self):
-        pass
+        """
+        Retrieves the name of the action that caused the creation of this dispatcher.
+
+        :return str: The name of the action e.g. initialize, or processRecords
+        """
+        raise NotImplementedError
 
 
 class InitializeInput(MessageDispatcher):
@@ -266,6 +269,17 @@ class Record(object):
     Represents a single record as returned by Kinesis, or Deaggregated from the Kinesis Producer Library
     """
     def __init__(self, json_dict):
+        """
+        Creates a new Record object that represent a single record in Kinesis.  Construction for the provided
+        dictionary requires that the following fields are present:
+            * sequenceNumber
+            * subSequenceNumber
+            * approximateArrivalTimestamp
+            * partitionKey
+            * data
+
+        :param dict json_dict:
+        """
         self._sequence_number = json_dict["sequenceNumber"]
         self._sub_sequence_number = json_dict["subSequenceNumber"]
 
