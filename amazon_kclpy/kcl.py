@@ -25,7 +25,7 @@ from amazon_kclpy import messages
 class _IOHandler(object):
     '''
     Hidden class used by :class:`KCLProcess` and :class:`Checkpointer` to communicate with the input and output
-    files.  Wheee
+    files.
     '''
 
     def __init__(self, input_file, output_file, error_file):
@@ -155,13 +155,13 @@ class Checkpointer(object):
             if action.error is not None:
                 raise CheckpointError(action.error)
         else:
-            '''
-            We are in an invalid state. We will raise a checkpoint exception
-            to the RecordProcessor indicating that the KCL (or KCLpy) is in
-            an invalid state. See KCL documentation for description of this
-            exception. Note that the documented guidance is that this exception
-            is NOT retryable so the client code should exit.
-            '''
+            #
+            # We are in an invalid state. We will raise a checkpoint exception
+            # to the RecordProcessor indicating that the KCL (or KCLpy) is in
+            # an invalid state. See KCL documentation for description of this
+            # exception. Note that the documented guidance is that this exception
+            # is NOT retryable so the client code should exit.
+            #
             raise CheckpointError('InvalidStateException')
 
 
@@ -185,7 +185,7 @@ class RecordProcessorBase(object):
         :type shard_id: str
         :param shard_id: The shard id that this processor is going to be working on.
         '''
-        return
+        raise NotImplementedError
 
     @abc.abstractmethod
     def process_records(self, records, checkpointer):
@@ -202,7 +202,7 @@ class RecordProcessorBase(object):
         :type checkpointer: amazon_kclpy.kcl.Checkpointer
         :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
         '''
-        return
+        raise NotImplementedError
 
     @abc.abstractmethod
     def shutdown(self, checkpointer, reason):
@@ -220,7 +220,7 @@ class RecordProcessorBase(object):
             shard so that this processor will be shutdown and new processor(s) will be created to for the child(ren) of
             this shard.
         '''
-        return
+        raise NotImplementedError
 
     version = 1
 

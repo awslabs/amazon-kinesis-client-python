@@ -23,16 +23,16 @@ class MalformedAction(Exception):
 
 
 _serializers = {
-    "initialize": lambda (json_dict): messages.InitializeInput(json_dict),
-    "processRecords": lambda (json_dict): messages.ProcessRecordsInput(json_dict),
-    "shutdown": lambda (json_dict): messages.ShutdownInput(json_dict),
-    "checkpoint": lambda (json_dict): messages.CheckpointInput(json_dict),
-    "record": lambda (json_dict): messages.Record(json_dict)
+    "initialize": messages.InitializeInput,
+    "processRecords": messages.ProcessRecordsInput,
+    "shutdown": messages.ShutdownInput,
+    "checkpoint": messages.CheckpointInput,
+    "record": messages.Record
 }
 
 
 def _format_serializer_names():
-    return ", ".join(map(lambda k: '"{k}"'.format(k=k), _serializers.keys()))
+    return ", ".join('"{k}"'.format(k) for k in _serializers.keys())
 
 
 def message_decode(json_dict):
@@ -50,8 +50,8 @@ def message_decode(json_dict):
     try:
         action = json_dict["action"]
     except KeyError as key_error:
-        raise MalformedAction("Action {json_dict} was expected to have key {key}".format(json_dict=json_dict,
-                                                                                         key=str(key_error)))
+        raise MalformedAction("Action {json_dict} was expected to have key {key!s}".format(json_dict=json_dict,
+                                                                                           key=key_error))
     try:
         serializer = _serializers[action]
     except KeyError:

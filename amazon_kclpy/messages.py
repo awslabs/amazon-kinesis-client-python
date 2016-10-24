@@ -269,10 +269,8 @@ class Record(object):
         self._sequence_number = json_dict["sequenceNumber"]
         self._sub_sequence_number = json_dict["subSequenceNumber"]
 
-        self._java_time_stamp = int(json_dict["approximateArrivalTimestamp"])
-        millis = timedelta(milliseconds=self._java_time_stamp % 1000)
-        seconds = self._java_time_stamp / 1000
-        self._approximate_arrival_timestamp = datetime.fromtimestamp(seconds) + millis
+        self._timestamp_millis = int(json_dict["approximateArrivalTimestamp"])
+        self._approximate_arrival_timestamp = datetime.fromtimestamp(self._timestamp_millis / 1000.0)
 
         self._partition_key = json_dict["partitionKey"]
         self._data = json_dict["data"]
@@ -315,16 +313,14 @@ class Record(object):
         return self._sub_sequence_number
 
     @property
-    def java_time_stamp(self):
+    def timestamp_millis(self):
         """
-        The original Java timestamp of the approximate arrival time of the record.
-
-        Java stores timestamps as the number of milliseconds since the Unix epoch.
+        The timestamp of the approximate arrival time of the record in milliseconds since the Unix epoch
 
         :return: the timestamp in milliseconds
         :rtype: int
         """
-        return self._java_time_stamp
+        return self._timestamp_millis
 
     @property
     def approximate_arrival_timestamp(self):
