@@ -13,9 +13,12 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 """
 from __future__ import print_function
-from setuptools import setup
-import os, sys, glob
+
+import glob
+import os
+
 from setuptools import Command
+from setuptools import setup
 from setuptools.command.install import install
 
 try:
@@ -48,10 +51,12 @@ PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
 PACKAGE_VERSION = '1.3.1'
 PYTHON_REQUIREMENTS = [
-            'boto',
-            # argparse is part of python2.7 but must be declared for python2.6
-            'argparse',
-        ]
+    'boto',
+    # argparse is part of python2.7 but must be declared for python2.6
+    'argparse',
+    'mock'
+
+]
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
         ('com.amazonaws', 'amazon-kinesis-client', '1.6.4'),

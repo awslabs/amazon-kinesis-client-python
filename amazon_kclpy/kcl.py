@@ -12,13 +12,15 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 """
-import abc, base64, io, json, os, random, sys, time, traceback
+import abc
+import json
+import sys
+import traceback
 
 from amazon_kclpy import dispatch
-
 from amazon_kclpy.v2 import processor
-
 from amazon_kclpy import messages
+
 
 class _IOHandler(object):
     '''
@@ -109,6 +111,7 @@ class CheckpointError(Exception):
     def __str__(self):
         return repr(self.value)
 
+
 class Checkpointer(object):
     '''
     A checkpointer class which allows you to make checkpoint requests. A checkpoint marks a point in a shard
@@ -135,15 +138,17 @@ class Checkpointer(object):
         action = self.io_handler.load_action(line)
         return action
 
-    def checkpoint(self, sequenceNumber=None, subSequenceNumber=None):
-        '''
+    def checkpoint(self, sequence_number=None, sub_sequence_number=None):
+        """
         Checkpoints at a particular sequence number you provide or if no sequence number is given, the checkpoint will
         be at the end of the most recently delivered list of records
 
-        :type sequenceNumber: str
-        :param sequenceNumber: The sequence number to checkpoint at or None if you want to checkpoint at the farthest record
-        '''
-        response = {"action" : "checkpoint", "sequenceNumber" : sequenceNumber, "subSequenceNumber": subSequenceNumber}
+        :param str or None sequence_number: The sequence number to checkpoint at or None if you want to checkpoint at the
+            farthest record
+        :param int or None sub_sequence_number: the sub sequence to checkpoint at, if set to None will checkpoint
+            at the farthest sub_sequence_number
+        """
+        response = {"action": "checkpoint", "sequenceNumber": sequence_number, "subSequenceNumber": sub_sequence_number}
         self.io_handler.write_action(response)
         action = self._get_action()
         if isinstance(action, messages.CheckpointInput):
@@ -217,24 +222,23 @@ class RecordProcessorBase(object):
         '''
         return
 
-
     version = 1
 
 
 class KCLProcess(object):
 
-    def __init__(self, record_processor, inputfile=sys.stdin, outputfile=sys.stdout, errorfile=sys.stderr):
+    def __init__(self, record_processor, input_file=sys.stdin, output_file=sys.stdout, error_file=sys.stderr):
         """
         :type record_processor: RecordProcessorBase or amazon_kclpy.v2.processor.RecordProcessorBase
         :param record_processor: A record processor to use for processing a shard.
 
-        :param file inputfile: A file to read action messages from. Typically STDIN.
+        :param file input_file: A file to read action messages from. Typically STDIN.
 
-        :param file outputfile: A file to write action messages to. Typically STDOUT.
+        :param file output_file: A file to write action messages to. Typically STDOUT.
 
-        :param file errorfile: A file to write error messages to. Typically STDERR.
+        :param file error_file: A file to write error messages to. Typically STDERR.
         """
-        self.io_handler = _IOHandler(inputfile, outputfile, errorfile)
+        self.io_handler = _IOHandler(input_file, output_file, error_file)
         self.checkpointer = Checkpointer(self.io_handler)
         if record_processor.version == 1:
             self.processor = processor.V1toV2Processor(record_processor)
@@ -268,7 +272,7 @@ class KCLProcess(object):
 
         :param response_for: Required parameter; the action that this status message is confirming completed.
         '''
-        self.io_handler.write_action({"action" : "status", "responseFor" : response_for})
+        self.io_handler.write_action({"action": "status", "responseFor": response_for})
 
     def _handle_a_line(self, line):
         '''
@@ -283,7 +287,6 @@ class KCLProcess(object):
         action = self.io_handler.load_action(line)
         self._perform_action(action)
         self._report_done(action.action)
-
 
     def run(self):
         '''

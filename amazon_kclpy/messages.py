@@ -14,15 +14,14 @@ permissions and limitations under the License.
 """
 import abc
 import base64
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 
 class MessageDispatcher(object):
     """
     The base class use to dispatch actions to record processors.  This allows derived classes
     to determine which method on the record processor they need to call.  Additionally classes
-    implementing this generally wrap up the parameters into them self
+    implementing this generally wrap up the parameters into themselves
     """
     __metaclass__ = abc.ABCMeta
 
@@ -45,6 +44,7 @@ class MessageDispatcher(object):
     def action(self):
         pass
 
+
 class InitializeInput(MessageDispatcher):
     """
     Provides the necessary parameters to initialize a Record Processor
@@ -58,7 +58,7 @@ class InitializeInput(MessageDispatcher):
         self._shard_id = json_dict["shardId"]
         self._sequence_number = json_dict["sequenceNumber"]
         self._sub_sequence_number = json_dict["subSequenceNumber"]
-        self._action = _get_action(json_dict)
+        self._action = json_dict['action']
 
     @property
     def shard_id(self):
@@ -114,7 +114,7 @@ class ProcessRecordsInput(MessageDispatcher):
         self._records = json_dict["records"]
         self._millis_behind_latest = json_dict["millisBehindLatest"]
         self._checkpointer = None
-        self._action = _get_action(json_dict)
+        self._action = json_dict['action']
 
     @property
     def records(self):
@@ -168,7 +168,7 @@ class ShutdownInput(MessageDispatcher):
     def __init__(self, json_dict):
         self._reason = json_dict["reason"]
         self._checkpointer = None
-        self._action = _get_action(json_dict)
+        self._action = json_dict['action']
 
     @property
     def reason(self):
@@ -213,9 +213,20 @@ class CheckpointInput(object):
     Used in preparing the response back during the checkpoint process.  This shouldn't be used by record processors.
     """
     def __init__(self, json_dict):
+        """
+        Creates a new CheckpointInput object with the given sequence number, and sub-sequence number.
+        The provided dictionary must contain:
+        * sequenceNumber
+        * subSequenceNumber
+
+        The provided dictionary can optionally contain:
+        * error
+
+        :param dict json_dict:
+        """
         self._sequence_number = json_dict["sequenceNumber"]
         self._sub_sequence_number = json_dict["subSequenceNumber"]
-        self._error = json_dict["error"]
+        self._error = json_dict.get("error", None)
 
     @property
     def sequence_number(self):
@@ -348,6 +359,3 @@ class Record(object):
     def get(self, field):
         return self._json_dict[field]
 
-
-def _get_action(dct):
-    return dct['action']

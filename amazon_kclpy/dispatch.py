@@ -14,6 +14,7 @@ permissions and limitations under the License.
 """
 from amazon_kclpy import messages
 
+
 class MalformedAction(Exception):
     """
     Raised when an action given by the MultiLangDaemon doesn't have all the appropriate attributes.
