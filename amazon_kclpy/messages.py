@@ -12,7 +12,7 @@
 # permissions and limitations under the License.
 import abc
 import base64
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class MessageDispatcher(object):
@@ -125,7 +125,7 @@ class ProcessRecordsInput(MessageDispatcher):
         The records that are part of this request.
 
         :return: records that are part of this request
-        :rtype: list
+        :rtype: list[amazon_kclpy.messages.Record]
         """
         return self._records
 

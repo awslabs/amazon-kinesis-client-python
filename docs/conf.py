@@ -22,6 +22,8 @@ sys.path.insert(0, os.path.abspath('../'))
 
 import amazon_kclpy
 import amazon_kclpy.v2
+import samples.sample_kclpy_app
+import samples.amazon_kclpy_helper
 
 # -- General configuration ------------------------------------------------
 

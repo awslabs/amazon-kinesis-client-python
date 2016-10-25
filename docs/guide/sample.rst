@@ -8,16 +8,16 @@ Before Getting Started
 ----------------------
 Before running the samples, you'll want to make sure that your environment is
 configured to allow the samples to use your
-`AWS Security Credentials <http://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html>`.
+`AWS Security Credentials <http://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html>`_.
 
-By default the samples use the `DefaultAWSCredentialsProviderChain <http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html>`
+By default the samples use the `DefaultAWSCredentialsProviderChain <http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html>`_
 so you'll want to make your credentials available to one of the credentials providers in that
 provider chain. There are several ways to do this such as providing a ~/.aws/credentials file,
 or if you're running on EC2, you can associate an IAM role with your instance with appropriate
 access.
 
 For questions regarding Amazon Kinesis Service and the client libraries please visit the
-`Amazon Kinesis Forums <http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169>`
+`Amazon Kinesis Forums <http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169>`_
 
 Running the Sample
 ------------------
@@ -30,7 +30,7 @@ From the root of this repo, run::
     python setup.py download_jars
     python setup.py install
 
-Now the ``amazon_kclpy`` and `boto < http://boto.readthedocs.org/en/latest/>` (used by the sample putter script) and required
+Now the ``amazon_kclpy`` and `boto < http://boto.readthedocs.org/en/latest/>`_ (used by the sample putter script) and required
 jars should be installed in your environment. To start the sample putter, run::
 
     sample_kinesis_wordputter.py --stream words -w cat -w dog -w bird -w lobster
@@ -68,3 +68,8 @@ app you can use the ``--sample`` argument to indicate you'd like to get the
 sample.properties file from the installation location::
 
     amazon_kclpy_helper.py --print_command --java <path-to-java> --sample
+
+The Sample Code
+---------------
+.. autoclass:: samples.sample_kclpy_app.RecordProcessor
+    :members:

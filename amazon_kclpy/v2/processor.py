@@ -53,8 +53,23 @@ class RecordProcessorBase(object):
         Called by a KCLProcess instance to indicate that this record processor should shutdown. After this is called,
         there will be no more calls to any other methods of this record processor.
 
-        :param amazon_kclpy.messages.ShutdownInput shutdown_input: Information related to the shutdown request
+        As part of the shutdown process you must inspect :attr:`amazon_kclpy.messages.ShutdownInput.reason` to
+        determine the steps to take.
 
+            * Shutdown Reason ZOMBIE:
+                **ATTEMPTING TO CHECKPOINT ONCE A LEASE IS LOST WILL FAIL**
+
+                A record processor will be shutdown if it loses its lease.  In this case the KCL will terminate the
+                record processor.  It is not possible to checkpoint once a record processor has lost its lease.
+            * Shutdown Reason TERMINATE:
+                **THE RECORD PROCESSOR MUST CHECKPOINT OR THE KCL WILL BE UNABLE TO PROGRESS**
+
+                A record processor will be shutdown once it reaches the end of a shard.  A shard ending indicates that
+                it has been either split into multiple shards or merged with another shard.  To begin processing the new
+                shard(s) it's required that a final checkpoint occurs.
+
+
+        :param amazon_kclpy.messages.ShutdownInput shutdown_input: Information related to the shutdown request
         """
         raise NotImplementedError
 

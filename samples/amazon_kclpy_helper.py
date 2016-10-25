@@ -1,22 +1,40 @@
-#!env python
-'''
-Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#!/usr/bin/env python
+# Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Amazon Software License (the "License").
+# You may not use this file except in compliance with the License.
+# A copy of the License is located at
+#
+# http://aws.amazon.com/asl/
+#
+# or in the "license" file accompanying this file. This file is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied. See the License for the specific language governing
+# permissions and limitations under the License.
+"""
+This script provides two utility functions:
 
-Licensed under the Amazon Software License (the "License").
-You may not use this file except in compliance with the License.
-A copy of the License is located at
+    ``--print_classpath``
+        which prints a java class path. It optionally takes --properties
+        and any number of --path options. It will generate a java class path which will include
+        the properties file and paths and the location of the KCL jars based on the location of
+        the amazon_kclpy.kcl module.
 
-http://aws.amazon.com/asl/
-
-or in the "license" file accompanying this file. This file is distributed
-on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-express or implied. See the License for the specific language governing
-permissions and limitations under the License.
-'''
+    ``--print_command``
+        which prints a command to run an Amazon KCLpy application. It requires a --java
+        and --properties argument and optionally takes any number of --path arguments to prepend
+        to the classpath that it generates for the command.
+"""
 from __future__ import print_function
 from amazon_kclpy import kcl
 from glob import glob
-import os, argparse, sys, samples
+import os
+import argparse
+import sys
+import samples
+
+
+
 
 def get_dir_of_file(f):
     '''
@@ -99,25 +117,14 @@ def get_kcl_app_command(java, multi_lang_daemon_class, properties, paths=[]):
                                     daemon = multi_lang_daemon_class,
                                     # Just need the basename becasue the path is added to the classpath
                                     props = os.path.basename(properties))
-'''
-This script provides two utility functions:
 
-    --print_classpath - which prints a java class path. It optionally takes --properties
-    and any number of --path options. It will generate a java class path which will include
-    the properties file and paths and the location of the KCL jars based on the location of
-    the amazon_kclpy.kcl module.
-
-    --print_command - which prints a command to run an Amazon KCLpy application. It requires a --java
-    and --properties argument and optionally takes any number of --path arguments to prepend
-    to the classpath that it generates for the command.
-'''
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("A script for generating a command to run an Amazon KCLpy app")
     parser.add_argument("--print_classpath", dest="print_classpath", action="store_true",
-                        default = False,
+                        default=False,
                         help="Print a java class path.\noptional arguments: --path")
     parser.add_argument("--print_command", dest="print_command", action="store_true",
-                        default = False,
+                        default=False,
                         help="Print a command for running an Amazon KCLpy app.\nrequired "
                         + "args: --java --properties\noptional args: --classpath")
     parser.add_argument("-j", "--java", dest="java",
