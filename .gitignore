@@ -1,0 +1,7 @@
+/.cache/
+/amazon_kclpy.egg-info/
+/amazon_kclpy/jars/
+*.pyc
+/build/
+/dist/
+/docs/_build/

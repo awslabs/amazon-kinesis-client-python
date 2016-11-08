@@ -1,18 +1,24 @@
-'''
-Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Amazon Software License (the "License").
+# You may not use this file except in compliance with the License.
+# A copy of the License is located at
+#
+# http://aws.amazon.com/asl/
+#
+# or in the "license" file accompanying this file. This file is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied. See the License for the specific language governing
+# permissions and limitations under the License.
+import abc
+import json
+import sys
+import traceback
 
-Licensed under the Amazon Software License (the "License").
-You may not use this file except in compliance with the License.
-A copy of the License is located at
+from amazon_kclpy import dispatch
+from amazon_kclpy.v2 import processor
+from amazon_kclpy import messages
 
-http://aws.amazon.com/asl/
-
-or in the "license" file accompanying this file. This file is distributed
-on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-express or implied. See the License for the specific language governing
-permissions and limitations under the License.
-'''
-import abc, base64, io, json, os, random, sys, time, traceback
 
 class _IOHandler(object):
     '''
@@ -72,10 +78,10 @@ class _IOHandler(object):
         :param line: A message line that was delivered received from the MultiLangDaemon (e.g.
             '{"action" : "initialize", "shardId" : "shardId-000001"}')
 
-        :rtype: dict
-        :return: A dictionary representing the contents of the line (e.g. {"action" : "initialize", "shardId" : "shardId-000001"})
+        :rtype: amazon_kclpy.messages.MessageDispatcher
+        :return: A callabe action class that contains the action presented in the line
         '''
-        return json.loads(line)
+        return json.loads(line, object_hook=dispatch.message_decode)
 
     def write_action(self, response):
         '''
@@ -103,6 +109,7 @@ class CheckpointError(Exception):
     def __str__(self):
         return repr(self.value)
 
+
 class Checkpointer(object):
     '''
     A checkpointer class which allows you to make checkpoint requests. A checkpoint marks a point in a shard
@@ -122,38 +129,39 @@ class Checkpointer(object):
         '''
         Gets the next json message from STDIN
 
-        :rtype: dict
-        :return: A dictionary object that indicates what action this processor should take next. For example
-            {"action" : "initialize", "shardId" : "shardId-000001"} would indicate that this processor should
-            invoke the initialize method of the inclosed RecordProcessor object.
+        :rtype: object
+        :return: Either a child of MessageDispatcher, or a housekeeping object type
         '''
         line = self.io_handler.read_line()
         action = self.io_handler.load_action(line)
         return action
 
-    def checkpoint(self, sequenceNumber=None):
-        '''
+    def checkpoint(self, sequence_number=None, sub_sequence_number=None):
+        """
         Checkpoints at a particular sequence number you provide or if no sequence number is given, the checkpoint will
         be at the end of the most recently delivered list of records
 
-        :type sequenceNumber: str
-        :param sequenceNumber: The sequence number to checkpoint at or None if you want to checkpoint at the farthest record
-        '''
-        response = {"action" : "checkpoint", "checkpoint" : sequenceNumber}
+        :param str or None sequence_number: The sequence number to checkpoint at or None if you want to checkpoint at the
+            farthest record
+        :param int or None sub_sequence_number: the sub sequence to checkpoint at, if set to None will checkpoint
+            at the farthest sub_sequence_number
+        """
+        response = {"action": "checkpoint", "sequenceNumber": sequence_number, "subSequenceNumber": sub_sequence_number}
         self.io_handler.write_action(response)
         action = self._get_action()
-        if action.get('action') == 'checkpoint':
-            if action.get('error') != None:
-                raise CheckpointError(action.get('error'))
+        if isinstance(action, messages.CheckpointInput):
+            if action.error is not None:
+                raise CheckpointError(action.error)
         else:
-            '''
-            We are in an invalid state. We will raise a checkpoint exception
-            to the RecordProcessor indicating that the KCL (or KCLpy) is in
-            an invalid state. See KCL documentation for description of this
-            exception. Note that the documented guidance is that this exception
-            is NOT retryable so the client code should exit.
-            '''
+            #
+            # We are in an invalid state. We will raise a checkpoint exception
+            # to the RecordProcessor indicating that the KCL (or KCLpy) is in
+            # an invalid state. See KCL documentation for description of this
+            # exception. Note that the documented guidance is that this exception
+            # is NOT retryable so the client code should exit.
+            #
             raise CheckpointError('InvalidStateException')
+
 
 # RecordProcessor base class
 class RecordProcessorBase(object):
@@ -175,7 +183,7 @@ class RecordProcessorBase(object):
         :type shard_id: str
         :param shard_id: The shard id that this processor is going to be working on.
         '''
-        return
+        raise NotImplementedError
 
     @abc.abstractmethod
     def process_records(self, records, checkpointer):
@@ -192,7 +200,7 @@ class RecordProcessorBase(object):
         :type checkpointer: amazon_kclpy.kcl.Checkpointer
         :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
         '''
-        return
+        raise NotImplementedError
 
     @abc.abstractmethod
     def shutdown(self, checkpointer, reason):
@@ -210,63 +218,43 @@ class RecordProcessorBase(object):
             shard so that this processor will be shutdown and new processor(s) will be created to for the child(ren) of
             this shard.
         '''
-        return
+        raise NotImplementedError
 
-class MalformedAction(Exception):
-    '''
-    Raised when an action given by the MultiLangDaemon doesn't have all the appropriate attributes.
-    '''
-    pass
+    version = 1
+
 
 class KCLProcess(object):
 
-    def __init__(self, record_processor, inputfile=sys.stdin, outputfile=sys.stdout, errorfile=sys.stderr):
-        '''
-        :type record_processor: amazon_kclpy.kcl.RecordProcessorBase
+    def __init__(self, record_processor, input_file=sys.stdin, output_file=sys.stdout, error_file=sys.stderr):
+        """
+        :type record_processor: RecordProcessorBase or amazon_kclpy.v2.processor.RecordProcessorBase
         :param record_processor: A record processor to use for processing a shard.
 
-        :type inputfile: file
-        :param inputfile: A file to read action messages from. Typically STDIN.
+        :param file input_file: A file to read action messages from. Typically STDIN.
 
-        :type outputfile: file
-        :param outputfile: A file to write action messages to. Typically STDOUT.
+        :param file output_file: A file to write action messages to. Typically STDOUT.
 
-        :type errorfile: file
-        :param errorfile: A file to write error messages to. Typically STDERR.
-        '''
-        self.io_handler = _IOHandler(inputfile, outputfile, errorfile)
+        :param file error_file: A file to write error messages to. Typically STDERR.
+        """
+        self.io_handler = _IOHandler(input_file, output_file, error_file)
         self.checkpointer = Checkpointer(self.io_handler)
-        self.processor = record_processor
+        if record_processor.version == 1:
+            self.processor = processor.V1toV2Processor(record_processor)
+        else:
+            self.processor = record_processor
 
     def _perform_action(self, action):
-        '''
+        """
         Maps input action to the appropriate method of the record processor.
 
-        :type action: dict
-        :param action: A dictionary that represents an action to take with appropriate attributes e.g.
-            {"action":"initialize","shardId":"shardId-123"}
-            {"action":"processRecords","records":[{"data":"bWVvdw==","partitionKey":"cat","sequenceNumber":"456"}]}
-            {"action":"shutdown","reason":"TERMINATE"}
+        :type action:
+        :param MessageDispatcher action: A derivative of MessageDispatcher that will handle the provided input
 
         :raises MalformedAction: Raised if the action is missing attributes.
-        '''
+        """
+
         try:
-            action_type = action['action']
-            if action_type == 'initialize':
-                args = (action['shardId'],)
-                f = self.processor.initialize
-            elif action_type == 'processRecords':
-                args = (action['records'], self.checkpointer)
-                f = self.processor.process_records
-            elif action_type == 'shutdown':
-                args = (self.checkpointer, action['reason'])
-                f = self.processor.shutdown
-            else:
-                raise MalformedAction("Received an action which couldn't be understood. Action was '{action}'".format(action=action))
-        except KeyError as key_error:
-            raise MalformedAction("Action {action} was expected to have key {key}".format(action=action, key=str(key_error)))
-        try:
-            f(*args)
+            action.dispatch(self.checkpointer, self.processor)
         except:
             '''
             We don't know what the client's code could raise and we have no way to recover if we let it propagate
@@ -282,7 +270,7 @@ class KCLProcess(object):
 
         :param response_for: Required parameter; the action that this status message is confirming completed.
         '''
-        self.io_handler.write_action({"action" : "status", "responseFor" : response_for})
+        self.io_handler.write_action({"action": "status", "responseFor": response_for})
 
     def _handle_a_line(self, line):
         '''
@@ -296,8 +284,7 @@ class KCLProcess(object):
         '''
         action = self.io_handler.load_action(line)
         self._perform_action(action)
-        self._report_done(action.get('action'))
-
+        self._report_done(action.action)
 
     def run(self):
         '''

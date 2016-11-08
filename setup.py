@@ -1,79 +1,85 @@
-"""
-Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-Licensed under the Amazon Software License (the "License").
-You may not use this file except in compliance with the License.
-A copy of the License is located at
-
-http://aws.amazon.com/asl/
-
-or in the "license" file accompanying this file. This file is distributed
-on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-express or implied. See the License for the specific language governing
-permissions and limitations under the License.
-"""
+# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Amazon Software License (the "License").
+# You may not use this file except in compliance with the License.
+# A copy of the License is located at
+#
+# http://aws.amazon.com/asl/
+#
+# or in the "license" file accompanying this file. This file is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied. See the License for the specific language governing
+# permissions and limitations under the License.
 from __future__ import print_function
-from setuptools import setup
-import os, sys, glob
+
+import glob
+import os
+import sys
+
 from setuptools import Command
+from setuptools import setup
 from setuptools.command.install import install
 
-try:
+if sys.version_info[0] >= 3:
     # Python 3
     from urllib.request import urlretrieve
-except ImportError:
+else:
     # Python 2
     from urllib import urlretrieve
 
-'''
-This script modifies the basic setuptools by adding some functionality to the standard
-"install" command and by adding an additional command "download_jars" which
-simplifies retrieval of the jars required to run the KCL multi-language daemon
-which is required to run the sample app included in this package.
+#
+# This script modifies the basic setuptools by adding some functionality to the standard
+# "install" command and by adding an additional command "download_jars" which
+# simplifies retrieval of the jars required to run the KCL multi-language daemon
+# which is required to run the sample app included in this package.
+#
+# If a user runs the basic install:
+#
+#     python setup.py install
+#
+# They will be notified of any jars that are downloaded for this package. Those jars
+# will go in amazon_kclpy/jars so that they can be installed as part of this package's
+# data.
+#
+#     python setup.py download_jars
+#
+# Will retrieve the configured jars from maven and then advise the user
+# to rerun the install command.
+#
 
-If a user runs the basic install:
-
-    python setup.py install
-
-They will be notified of any jars that are downloaded for this package. Those jars
-will go in amazon_kclpy/jars so that they can be installed as part of this package's
-data.
-
-    python setup.py download_jars
-
-Will retrieve the configured jars from maven and then advise the user
-to rerun the install command.
-'''
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.3.1'
+PACKAGE_VERSION = '1.4.0'
 PYTHON_REQUIREMENTS = [
-            'boto',
-            # argparse is part of python2.7 but must be declared for python2.6
-            'argparse',
-        ]
+    'boto',
+    # argparse is part of python2.7 but must be declared for python2.6
+    'argparse',
+    'mock'
+
+]
 REMOTE_MAVEN_PACKAGES = [
         # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.6.4'),
-        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-core', '1.11.14'),
+        ('com.amazonaws', 'amazon-kinesis-client', '1.7.2'),
         ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-kms', '1.11.14'),
         ('com.amazonaws', 'aws-java-sdk-s3', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-kms', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-core', '1.11.14'),
+        ('commons-logging', 'commons-logging', '1.1.3'),
+        ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
+        ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
+        ('commons-codec', 'commons-codec', '1.9'),
+        ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
         ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
         ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
-        ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
         ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
+        ('joda-time', 'joda-time', '2.8.1'),
+        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.14'),
+        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.14'),
         ('com.google.guava', 'guava', '18.0'),
         ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-        ('commons-codec', 'commons-codec', '1.9'),
-        ('commons-lang', 'commons-lang', '2.6'),
-        ('commons-logging', 'commons-logging', '1.1.3'),
-        ('joda-time', 'joda-time', '2.8.1'),
-        ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
-        ('org.apache.httpcomponents', 'httpcore', '4.4.4')
-        ]
+        ('commons-lang', 'commons-lang', '2.6')
+]
+
 
 class MavenJarDownloader:
 
@@ -89,22 +95,22 @@ class MavenJarDownloader:
         return [f for f in file_list if not os.path.isfile(f)] # The missing files
 
     def package_url(self, group_id, artifact_id, version):
-        '''
-        Sample url:
-        http://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
-        '''
+        #
+        # Sample url:
+        # http://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
+        #
         prefix = 'http://search.maven.org/remotecontent?filepath='
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
-                                        prefix      = prefix,
-                                        path        = '/'.join(group_id.split('.')),
-                                        artifact_id = artifact_id,
-                                        version     = version,
-                                        dest        = self.package_destination(artifact_id, version))
+                                        prefix=prefix,
+                                        path='/'.join(group_id.split('.')),
+                                        artifact_id=artifact_id,
+                                        version=version,
+                                        dest=self.package_destination(artifact_id, version))
 
     def download_file(self, url, dest):
-        '''
+        """
         Downloads a file at the url to the destination.
-        '''
+        """
         print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
             urlretrieve(url, dest)
@@ -122,6 +128,7 @@ class MavenJarDownloader:
                 url = self.package_url(package[0], package[1], package[2])
                 self.download_file(url, dest)
 
+
 class DownloadJarsCommand(Command):
     description = "Download the jar files needed to run the sample application"
     user_options = []
@@ -132,11 +139,10 @@ class DownloadJarsCommand(Command):
     def finalize_options(self):
         pass
 
-
     def run(self):
-        '''
+        """
         Runs when this command is given to setup.py
-        '''
+        """
         downloader = MavenJarDownloader()
         downloader.download_files()
         print('''
@@ -146,6 +152,7 @@ Now you should run:
 
 Which will finish the installation.
 ''')
+
 
 class InstallThenCheckForJars(install):
 
@@ -168,51 +175,38 @@ Which will download the required jars and rerun the install.
         return s
 
     def run(self):
-        '''
+        """
         We override the basic install command. First we download jars then
         we run the basic install then we check whether the jars are present
         in this package. If they aren't present we warn the user and give
         them some advice on how to retry getting the jars.
-        '''
+        """
         downloader = MavenJarDownloader()
         downloader.download_files()
-        if 'do_egg_install' in dir(install):
-            '''
-            setuptools.command.install checks if it was called
-            directly by setup or by some other code by inspecting the call
-            stack. They do this for backwards compatability.
-
-            Anyway, when "install" is overriden it calls an older form of
-            install (distutils.command.install) otherwise they call do_egg_install
-            so we try to call do_egg_install otherwise we call install normally
-            (since it should always be present).
-            '''
-            install.do_egg_install(self)
-        else:
-            install.run(self)
+        install.run(self)
         missing_jars = downloader.missing_jars()
         if len(missing_jars) > 0:
             print(self.warning_string(missing_jars))
 
 if __name__ == '__main__':
     setup(
-        name          = PACKAGE_NAME,
-        version       = PACKAGE_VERSION,
-        description   = 'A python interface for the Amazon Kinesis Client Library MultiLangDaemon',
-        license       = 'Amazon Software License',
-        packages      = [PACKAGE_NAME, 'samples'],
-        scripts       = glob.glob('samples/*py'),
-        package_data  = {
-            ''           : ['*.txt', '*.md'],
-            PACKAGE_NAME : ['jars/*'],
-            'samples'    : ['sample.properties'],
+        name=PACKAGE_NAME,
+        version=PACKAGE_VERSION,
+        description='A python interface for the Amazon Kinesis Client Library MultiLangDaemon',
+        license='Amazon Software License',
+        packages=[PACKAGE_NAME, PACKAGE_NAME + "/v2", 'samples'],
+        scripts=glob.glob('samples/*py'),
+        package_data={
+            '': ['*.txt', '*.md'],
+            PACKAGE_NAME: ['jars/*'],
+            'samples': ['sample.properties'],
         },
-        install_requires = PYTHON_REQUIREMENTS,
+        install_requires=PYTHON_REQUIREMENTS,
         cmdclass={
             'download_jars': DownloadJarsCommand,
             'install': InstallThenCheckForJars,
         },
-        url = "https://github.com/awslabs/amazon-kinesis-client-python",
-        keywords = "amazon kinesis client library python",
-        zip_safe      = False,
+        url="https://github.com/awslabs/amazon-kinesis-client-python",
+        keywords="amazon kinesis client library python",
+        zip_safe=False,
         )
