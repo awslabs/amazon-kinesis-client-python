@@ -137,6 +137,20 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 1.4.0 (November 9, 2016)
+* Added a new v2 record processor class that allows access to updated features.
+  * Record processor initialization
+    * The initialize method receives an InitializeInput object that provides shard id, and the starting sequence and sub sequence numbers.
+  * Process records calls
+    * The process_records calls now receives a ProcessRecordsInput object that, in addition to the records, now includes the millisBehindLatest for the batch of records
+    * Records are now represented as a Record object that adds new data, and includes some convenience methods
+      * Adds a `binary_data` method that handles the base 64 decode of the data.
+      * Includes the sub sequence number of the record.
+      * Includes the approximate arrival time stamp of the record.
+  * Record processor shutdown
+    * The method `shutdown` now receives a `ShutdownInput` object.
+* Checkpoint methods now accept a sub sequence number in addition to the sequence number.
+
 ### Release 1.3.1
 * Version number increase to stay inline with PyPI.
 
