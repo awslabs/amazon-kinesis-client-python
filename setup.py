@@ -20,6 +20,10 @@ from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
 
+from wheel.bdist_wheel import bdist_wheel
+
+from distutils.command.build import build
+
 if sys.version_info[0] >= 3:
     # Python 3
     from urllib.request import urlretrieve
@@ -83,9 +87,35 @@ REMOTE_MAVEN_PACKAGES = [
 
 class MavenJarDownloader:
 
-    def __init__(self, destdir=JAR_DIRECTORY, packages=REMOTE_MAVEN_PACKAGES):
+    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=REMOTE_MAVEN_PACKAGES):
+        self.on_completion = on_completion
         self.destdir = destdir
         self.packages = packages
+
+    def warning_string(self, missing_jars=[]):
+        s = '''The following jars were not installed because they were not
+present in this package at the time of installation:'''
+        for jar in missing_jars:
+            s += '\n  {jar}'.format(jar=jar)
+        s += '''
+This doesn't affect the rest of the installation, but may make it more
+difficult for you to run the sample app and get started.
+
+You should consider running:
+
+    python setup.py download_jars
+    python setup.py install
+
+Which will download the required jars and rerun the install.
+'''
+        return s
+
+    def download_and_check(self):
+        self.download_files()
+        self.on_completion()
+        missing_jars = self.missing_jars()
+        if len(missing_jars) > 0:
+            print(self.warning_string(missing_jars))
 
     def package_destination(self, artifcat_id, version):
         return '{artifcat_id}-{version}.jar'.format(artifcat_id=artifcat_id, version=version)
@@ -156,23 +186,8 @@ Which will finish the installation.
 
 class InstallThenCheckForJars(install):
 
-    def warning_string(self, missing_jars=[]):
-        s = '''The following jars were not installed because they were not
-present in this package at the time of installation:'''
-        for jar in missing_jars:
-            s += '\n  {jar}'.format(jar=jar)
-        s += '''
-This doesn't affect the rest of the installation, but may make it more
-difficult for you to run the sample app and get started.
-
-You should consider running:
-
-    python setup.py download_jars
-    python setup.py install
-
-Which will download the required jars and rerun the install.
-'''
-        return s
+    def do_install(self):
+        install.run(self)
 
     def run(self):
         """
@@ -181,12 +196,24 @@ Which will download the required jars and rerun the install.
         in this package. If they aren't present we warn the user and give
         them some advice on how to retry getting the jars.
         """
-        downloader = MavenJarDownloader()
-        downloader.download_files()
-        install.run(self)
-        missing_jars = downloader.missing_jars()
-        if len(missing_jars) > 0:
-            print(self.warning_string(missing_jars))
+        downloader = MavenJarDownloader(self.do_install)
+        downloader.download_and_check()
+
+
+class BuildOverride(build):
+    def run(self):
+        self.announce("In build")
+        build.run(self)
+
+
+class BdistWheelWithJars(bdist_wheel):
+
+    def do_run(self):
+        bdist_wheel.run(self)
+
+    def run(self):
+        downloader = MavenJarDownloader(self.do_run)
+        downloader.download_and_check()
 
 if __name__ == '__main__':
     setup(
@@ -205,6 +232,7 @@ if __name__ == '__main__':
         cmdclass={
             'download_jars': DownloadJarsCommand,
             'install': InstallThenCheckForJars,
+            'bdist_wheel': BdistWheelWithJars,
         },
         url="https://github.com/awslabs/amazon-kinesis-client-python",
         keywords="amazon kinesis client library python",
