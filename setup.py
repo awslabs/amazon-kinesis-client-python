@@ -20,10 +20,6 @@ from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
 
-from wheel.bdist_wheel import bdist_wheel
-
-from distutils.command.build import build
-
 if sys.version_info[0] >= 3:
     # Python 3
     from urllib.request import urlretrieve
@@ -200,22 +196,44 @@ class InstallThenCheckForJars(install):
         downloader.download_and_check()
 
 
-class BuildOverride(build):
-    def run(self):
-        self.announce("In build")
-        build.run(self)
+try:
+    from wheel.bdist_wheel import bdist_wheel
 
 
-class BdistWheelWithJars(bdist_wheel):
+    class BdistWheelWithJars(bdist_wheel):
+        """
+        This overrides the bdist_wheel command, that handles building a binary wheel of the package.
+        Currently, as far as I can tell, binary wheel creation only occurs during the virtual environment creation.
+        The package that bdist_wheel comes from isn't a modeled dependency of this package, but is required for virtual
+        environment creation.
+        """
 
-    def do_run(self):
-        bdist_wheel.run(self)
+        def do_run(self):
+            bdist_wheel.run(self)
 
-    def run(self):
-        downloader = MavenJarDownloader(self.do_run)
-        downloader.download_and_check()
+        def run(self):
+            downloader = MavenJarDownloader(self.do_run)
+            downloader.download_and_check()
+
+except ImportError:
+    pass
 
 if __name__ == '__main__':
+    commands = {
+        'download_jars': DownloadJarsCommand,
+        'install': InstallThenCheckForJars,
+    }
+    try:
+        #
+        # BdistWheelWithJars will only be present if the wheel package is present, and that is present during
+        # virtual environment creation.
+        # It's important to note this is a hack.  There doesn't appear to be a way to execute hooks around wheel
+        # creation by design.  See https://github.com/pypa/packaging-problems/issues/64 for more information.
+        #
+        commands['bdist_wheel'] = BdistWheelWithJars
+    except NameError:
+        pass
+
     setup(
         name=PACKAGE_NAME,
         version=PACKAGE_VERSION,
@@ -229,11 +247,7 @@ if __name__ == '__main__':
             'samples': ['sample.properties'],
         },
         install_requires=PYTHON_REQUIREMENTS,
-        cmdclass={
-            'download_jars': DownloadJarsCommand,
-            'install': InstallThenCheckForJars,
-            'bdist_wheel': BdistWheelWithJars,
-        },
+        cmdclass=commands,
         url="https://github.com/awslabs/amazon-kinesis-client-python",
         keywords="amazon kinesis client library python",
         zip_safe=False,
