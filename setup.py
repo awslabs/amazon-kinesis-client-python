@@ -169,7 +169,7 @@ class DownloadJarsCommand(Command):
         """
         Runs when this command is given to setup.py
         """
-        downloader = MavenJarDownloader()
+        downloader = MavenJarDownloader(on_completion=lambda : None)
         downloader.download_files()
         print('''
 Now you should run:
