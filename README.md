@@ -137,6 +137,9 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 1.4.2 (November 21, 2016)
+* [PR #35](https://github.com/awslabs/amazon-kinesis-client-python/pull/35): Downloading JAR files now runs correctly.
+
 ### Release 1.4.1 (November 18, 2016)
 * Installation of the library into a virtual environment on macOS, and Windows now correctly downloads the jar files.
   * Fixes [Issue #33](https://github.com/awslabs/amazon-kinesis-client-python/issues/33)
