@@ -368,4 +368,7 @@ class Record(object):
 
     def get(self, field):
         return self._json_dict[field]
+    
+    def __getitem__(self, field):
+        return self.get(field)
 
