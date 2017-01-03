@@ -137,6 +137,10 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+
+### Release 1.4.3 (January 3, 2017)
+* [PR #39](https://github.com/awslabs/amazon-kinesis-client-python/pull/39): Make record objects subscriptable for backwards compatibility.
+
 ### Release 1.4.2 (November 21, 2016)
 * [PR #35](https://github.com/awslabs/amazon-kinesis-client-python/pull/35): Downloading JAR files now runs correctly.
 
