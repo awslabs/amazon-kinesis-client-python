@@ -83,12 +83,15 @@ REMOTE_MAVEN_PACKAGES = [
 
 class MavenJarDownloader(object):
 
-    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=REMOTE_MAVEN_PACKAGES):
+    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=None):
         self.on_completion = on_completion
         self.destdir = destdir
-        self.packages = packages
+        self.packages = packages or REMOTE_MAVEN_PACKAGES
 
-    def warning_string(self, missing_jars=[]):
+    def warning_string(self, missing_jars=None):
+        if not missing_jars:
+            return ""
+
         s = '''The following jars were not installed because they were not
 present in this package at the time of installation:'''
         for jar in missing_jars:
