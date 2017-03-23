@@ -58,37 +58,40 @@ PYTHON_REQUIREMENTS = [
 
 ]
 REMOTE_MAVEN_PACKAGES = [
-        # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.7.2'),
-        ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-s3', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-kms', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-core', '1.11.14'),
-        ('commons-logging', 'commons-logging', '1.1.3'),
-        ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
-        ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
-        ('commons-codec', 'commons-codec', '1.9'),
-        ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
-        ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
-        ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
-        ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
-        ('joda-time', 'joda-time', '2.8.1'),
-        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.14'),
-        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.14'),
-        ('com.google.guava', 'guava', '18.0'),
-        ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-        ('commons-lang', 'commons-lang', '2.6')
+    # (group id, artifact id, version),
+    ('com.amazonaws', 'amazon-kinesis-client', '1.7.2'),
+    ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.14'),
+    ('com.amazonaws', 'aws-java-sdk-s3', '1.11.14'),
+    ('com.amazonaws', 'aws-java-sdk-kms', '1.11.14'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.14'),
+    ('commons-logging', 'commons-logging', '1.1.3'),
+    ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
+    ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
+    ('commons-codec', 'commons-codec', '1.9'),
+    ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
+    ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
+    ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
+    ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
+    ('joda-time', 'joda-time', '2.8.1'),
+    ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.14'),
+    ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.14'),
+    ('com.google.guava', 'guava', '18.0'),
+    ('com.google.protobuf', 'protobuf-java', '2.6.1'),
+    ('commons-lang', 'commons-lang', '2.6')
 ]
 
 
-class MavenJarDownloader:
+class MavenJarDownloader(object):
 
-    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=REMOTE_MAVEN_PACKAGES):
+    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=None):
         self.on_completion = on_completion
         self.destdir = destdir
-        self.packages = packages
+        self.packages = packages or REMOTE_MAVEN_PACKAGES
 
-    def warning_string(self, missing_jars=[]):
+    def warning_string(self, missing_jars=None):
+        if not missing_jars:
+            return ""
+
         s = '''The following jars were not installed because they were not
 present in this package at the time of installation:'''
         for jar in missing_jars:
@@ -127,11 +130,12 @@ Which will download the required jars and rerun the install.
         #
         prefix = 'http://search.maven.org/remotecontent?filepath='
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
-                                        prefix=prefix,
-                                        path='/'.join(group_id.split('.')),
-                                        artifact_id=artifact_id,
-                                        version=version,
-                                        dest=self.package_destination(artifact_id, version))
+            prefix=prefix,
+            path='/'.join(group_id.split('.')),
+            artifact_id=artifact_id,
+            version=version,
+            dest=self.package_destination(artifact_id, version)
+        )
 
     def download_file(self, url, dest):
         """
@@ -169,7 +173,7 @@ class DownloadJarsCommand(Command):
         """
         Runs when this command is given to setup.py
         """
-        downloader = MavenJarDownloader(on_completion=lambda : None)
+        downloader = MavenJarDownloader(on_completion=lambda: None)
         downloader.download_files()
         print('''
 Now you should run:
@@ -251,4 +255,4 @@ if __name__ == '__main__':
         url="https://github.com/awslabs/amazon-kinesis-client-python",
         keywords="amazon kinesis client library python",
         zip_safe=False,
-        )
+    )
