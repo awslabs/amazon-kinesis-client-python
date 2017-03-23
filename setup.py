@@ -81,7 +81,7 @@ REMOTE_MAVEN_PACKAGES = [
 ]
 
 
-class MavenJarDownloader:
+class MavenJarDownloader(object):
 
     def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=REMOTE_MAVEN_PACKAGES):
         self.on_completion = on_completion
@@ -170,7 +170,7 @@ class DownloadJarsCommand(Command):
         """
         Runs when this command is given to setup.py
         """
-        downloader = MavenJarDownloader(on_completion=lambda : None)
+        downloader = MavenJarDownloader(on_completion=lambda: None)
         downloader.download_files()
         print('''
 Now you should run:
