@@ -138,6 +138,12 @@ all languages.
 
 ## Release Notes
 
+### Release 1.4.4 (April 7, 2017)
+* [PR #47](https://github.com/awslabs/amazon-kinesis-client-python/pull/47): Update to release 1.7.5 of the Amazon Kinesis Client.
+  * Additionally updated to version 1.11.115 of the AWS Java SDK.
+  * Fixes [Issue #43](https://github.com/awslabs/amazon-kinesis-client-python/issues/43).
+  * Fixes [Issue #27](https://github.com/awslabs/amazon-kinesis-client-python/issues/27).
+
 ### Release 1.4.3 (January 3, 2017)
 * [PR #39](https://github.com/awslabs/amazon-kinesis-client-python/pull/39): Make record objects subscriptable for backwards compatibility.
 
