@@ -223,7 +223,7 @@ class RecordProcessorBase(object):
     @abc.abstractmethod
     def shutdownRequested(self, checkpointer):
         '''
-                Called by a KCLProcess instance to indicate that this record processor is being shutdown shutdown.
+                Called by a KCLProcess instance to indicate that this record processor is being shutdown.
                 And it gives an opportunity for record processor to checkpoint before shutdown.
 
                 :type checkpointer: amazon_kclpy.kcl.Checkpointer
