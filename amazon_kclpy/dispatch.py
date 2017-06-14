@@ -31,7 +31,6 @@ _serializers = {
 
 
 def _format_serializer_names():
-    print _serializers.keys()
     return ", ".join('"{k}"'.format(k) for k in _serializers.keys())
 
 
