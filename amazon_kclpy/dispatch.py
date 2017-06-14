@@ -30,7 +30,7 @@ _serializers = {
 
 
 def _format_serializer_names():
-    return ", ".join('"{k}"'.format(k) for k in _serializers.keys())
+    return ", ".join('"{k}"'.format(k=k) for k in _serializers.keys())
 
 
 def message_decode(json_dict):
