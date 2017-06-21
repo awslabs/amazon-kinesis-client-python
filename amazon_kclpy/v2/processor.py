@@ -73,6 +73,16 @@ class RecordProcessorBase(object):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def shutdown_requested(self, shutdown_requested_input):
+        '''
+                Called by a KCLProcess instance to indicate that this record processor is being shutdown.
+                And it gives an opportunity for record processor to checkpoint before shutdown.
+
+                :param amazon_kclpy.messages.ShutdownRequestedInput shutdown_requested_input: Information related to shutdown requested.
+                '''
+        pass
+
     version = 2
 
 
@@ -121,3 +131,12 @@ class V1toV2Processor(RecordProcessorBase):
         :return: None
         """
         self.delegate.shutdown(shutdown_input.checkpointer, shutdown_input.reason)
+
+    def shutdown_requested(self, shutdown_requested_input):
+        """
+        Sends the shutdown request to the delegate
+
+        :param amazon_kclpy.messages.ShutdownInput shutdown_input: information related to the record processor shutdown
+        :return: None
+        """
+        self.delegate.shutdown_requested(shutdown_requested_input.checkpointer)

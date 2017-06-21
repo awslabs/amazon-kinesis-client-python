@@ -221,7 +221,7 @@ class RecordProcessorBase(object):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def shutdownRequested(self, checkpointer):
+    def shutdown_requested(self, checkpointer):
         '''
                 Called by a KCLProcess instance to indicate that this record processor is being shutdown.
                 And it gives an opportunity for record processor to checkpoint before shutdown.
@@ -229,7 +229,7 @@ class RecordProcessorBase(object):
                 :type checkpointer: amazon_kclpy.kcl.Checkpointer
                 :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
                 '''
-        raise NotImplementedError
+        pass
 
     version = 1
 
