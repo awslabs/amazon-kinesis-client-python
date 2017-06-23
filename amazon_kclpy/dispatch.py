@@ -25,7 +25,8 @@ _serializers = {
     "processRecords": messages.ProcessRecordsInput,
     "shutdown": messages.ShutdownInput,
     "checkpoint": messages.CheckpointInput,
-    "record": messages.Record
+    "record": messages.Record,
+    "shutdownRequested": messages.ShutdownRequestedInput
 }
 
 
