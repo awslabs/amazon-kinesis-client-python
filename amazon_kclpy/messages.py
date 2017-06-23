@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2014-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Amazon Software License (the "License").
 # You may not use this file except in compliance with the License.
@@ -209,6 +209,7 @@ class ShutdownInput(MessageDispatcher):
     def dispatch(self, checkpointer, record_processor):
         self._checkpointer = checkpointer
         record_processor.shutdown(self)
+
 
 class ShutdownRequestedInput(MessageDispatcher):
     """

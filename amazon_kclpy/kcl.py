@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2014-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Amazon Software License (the "License").
 # You may not use this file except in compliance with the License.
@@ -222,13 +222,13 @@ class RecordProcessorBase(object):
 
     @abc.abstractmethod
     def shutdown_requested(self, checkpointer):
-        '''
-                Called by a KCLProcess instance to indicate that this record processor is being shutdown.
-                And it gives an opportunity for record processor to checkpoint before shutdown.
+        """
+        Called by a KCLProcess instance to indicate that this record processor is about to be be shutdown.  This gives
+        the record processor a chance to checkpoint, before the lease is terminated.
 
-                :type checkpointer: amazon_kclpy.kcl.Checkpointer
-                :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
-                '''
+        :type checkpointer: amazon_kclpy.kcl.Checkpointer
+        :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
+        """
         pass
 
     version = 1
