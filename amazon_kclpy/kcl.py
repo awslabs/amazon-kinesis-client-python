@@ -220,7 +220,6 @@ class RecordProcessorBase(object):
         '''
         raise NotImplementedError
 
-    @abc.abstractmethod
     def shutdown_requested(self, checkpointer):
         """
         Called by a KCLProcess instance to indicate that this record processor is about to be be shutdown.  This gives
