@@ -49,7 +49,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.4.4'
+PACKAGE_VERSION = '1.4.5'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -58,28 +58,28 @@ PYTHON_REQUIREMENTS = [
 
 ]
 REMOTE_MAVEN_PACKAGES = [
-        # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.7.5'),
-        ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-s3', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-kms', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-core', '1.11.115'),
-        ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
-        ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
-        ('commons-codec', 'commons-codec', '1.9'),
-        ('software.amazon.ion', 'ion-java', '1.0.2'),
-        ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
-        ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
-        ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
-        ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
-        ('joda-time', 'joda-time', '2.8.1'),
-        ('com.amazonaws', 'jmespath-java', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.115'),
-        ('com.google.guava', 'guava', '18.0'),
-        ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-        ('commons-lang', 'commons-lang', '2.6'),
-        ('commons-logging', 'commons-logging', '1.1.3')
+    # (group id, artifact id, version),
+    ('com.amazonaws', 'amazon-kinesis-client', '1.7.6'),
+    ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.151'),
+    ('com.amazonaws', 'aws-java-sdk-s3', '1.11.151'),
+    ('com.amazonaws', 'aws-java-sdk-kms', '1.11.151'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.151'),
+    ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
+    ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
+    ('commons-codec', 'commons-codec', '1.9'),
+    ('software.amazon.ion', 'ion-java', '1.0.2'),
+    ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
+    ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
+    ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
+    ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
+    ('joda-time', 'joda-time', '2.8.1'),
+    ('com.amazonaws', 'jmespath-java', '1.11.151'),
+    ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.151'),
+    ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.151'),
+    ('com.google.guava', 'guava', '18.0'),
+    ('com.google.protobuf', 'protobuf-java', '2.6.1'),
+    ('commons-lang', 'commons-lang', '2.6'),
+    ('commons-logging', 'commons-logging', '1.1.3')
 ]
 
 
