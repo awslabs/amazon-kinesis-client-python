@@ -265,6 +265,9 @@ class KCLProcess(object):
 
         try:
             action.dispatch(self.checkpointer, self.processor)
+        except SystemExit as sys_exit:
+            # On a system exit exception just go ahead and exit
+            raise sys_exit
         except:
             '''
             We don't know what the client's code could raise and we have no way to recover if we let it propagate
