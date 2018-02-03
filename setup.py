@@ -64,6 +64,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('com.amazonaws', 'aws-java-sdk-s3', '1.11.151'),
     ('com.amazonaws', 'aws-java-sdk-kms', '1.11.151'),
     ('com.amazonaws', 'aws-java-sdk-core', '1.11.151'),
+    ('com.amazonaws', 'aws-java-sdk-sts', '1.11.151'),
     ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
     ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
     ('commons-codec', 'commons-codec', '1.9'),
