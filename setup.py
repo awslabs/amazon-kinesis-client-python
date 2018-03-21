@@ -54,7 +54,6 @@ PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
     'argparse',
-    'mock'
 
 ]
 REMOTE_MAVEN_PACKAGES = [
