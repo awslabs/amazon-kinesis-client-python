@@ -81,10 +81,10 @@ REMOTE_MAVEN_PACKAGES = [
     ('com.google.protobuf', 'protobuf-java', '2.6.1'),
     ('commons-lang', 'commons-lang', '2.6'),
     ('commons-logging', 'commons-logging', '1.1.3'),
-    ('ch.qos.logback', 'logback-classic', '1.1.7'),
-    ('ch.qos.logback', 'logback-core', '1.1.7'),
-    ('org.slf4j', 'slf4j-api', '1.7.21'),
-    ('org.slf4j', 'jcl-over-slf4j', '1.7.21')
+#     ('ch.qos.logback', 'logback-classic', '1.1.7'),
+#     ('ch.qos.logback', 'logback-core', '1.1.7'),
+#     ('org.slf4j', 'slf4j-api', '1.7.21'),
+#     ('org.slf4j', 'jcl-over-slf4j', '1.7.21')
 ]
 
 
