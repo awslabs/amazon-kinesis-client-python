@@ -16,16 +16,17 @@ import glob
 import sys
 
 import os
+import shutil
 from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
 
 if sys.version_info[0] >= 3:
     # Python 3
-    from urllib.request import urlretrieve
+    from urllib.request import urlopen
 else:
     # Python 2
-    from urllib import urlretrieve
+    from urllib2 import urlopen
 
 #
 # This script modifies the basic setuptools by adding some functionality to the standard
@@ -49,7 +50,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '1.4.4'
+PACKAGE_VERSION = '1.5.0'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -58,28 +59,28 @@ PYTHON_REQUIREMENTS = [
 
 ]
 REMOTE_MAVEN_PACKAGES = [
-        # (group id, artifact id, version),
-        ('com.amazonaws', 'amazon-kinesis-client', '1.7.5'),
-        ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-s3', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-kms', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-core', '1.11.115'),
-        ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
-        ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
-        ('commons-codec', 'commons-codec', '1.9'),
-        ('software.amazon.ion', 'ion-java', '1.0.2'),
-        ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.6'),
-        ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
-        ('com.fasterxml.jackson.core', 'jackson-core', '2.6.6'),
-        ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.6'),
-        ('joda-time', 'joda-time', '2.8.1'),
-        ('com.amazonaws', 'jmespath-java', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.115'),
-        ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.115'),
-        ('com.google.guava', 'guava', '18.0'),
-        ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-        ('commons-lang', 'commons-lang', '2.6'),
-        ('commons-logging', 'commons-logging', '1.1.3')
+    # (group id, artifact id, version),
+    ('com.amazonaws', 'amazon-kinesis-client', '1.9.0'),
+    ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.272'),
+    ('com.amazonaws', 'aws-java-sdk-s3', '1.11.272'),
+    ('com.amazonaws', 'aws-java-sdk-kms', '1.11.272'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.272'),
+    ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
+    ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
+    ('commons-codec', 'commons-codec', '1.9'),
+    ('software.amazon.ion', 'ion-java', '1.0.2'),
+    ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.7.1'),
+    ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
+    ('com.fasterxml.jackson.core', 'jackson-core', '2.6.7'),
+    ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.7'),
+    ('joda-time', 'joda-time', '2.8.1'),
+    ('com.amazonaws', 'jmespath-java', '1.11.272'),
+    ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.272'),
+    ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.272'),
+    ('com.google.guava', 'guava', '18.0'),
+    ('com.google.protobuf', 'protobuf-java', '2.6.1'),
+    ('commons-lang', 'commons-lang', '2.6'),
+    ('commons-logging', 'commons-logging', '1.1.3')
 ]
 
 
@@ -113,7 +114,7 @@ Which will download the required jars and rerun the install.
         self.on_completion()
         missing_jars = self.missing_jars()
         if len(missing_jars) > 0:
-            print(self.warning_string(missing_jars))
+            raise RuntimeError(self.warning_string(missing_jars)) 
 
     def package_destination(self, artifcat_id, version):
         return '{artifcat_id}-{version}.jar'.format(artifcat_id=artifcat_id, version=version)
@@ -141,10 +142,12 @@ Which will download the required jars and rerun the install.
         """
         print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
-            urlretrieve(url, dest)
+            response = urlopen(url)
+            with open(dest, 'wb') as dest_file:
+                shutil.copyfileobj(response, dest_file)
             print('Saving {url} -> {dest}'.format(url=url, dest=dest))
-        except:
-            print('Failed to retrieve {url}'.format(url=url))
+        except Exception as e:
+            print('Failed to retrieve {url}: {e}'.format(url=url, e=e))
             return
 
     def download_files(self):
