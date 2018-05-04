@@ -1,8 +1,8 @@
 import json
-import io
 import re
 
 from amazon_kclpy import kcl
+from utils import make_io_obj
 
 
 # Dummy record processor
@@ -82,9 +82,9 @@ test_input_messages = [
 
 def test_kcl_py_integration_test_perfect_input():
     test_input_json = "\n".join(map(lambda j: json.dumps(j), test_input_messages))
-    input_file = io.BytesIO(test_input_json)
-    output_file = io.BytesIO()
-    error_file = io.BytesIO()
+    input_file = make_io_obj(test_input_json)
+    output_file = make_io_obj()
+    error_file = make_io_obj()
     process = kcl.KCLProcess(RecordProcessor(test_shard_id, test_sequence_number),
                              input_file=input_file, output_file=output_file, error_file=error_file)
     process.run()
@@ -92,7 +92,7 @@ def test_kcl_py_integration_test_perfect_input():
     The strings are approximately the same, modulo whitespace.
     '''
     output_message_list = filter(lambda s: s != "", output_file.getvalue().split("\n"))
-    responses = map(lambda s: json.loads(s), output_message_list)
+    responses = [json.loads(s) for s in output_message_list]
     assert len(responses) == len(test_output_messages)
     for i in range(len(responses)):
         assert responses[i] == test_output_messages[i]

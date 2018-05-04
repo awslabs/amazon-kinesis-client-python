@@ -25,12 +25,13 @@ _serializers = {
     "processRecords": messages.ProcessRecordsInput,
     "shutdown": messages.ShutdownInput,
     "checkpoint": messages.CheckpointInput,
-    "record": messages.Record
+    "record": messages.Record,
+    "shutdownRequested": messages.ShutdownRequestedInput
 }
 
 
 def _format_serializer_names():
-    return ", ".join('"{k}"'.format(k) for k in _serializers.keys())
+    return ", ".join('"{k}"'.format(k=k) for k in _serializers.keys())
 
 
 def message_decode(json_dict):

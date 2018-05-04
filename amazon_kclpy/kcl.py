@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2014-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Amazon Software License (the "License").
 # You may not use this file except in compliance with the License.
@@ -220,6 +220,16 @@ class RecordProcessorBase(object):
         '''
         raise NotImplementedError
 
+    def shutdown_requested(self, checkpointer):
+        """
+        Called by a KCLProcess instance to indicate that this record processor is about to be be shutdown.  This gives
+        the record processor a chance to checkpoint, before the lease is terminated.
+
+        :type checkpointer: amazon_kclpy.kcl.Checkpointer
+        :param checkpointer: A checkpointer which accepts a sequence number or no parameters.
+        """
+        pass
+
     version = 1
 
 
@@ -255,6 +265,9 @@ class KCLProcess(object):
 
         try:
             action.dispatch(self.checkpointer, self.processor)
+        except SystemExit as sys_exit:
+            # On a system exit exception just go ahead and exit
+            raise sys_exit
         except:
             '''
             We don't know what the client's code could raise and we have no way to recover if we let it propagate

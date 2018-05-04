@@ -138,6 +138,21 @@ all languages.
 
 ## Release Notes
 
+### Release 1.5.0 (February 7, 2018)
+* Updated to version 1.9.0 of the Amazon Kinesis Client Library for Java
+  * Version 1.9.0 now uses the [`ListShards` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_ListShards.html), which provides a higher call rate than `DescribeStream`.
+  * __WARNING: `ListShards` is a new API, and may require updating any explicit IAM policies__
+  * [PR #71](https://github.com/awslabs/amazon-kinesis-client-python/pull/71)
+
+### Release 1.4.5 (June 28, 2017)
+* Record processors can now be notified, and given a final opportunity to checkpoint, when the KCL is being shutdown.
+  * [PR #53](https://github.com/awslabs/amazon-kinesis-client-python/pull/53)
+  * [PR #56](https://github.com/awslabs/amazon-kinesis-client-python/pull/56)
+  * [PR #57](https://github.com/awslabs/amazon-kinesis-client-python/pull/57)
+
+  To use this feature the record processor must implement the `shutdown_requested` operation from the respective processor module.
+  See [v2/processor.py](https://github.com/awslabs/amazon-kinesis-client-python/blob/master/amazon_kclpy/v2/processor.py#L76) or [kcl.py](https://github.com/awslabs/amazon-kinesis-client-python/blob/master/amazon_kclpy/kcl.py#L223) for the required API.
+
 ### Release 1.4.4 (April 7, 2017)
 * [PR #47](https://github.com/awslabs/amazon-kinesis-client-python/pull/47): Update to release 1.7.5 of the Amazon Kinesis Client.
   * Additionally updated to version 1.11.115 of the AWS Java SDK.

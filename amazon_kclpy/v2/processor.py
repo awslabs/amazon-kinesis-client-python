@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2014-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Amazon Software License (the "License").
 # You may not use this file except in compliance with the License.
@@ -73,6 +73,16 @@ class RecordProcessorBase(object):
         """
         raise NotImplementedError
 
+    def shutdown_requested(self, shutdown_requested_input):
+        """
+        Called by a KCLProcess instance to indicate that this record processor is about to be be shutdown.  This gives
+        the record processor a chance to checkpoint, before the lease is terminated.
+
+        :param amazon_kclpy.messages.ShutdownRequestedInput shutdown_requested_input:
+            Information related to shutdown requested.
+        """
+        pass
+
     version = 2
 
 
@@ -121,3 +131,12 @@ class V1toV2Processor(RecordProcessorBase):
         :return: None
         """
         self.delegate.shutdown(shutdown_input.checkpointer, shutdown_input.reason)
+
+    def shutdown_requested(self, shutdown_requested_input):
+        """
+        Sends the shutdown request to the delegate
+
+        :param amazon_kclpy.messages.ShutdownInput shutdown_input: information related to the record processor shutdown
+        :return: None
+        """
+        self.delegate.shutdown_requested(shutdown_requested_input.checkpointer)
