@@ -16,16 +16,17 @@ import glob
 import sys
 
 import os
+import shutil
 from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
 
 if sys.version_info[0] >= 3:
     # Python 3
-    from urllib.request import urlretrieve
+    from urllib.request import urlopen
 else:
     # Python 2
-    from urllib import urlretrieve
+    from urllib2 import urlopen
 
 #
 # This script modifies the basic setuptools by adding some functionality to the standard
@@ -113,7 +114,7 @@ Which will download the required jars and rerun the install.
         self.on_completion()
         missing_jars = self.missing_jars()
         if len(missing_jars) > 0:
-            print(self.warning_string(missing_jars))
+            raise RuntimeError(self.warning_string(missing_jars)) 
 
     def package_destination(self, artifcat_id, version):
         return '{artifcat_id}-{version}.jar'.format(artifcat_id=artifcat_id, version=version)
@@ -141,10 +142,12 @@ Which will download the required jars and rerun the install.
         """
         print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
-            urlretrieve(url, dest)
+            response = urlopen(url)
+            with open(dest, 'wb') as dest_file:
+                shutil.copyfileobj(response, dest_file)
             print('Saving {url} -> {dest}'.format(url=url, dest=dest))
-        except:
-            print('Failed to retrieve {url}'.format(url=url))
+        except Exception as e:
+            print('Failed to retrieve {url}: {e}'.format(url=url, e=e))
             return
 
     def download_files(self):
