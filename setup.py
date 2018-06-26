@@ -65,6 +65,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('com.amazonaws', 'aws-java-sdk-s3', '1.11.272'),
     ('com.amazonaws', 'aws-java-sdk-kms', '1.11.272'),
     ('com.amazonaws', 'aws-java-sdk-core', '1.11.272'),
+    ('com.amazonaws', 'aws-java-sdk-sts', '1.11.272'),
     ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
     ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
     ('commons-codec', 'commons-codec', '1.9'),
@@ -80,7 +81,11 @@ REMOTE_MAVEN_PACKAGES = [
     ('com.google.guava', 'guava', '18.0'),
     ('com.google.protobuf', 'protobuf-java', '2.6.1'),
     ('commons-lang', 'commons-lang', '2.6'),
-    ('commons-logging', 'commons-logging', '1.1.3')
+    ('commons-logging', 'commons-logging', '1.1.3'),
+#     ('ch.qos.logback', 'logback-classic', '1.1.7'),
+#     ('ch.qos.logback', 'logback-core', '1.1.7'),
+#     ('org.slf4j', 'slf4j-api', '1.7.21'),
+#     ('org.slf4j', 'jcl-over-slf4j', '1.7.21')
 ]
 
 
