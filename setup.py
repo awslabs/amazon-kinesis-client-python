@@ -60,26 +60,31 @@ PYTHON_REQUIREMENTS = [
 ]
 REMOTE_MAVEN_PACKAGES = [
     # (group id, artifact id, version),
-    ('com.amazonaws', 'amazon-kinesis-client', '1.9.0'),
-    ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.272'),
-    ('com.amazonaws', 'aws-java-sdk-s3', '1.11.272'),
-    ('com.amazonaws', 'aws-java-sdk-kms', '1.11.272'),
-    ('com.amazonaws', 'aws-java-sdk-core', '1.11.272'),
-    ('org.apache.httpcomponents', 'httpclient', '4.5.2'),
-    ('org.apache.httpcomponents', 'httpcore', '4.4.4'),
-    ('commons-codec', 'commons-codec', '1.9'),
+    ('com.amazonaws', 'amazon-kinesis-client', '1.9.3'),
+    ('com.amazonaws', 'aws-java-sdk-dynamodb', '1.11.438'),
+    ('com.amazonaws', 'aws-java-sdk-s3', '1.11.438'),
+    ('com.amazonaws', 'aws-java-sdk-kms', '1.11.438'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.438'),
+    ('org.apache.httpcomponents', 'httpclient', '4.5.5'),
+    ('org.apache.httpcomponents', 'httpcore', '4.4.9'),
+    ('commons-codec', 'commons-codec', '1.10'),
     ('software.amazon.ion', 'ion-java', '1.0.2'),
     ('com.fasterxml.jackson.core', 'jackson-databind', '2.6.7.1'),
     ('com.fasterxml.jackson.core', 'jackson-annotations', '2.6.0'),
     ('com.fasterxml.jackson.core', 'jackson-core', '2.6.7'),
     ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.6.7'),
     ('joda-time', 'joda-time', '2.8.1'),
-    ('com.amazonaws', 'jmespath-java', '1.11.272'),
-    ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.272'),
-    ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.272'),
-    ('com.google.guava', 'guava', '18.0'),
+    ('com.amazonaws', 'jmespath-java', '1.11.438'),
+    ('com.amazonaws', 'aws-java-sdk-kinesis', '1.11.438'),
+    ('com.amazonaws', 'aws-java-sdk-cloudwatch', '1.11.438'),
+    ('com.google.guava', 'guava', '26.0-jre'),
+    ('com.google.code.findbugs', 'jsr305', '3.0.2'),
+    ('org.checkerframework', 'checker-qual', '2.5.2'),
+    ('com.google.errorprone', 'error_prone_annotations', '2.1.3'),
+    ('com.google.j2objc', 'j2objc-annotations', '1.1'),
+    ('org.codehaus.mojo', 'animal-sniffer-annotations', '1.14'),
     ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-    ('commons-lang', 'commons-lang', '2.6'),
+    ('org.apache.commons', 'commons-lang3', '3.7'),
     ('commons-logging', 'commons-logging', '1.1.3')
 ]
 
@@ -114,7 +119,7 @@ Which will download the required jars and rerun the install.
         self.on_completion()
         missing_jars = self.missing_jars()
         if len(missing_jars) > 0:
-            raise RuntimeError(self.warning_string(missing_jars)) 
+            raise RuntimeError(self.warning_string(missing_jars))
 
     def package_destination(self, artifcat_id, version):
         return '{artifcat_id}-{version}.jar'.format(artifcat_id=artifcat_id, version=version)
@@ -126,9 +131,9 @@ Which will download the required jars and rerun the install.
     def package_url(self, group_id, artifact_id, version):
         #
         # Sample url:
-        # http://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
+        # https://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
         #
-        prefix = 'http://search.maven.org/remotecontent?filepath='
+        prefix = 'https://search.maven.org/remotecontent?filepath='
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
                                         prefix=prefix,
                                         path='/'.join(group_id.split('.')),
