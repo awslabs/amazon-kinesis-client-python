@@ -126,9 +126,9 @@ Which will download the required jars and rerun the install.
     def package_url(self, group_id, artifact_id, version):
         #
         # Sample url:
-        # http://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
+        # https://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
         #
-        prefix = 'http://search.maven.org/remotecontent?filepath='
+        prefix = 'https://search.maven.org/remotecontent?filepath='
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
                                         prefix=prefix,
                                         path='/'.join(group_id.split('.')),
