@@ -138,6 +138,14 @@ all languages.
 
 ## Release Notes
 
+### Release 1.5.1 (January 2, 2019)
+* Updated to version 1.9.3 of the Amazon Kinesis Client Library for Java.
+  * [PR #87](https://github.com/awslabs/amazon-kinesis-client-python/pull/87)
+* Changed to now download jars from Maven using https.
+  * [PR #87](https://github.com/awslabs/amazon-kinesis-client-python/pull/87)
+* Changed to raise exception when downloading from Maven fails.
+  * [PR #80](https://github.com/awslabs/amazon-kinesis-client-python/pull/80)
+
 ### Release 1.5.0 (February 7, 2018)
 * Updated to version 1.9.0 of the Amazon Kinesis Client Library for Java
   * Version 1.9.0 now uses the [`ListShards` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_ListShards.html), which provides a higher call rate than `DescribeStream`.
