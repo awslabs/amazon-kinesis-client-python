@@ -93,7 +93,7 @@ def get_kcl_classpath(properties=None, paths=[]):
         paths.append(dir_of_file)
     return ":".join([p for p in paths if p != ''])
 
-def get_kcl_app_command(java, multi_lang_daemon_class, properties, paths=[]):
+def get_kcl_app_command(args, multi_lang_daemon_class, properties, log_configuration, paths=[]):
     '''
     Generates a command to run the MultiLangDaemon.
 
@@ -112,11 +112,12 @@ def get_kcl_app_command(java, multi_lang_daemon_class, properties, paths=[]):
     :rtype: str
     :return: A command that will run the MultiLangDaemon with your properties and custom paths and java.
     '''
-    return "{java} -cp {cp} {daemon} {props}".format(java=java,
-                                    cp = get_kcl_classpath(properties, paths),
+    return "{java} -cp {cp} {daemon} {props} {log_config}".format(java=args.java,
+                                    cp = get_kcl_classpath(args.properties, paths),
                                     daemon = multi_lang_daemon_class,
                                     # Just need the basename becasue the path is added to the classpath
-                                    props = os.path.basename(properties))
+                                    props = properties,
+                                    log_config = log_configuration)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("A script for generating a command to run an Amazon KCLpy app")
@@ -139,6 +140,9 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--classpath", "--path", dest="paths", action="append", default=[],
                         help="Additional path to add to java class path. May be specified any number of times",
                         metavar="PATH")
+    parser.add_argument("-l", "--log-configuration", dest="log_configuration",
+                        help="This will use the logback.xml which will be used by the KCL to log.",
+                        metavar="PATH_TO_LOG_CONFIGURATION")
     args = parser.parse_args()
     # Possibly replace the properties with the sample. Useful if they just want to run the sample app.
     if args.use_sample_props:
@@ -151,8 +155,12 @@ if __name__ == '__main__':
         print(get_kcl_classpath(args.properties, args.paths))
     elif args.print_command:
         if args.java and args.properties:
-            multi_lang_daemon_class = 'com.amazonaws.services.kinesis.multilang.MultiLangDaemon'
-            print(get_kcl_app_command(args.java, multi_lang_daemon_class, args.properties, paths=args.paths))
+            multi_lang_daemon_class = 'software.amazon.kinesis.multilang.MultiLangDaemon'
+            properties_argument = "--properties-file {props}".format(props = args.properties)
+            log_argument = ''
+            if args.log_configuration is not None:
+                log_argument = "--log-configuration {log}".format(log = args.log_configuration)
+            print(get_kcl_app_command(args, multi_lang_daemon_class, properties_argument, log_argument, paths=args.paths))
         else:
             sys.stderr.write("Must provide arguments: --java and --properties\n")
             parser.print_usage()

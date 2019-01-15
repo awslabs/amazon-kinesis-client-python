@@ -10,9 +10,12 @@
 # on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
+
 import abc
 import base64
 from datetime import datetime
+
+from amazon_kclpy.checkpoint_error import CheckpointError
 
 
 class MessageDispatcher(object):
@@ -31,7 +34,7 @@ class MessageDispatcher(object):
         :param amazon_kclpy.kcl.Checkpointer checkpointer: The checkpointer that can be used by the record
             process to record its progress
 
-        :param amazon_kclpy.v2.processor.RecordProcessorBase record_processor: The record processor that will receive,
+        :param amazon_kclpy.v3.processor.RecordProcessorBase record_processor: The record processor that will receive,
             and process the message.
 
         :return: Nothing
@@ -164,14 +167,34 @@ class ProcessRecordsInput(MessageDispatcher):
         record_processor.process_records(self)
 
 
-class ShutdownInput(MessageDispatcher):
+class LeaseLostCheckpointer:
+    """
+    Checkpointer for use in the lease loss scenario.  This is specifically used in the v2 to v3 delegate
+    """
+    def __init__(self):
+        pass
+
+    def checkpoint(self, sequence_number=None, sub_sequence_number=None):
+        raise CheckpointError("Checkpointing is not allowed when the lease is lost")
+
+
+class ShutdownInput:
     """
     Used to tell the record processor it will be shutdown.
     """
-    def __init__(self, json_dict):
-        self._reason = json_dict["reason"]
-        self._checkpointer = None
-        self._action = json_dict['action']
+
+    @staticmethod
+    def zombie():
+        return ShutdownInput("ZOMBIE", LeaseLostCheckpointer())
+
+    @staticmethod
+    def terminate(checkpointer):
+        return ShutdownInput("TERMINATE", checkpointer)
+
+    def __init__(self, reason, checkpointer):
+        self._action = 'shutdown'
+        self._reason = reason
+        self._checkpointer = checkpointer
 
     @property
     def reason(self):
@@ -206,9 +229,73 @@ class ShutdownInput(MessageDispatcher):
         """
         return self._action
 
+
+class LeaseLostInput(MessageDispatcher):
+    """
+    Message, and input that is sent when the client has lost the lease for this shard.
+    """
+
+    def __init__(self, json_dict):
+        self._action = json_dict['action']
+
+    @property
+    def action(self):
+        """
+        The action that indicated the lease was lost
+
+        :return: the name of the action
+        :rtype: str
+        """
+        return self._action
+
     def dispatch(self, checkpointer, record_processor):
+        """
+        Dispatch the lease lost notification to the record processor
+
+        :param checkpointer: unused
+        :param record_processor: the record processor to dispatch the call to
+        :return: None
+        """
+        record_processor.lease_lost(self)
+
+
+class ShardEndedInput(MessageDispatcher):
+    """
+    Message and input that is sent to the record processor when the client has reached the end of the shard.
+    """
+
+    def __init__(self, json_dict):
+        self._checkpointer = None
+        self._action = json_dict['action']
+
+    @property
+    def action(self):
+        """
+        The action that caused the creation of this message
+
+        :return: the action name
+        :rtype: str
+        """
+        return self._action
+
+    @property
+    def checkpointer(self):
+        """
+        The checkpointer that the record processor will use to checkpoint the end of the shard
+        :return: the checkpointer
+        :rtype: Checkpointer
+        """
+        return self._checkpointer
+
+    def dispatch(self, checkpointer, record_processor):
+        """
+        Dispatches the shard ended message to the record processor
+
+        :param checkpointer: the checkpointer to be used to officialy end processing on the shard
+        :param record_processor: the record processor that will handle the shard end message
+        """
         self._checkpointer = checkpointer
-        record_processor.shutdown(self)
+        record_processor.shard_ended(self)
 
 
 class ShutdownRequestedInput(MessageDispatcher):

@@ -5,6 +5,7 @@
 /build/
 /dist/
 /docs/_build/
+/.eggs/
 
 # IntelliJ idea stuff
 .idea

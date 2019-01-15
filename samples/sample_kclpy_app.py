@@ -19,7 +19,7 @@ import sys
 import time
 
 from amazon_kclpy import kcl
-from amazon_kclpy.v2 import processor
+from amazon_kclpy.v3 import processor
 
 
 class RecordProcessor(processor.RecordProcessorBase):
@@ -38,6 +38,9 @@ class RecordProcessor(processor.RecordProcessorBase):
         self._largest_seq = (None, None)
         self._largest_sub_seq = None
         self._last_checkpoint_time = None
+
+    def log(self, message):
+        sys.stderr.write(message)
 
     def initialize(self, initialize_input):
         """
@@ -99,7 +102,8 @@ class RecordProcessor(processor.RecordProcessorBase):
         ####################################
         # Insert your processing logic here
         ####################################
-        return
+        self.log("Record (Partition Key: {pk}, Sequence Number: {seq}, Subsequence Number: {sseq}, Data Size: {ds}"
+                 .format(pk=partition_key, seq=sequence_number, sseq=sub_sequence_number, ds=len(data)))
 
     def should_update_sequence(self, sequence_number, sub_sequence_number):
         """
@@ -138,42 +142,19 @@ class RecordProcessor(processor.RecordProcessorBase):
                 self._last_checkpoint_time = time.time()
 
         except Exception as e:
-            sys.stderr.write("Encountered an exception while processing records. Exception was {e}\n".format(e=e))
+            self.log("Encountered an exception while processing records. Exception was {e}\n".format(e=e))
 
-    def shutdown(self, shutdown_input):
-        """
-        Called by a KCLProcess instance to indicate that this record processor should shutdown. After this is called,
-        there will be no more calls to any other methods of this record processor.
+    def lease_lost(self, lease_lost_input):
+        self.log("Lease has been lost")
 
-        As part of the shutdown process you must inspect :attr:`amazon_kclpy.messages.ShutdownInput.reason` to
-        determine the steps to take.
+    def shard_ended(self, shard_ended_input):
+        self.log("Shard has ended checkpointing")
+        shard_ended_input.checkpointer.checkpoint()
 
-            * Shutdown Reason ZOMBIE:
-                **ATTEMPTING TO CHECKPOINT ONCE A LEASE IS LOST WILL FAIL**
+    def shutdown_requested(self, shutdown_requested_input):
+        self.log("Shutdown has been requested, checkpointing.")
+        shutdown_requested_input.checkpointer.checkpoint()
 
-                A record processor will be shutdown if it loses its lease.  In this case the KCL will terminate the
-                record processor.  It is not possible to checkpoint once a record processor has lost its lease.
-            * Shutdown Reason TERMINATE:
-                **THE RECORD PROCESSOR MUST CHECKPOINT OR THE KCL WILL BE UNABLE TO PROGRESS**
-
-                A record processor will be shutdown once it reaches the end of a shard.  A shard ending indicates that
-                it has been either split into multiple shards or merged with another shard.  To begin processing the new
-                shard(s) it's required that a final checkpoint occurs.
-
-
-        :param amazon_kclpy.messages.ShutdownInput shutdown_input: Information related to the shutdown request
-        """
-        try:
-            if shutdown_input.reason == 'TERMINATE':
-                # Checkpointing with no parameter will checkpoint at the
-                # largest sequence number reached by this processor on this
-                # shard id
-                print('Was told to terminate, will attempt to checkpoint.')
-                self.checkpoint(shutdown_input.checkpointer, None)
-            else: # reason == 'ZOMBIE'
-                print('Shutting down due to failover. Will not checkpoint.')
-        except:
-            pass
 
 if __name__ == "__main__":
     kcl_process = kcl.KCLProcess(RecordProcessor())

@@ -11,17 +11,5 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-import sys
-import io
-
-
-def make_io_obj(json_text=None):
-    if sys.version_info[0] >= 3:
-        create_method = io.StringIO
-    else:
-        create_method = io.BytesIO
-
-    if json_text is not None:
-        return create_method(json_text)
-    else:
-        return create_method()
+import pytest
+pytestmark = pytest.mark.webtests
