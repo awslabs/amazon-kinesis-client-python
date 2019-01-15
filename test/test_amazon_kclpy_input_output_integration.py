@@ -31,6 +31,7 @@ class RecordProcessor(kcl.RecordProcessorBase):
         if 'TERMINATE' == reason:
             checkpointer.checkpoint()
 
+
 '''
 An input string which we'll feed to a file for kcl.py to read from.
 '''
@@ -54,11 +55,13 @@ test_output_messages = [
     {"action": "checkpoint", "sequenceNumber": "456", "subSequenceNumber": None},
     {"action": "status", "responseFor": "processRecords"},
     {"action": "checkpoint", "sequenceNumber": None, "subSequenceNumber": None},
-    {"action": "status", "responseFor": "shutdown"}
+    {"action": "status", "responseFor": "shardEnded"}
 ]
+
 
 def _strip_all_whitespace(s):
     return re.sub('\s*', '', s)
+
 
 test_shard_id = "shardId-123"
 test_sequence_number = "456"
@@ -75,7 +78,7 @@ test_input_messages = [
      },
     {"action": "checkpoint", "sequenceNumber": test_sequence_number, "subSequenceNumber": 0, "error": "Exception"},
     {"action": "checkpoint", "sequenceNumber": test_sequence_number, "subSequenceNumber": 0},
-    {"action": "shutdown", "reason": "TERMINATE"},
+    {"action": "shardEnded"},
     {"action": "checkpoint", "sequenceNumber": test_sequence_number, "subSequenceNumber": 0}
 ]
 

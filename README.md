@@ -18,13 +18,19 @@ typically looks something like:
 
     class RecordProcessor(kcl.RecordProcessorBase):
 
-        def initialize(self, shard_id):
+        def initialize(self, initialiation_input):
             pass
 
-        def process_records(self, records, checkpointer):
+        def process_records(self, process_records_input):
             pass
 
-        def shutdown(self, checkpointer, reason):
+        def lease_lost(self, lease_lost_input):
+            pass
+
+        def shard_ended(self, shard_ended_input):
+            pass
+
+        def shutdown_requested(self, shutdown_requested_input):
             pass
 
     if __name__ == "__main__":
@@ -38,7 +44,7 @@ Before running the samples, you'll want to make sure that your environment is
 configured to allow the samples to use your
 [AWS Security Credentials](http://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html).
 
-By default the samples use the [DefaultAWSCredentialsProviderChain][DefaultAWSCredentialsProviderChain]
+By default the samples use the [DefaultCredentialsProvider][DefaultCredentialsProvider]
 so you'll want to make your credentials available to one of the credentials providers in that
 provider chain. There are several ways to do this such as providing a ~/.aws/credentials file,
 or if you're running on EC2, you can associate an IAM role with your instance with appropriate
@@ -138,6 +144,22 @@ all languages.
 
 ## Release Notes
 
+### Release 2.0.0 (January 15, 2019)
+* Introducing support for Enhanced Fan-Out
+* Updated to version 2.1.0 of the Amazon Kinesis Client for Java
+  * Version 2.1.0 now defaults to using [`RegisterStreamConsumer` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_RegisterStreamConsumer.html), which provides dedicated throughput compared to `GetRecords`.
+  * Version 2.1.0 now defaults to using [`SubscribeToShard` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_SubscribeToShard.html), which provides lower latencies than `GetRecords`.
+  * __WARNING: `RegisterStreamConsumer` and `SubscribeToShard` are new APIs, and may require updating any explicit IAM policies__
+  * For more information about Enhaced Fan-Out and Polling with the KCL check out the [announcement](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout/) and [developer documentation](https://docs.aws.amazon.com/streams/latest/dev/introduction-to-enhanced-consumers.html).
+* Introducing version 3 of the `RecordProcessorBase` which supports the new `ShardRecordProcessor` interface
+  * The `shutdown` method from version 2 has been removed and replaced by `leaseLost` and `shardEnded` methods.
+  * Introducing `leaseLost` method, which takes `LeaseLostInput` object and is invoked when a lease is lost.
+  * Introducing `shardEnded` method, which takes `ShardEndedInput` object and is invoked when all records from a split/merge have been processed.
+* Updated AWS SDK version to 2.2.0
+* MultiLangDaemon now uses logging using logback
+  * MultiLangDaemon supports custom logback.xml file via the `--log-configuration` option.
+  * `amazon_kclpy_helper` script supports `--log-configuration` option for command generation.
+
 ### Release 1.5.1 (January 2, 2019)
 * Updated to version 1.9.3 of the Amazon Kinesis Client Library for Java.
   * [PR #87](https://github.com/awslabs/amazon-kinesis-client-python/pull/87)
@@ -215,5 +237,5 @@ all languages.
 [amazon-kinesis-ruby-github]: https://github.com/awslabs/amazon-kinesis-client-ruby
 [kinesis-github]: https://github.com/awslabs/amazon-kinesis-client
 [boto]: http://boto.readthedocs.org/en/latest/
-[DefaultAWSCredentialsProviderChain]: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html
+[DefaultCredentialsProvider]: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/DefaultCredentialsProvider.html
 [kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
