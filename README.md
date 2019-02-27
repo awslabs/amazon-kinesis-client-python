@@ -144,6 +144,11 @@ all languages.
 
 ## Release Notes
 
+### Release 2.0.1 (February 27, 2019)
+* Updated to version 2.1.2 of the Amazon Kinesis Client Library for Java.  
+  This update also includes version 2.4.0 of the AWS Java SDK.
+  * [PR #92](https://github.com/awslabs/amazon-kinesis-client-python/pull/92)
+
 ### Release 2.0.0 (January 15, 2019)
 * Introducing support for Enhanced Fan-Out
 * Updated to version 2.1.0 of the Amazon Kinesis Client for Java
