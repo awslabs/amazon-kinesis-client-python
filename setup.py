@@ -1,15 +1,5 @@
 # Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#
-# Licensed under the Amazon Software License (the "License").
-# You may not use this file except in compliance with the License.
-# A copy of the License is located at
-#
-# http://aws.amazon.com/asl/
-#
-# or in the "license" file accompanying this file. This file is distributed
-# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-# express or implied. See the License for the specific language governing
-# permissions and limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import print_function
 
 import glob
@@ -282,7 +272,7 @@ if __name__ == '__main__':
         name=PACKAGE_NAME,
         version=PACKAGE_VERSION,
         description='A python interface for the Amazon Kinesis Client Library MultiLangDaemon',
-        license='Amazon Software License',
+        license='Apache-2.0',
         packages=[PACKAGE_NAME, PACKAGE_NAME + "/v2", PACKAGE_NAME + "/v3", 'samples'],
         scripts=glob.glob('samples/*py'),
         package_data={
