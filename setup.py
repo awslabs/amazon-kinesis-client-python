@@ -17,6 +17,8 @@ import sys
 
 import os
 import shutil
+from time import sleep
+
 from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
@@ -121,6 +123,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('commons-beanutils', 'commons-beanutils', '1.9.3'),
     ('commons-collections', 'commons-collections', '3.2.2')
 ]
+MAX_URL_DOWNLOAD_ATTEMPTS = 5
 
 
 class MavenJarDownloader:
@@ -181,7 +184,8 @@ Which will download the required jars and rerun the install.
         """
         print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
-            response = urlopen(url)
+            response = self.make_request_with_backoff(url)
+
             with open(dest, 'wb') as dest_file:
                 shutil.copyfileobj(response, dest_file)
             print('Saving {url} -> {dest}'.format(url=url, dest=dest))
@@ -197,6 +201,17 @@ Which will download the required jars and rerun the install.
             else:
                 url = self.package_url(package[0], package[1], package[2])
                 self.download_file(url, dest)
+
+    def make_request_with_backoff(self, url):
+        for attempt_number in range(MAX_URL_DOWNLOAD_ATTEMPTS):
+            response = urlopen(url)
+            if response.getcode() == 429:
+                sleep_time = 2 ** attempt_number
+                print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
+                sleep(sleep_time)
+            else:
+                return response
+        raise Exception('"429 Too Many Requests" responses received.')
 
 
 class DownloadJarsCommand(Command):
