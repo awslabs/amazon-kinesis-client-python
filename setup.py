@@ -205,7 +205,6 @@ Which will download the required jars and rerun the install.
     def make_request_with_backoff(self, url):
         for attempt_number in range(MAX_URL_DOWNLOAD_ATTEMPTS):
             response = urlopen(url)
-            breakpoint()
             if response.getcode() == 429:
                 sleep_time = 2 ** attempt_number
                 print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
