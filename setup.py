@@ -52,7 +52,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.2'
+PACKAGE_VERSION = '2.0.3'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -200,7 +200,6 @@ Which will download the required jars and rerun the install.
             else:
                 url = self.package_url(package[0], package[1], package[2])
                 self.download_file(url, dest)
-        raise Exception()
 
     def make_request_with_backoff(self, url):
         for attempt_number in range(MAX_URL_DOWNLOAD_ATTEMPTS):
