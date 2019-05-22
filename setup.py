@@ -26,9 +26,11 @@ from setuptools.command.install import install
 if sys.version_info[0] >= 3:
     # Python 3
     from urllib.request import urlopen
+    from urllib.error import HTTPError
 else:
     # Python 2
     from urllib2 import urlopen
+    from urllib2 import HTTPError
 
 #
 # This script modifies the basic setuptools by adding some functionality to the standard
@@ -52,7 +54,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.3'
+PACKAGE_VERSION = '2.0.4'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -204,8 +206,10 @@ Which will download the required jars and rerun the install.
     def make_request_with_backoff(self, url):
         for attempt_number in range(MAX_URL_DOWNLOAD_ATTEMPTS):
             print('Attempting to retrieve remote jar {url}'.format(url=url))
-            response = urlopen(url)
-            if response.getcode() == 429:
+            try:
+                return urlopen(url)
+            except HTTPError as e:
+            if e.code == 429:
                 sleep_time = 2 ** attempt_number
                 print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
                 sleep(sleep_time)
