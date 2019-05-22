@@ -182,7 +182,6 @@ Which will download the required jars and rerun the install.
         """
         Downloads a file at the url to the destination.
         """
-        print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
             response = self.make_request_with_backoff(url)
 
@@ -201,9 +200,11 @@ Which will download the required jars and rerun the install.
             else:
                 url = self.package_url(package[0], package[1], package[2])
                 self.download_file(url, dest)
+        raise Exception()
 
     def make_request_with_backoff(self, url):
         for attempt_number in range(MAX_URL_DOWNLOAD_ATTEMPTS):
+            print('Attempting to retrieve remote jar {url}'.format(url=url))
             response = urlopen(url)
             if response.getcode() == 429:
                 sleep_time = 2 ** attempt_number
