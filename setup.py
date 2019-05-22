@@ -54,7 +54,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.4'
+PACKAGE_VERSION = '2.0.5'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -209,10 +209,10 @@ Which will download the required jars and rerun the install.
             try:
                 return urlopen(url)
             except HTTPError as e:
-            if e.code == 429:
-                sleep_time = 2 ** attempt_number
-                print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
-                sleep(sleep_time)
+                if e.code == 429:
+                    sleep_time = 2 ** attempt_number
+                    print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
+                    sleep(sleep_time)
             else:
                 return response
         raise Exception('"429 Too Many Requests" responses received.')
