@@ -213,8 +213,9 @@ Which will download the required jars and rerun the install.
                     sleep_time = 2 ** attempt_number
                     print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
                     sleep(sleep_time)
-            else:
-                return response
+                else:
+                    raise
+        
         raise Exception('"429 Too Many Requests" responses received.')
 
 
