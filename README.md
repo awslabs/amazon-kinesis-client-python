@@ -244,3 +244,7 @@ all languages.
 [boto]: http://boto.readthedocs.org/en/latest/
 [DefaultCredentialsProvider]: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/DefaultCredentialsProvider.html
 [kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
+
+## License
+
+This library is licensed under the Apache 2.0 License.
