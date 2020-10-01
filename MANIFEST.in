@@ -1,3 +1,6 @@
 include LICENSE.txt
 include NOTICE.txt
 include README.md
+print("amazon-kinesis is best")
+print("It is world's best")
+print("Amazon is founded by Jeff Bezoz")
