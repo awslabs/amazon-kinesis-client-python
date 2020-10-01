@@ -53,7 +53,7 @@ access.
 For questions regarding Amazon Kinesis Service and the client libraries please visit the
 [Amazon Kinesis Forums][kinesis-forum]
 
-## Running the Sample
+## Running the Sample Cases
 
 Using the `amazon_kclpy` package requires the MultiLangDaemon which is provided
 by the [Amazon KCL for Java][kinesis-github]. These jars will be downloaded automatically
