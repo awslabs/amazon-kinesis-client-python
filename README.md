@@ -107,7 +107,7 @@ sample.properties file from the installation location.
 Running on EC2 is simple. Assuming you are already logged into an EC2 instance running
 Amazon Linux, the following steps will prepare your environment for running the sample
 app. Note the version of java that ships with Amazon Linux can be found at
-`/usr/bin/java` and should be 1.7 or greater.
+`/usr/bin/java` and should be 1.7 or greater.Yes Sure
 
     sudo yum install python-pip
 
