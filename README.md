@@ -150,7 +150,7 @@ all languages.
   * [PR #92](https://github.com/awslabs/amazon-kinesis-client-python/pull/92)
 
 ### Release 2.0.0 (January 15, 2019)
-* Introducing support for Enhanced Fan-Out
+* Introducing the support for Enhanced Fan-Out
 * Updated to version 2.1.0 of the Amazon Kinesis Client for Java
   * Version 2.1.0 now defaults to using [`RegisterStreamConsumer` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_RegisterStreamConsumer.html), which provides dedicated throughput compared to `GetRecords`.
   * Version 2.1.0 now defaults to using [`SubscribeToShard` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_SubscribeToShard.html), which provides lower latencies than `GetRecords`.
