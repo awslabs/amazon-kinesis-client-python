@@ -38,10 +38,10 @@ typically looks something like:
         kclprocess.run()
 ```
 
-## Before You Get Started
+## Before You Get Started have a look ...
 
 Before running the samples, you'll want to make sure that your environment is
-configured to allow the samples to use your
+configured to allow the samples to use your resources
 [AWS Security Credentials](http://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html).
 
 By default the samples use the [DefaultCredentialsProvider][DefaultCredentialsProvider]
