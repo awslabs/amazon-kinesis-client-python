@@ -40,7 +40,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.1'
+PACKAGE_VERSION = '2.0.2a'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -100,7 +100,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('org.apache.httpcomponents', 'httpclient', '4.5.9'),
     ('commons-codec', 'commons-codec', '1.11'),
     ('org.apache.httpcomponents', 'httpcore', '4.4.11'),
-    ('com.amazonaws', 'aws-java-sdk-core', '1.11.477'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.704'),
     ('commons-logging', 'commons-logging', '1.1.3'),
     ('software.amazon.ion', 'ion-java', '1.0.2'),
     ('joda-time', 'joda-time', '2.8.1'),
