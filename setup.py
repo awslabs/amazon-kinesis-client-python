@@ -100,7 +100,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('org.apache.httpcomponents', 'httpclient', '4.5.9'),
     ('commons-codec', 'commons-codec', '1.11'),
     ('org.apache.httpcomponents', 'httpcore', '4.4.11'),
-    ('com.amazonaws', 'aws-java-sdk-core', '1.11.704'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.908'),
     ('commons-logging', 'commons-logging', '1.1.3'),
     ('software.amazon.ion', 'ion-java', '1.0.2'),
     ('joda-time', 'joda-time', '2.8.1'),
