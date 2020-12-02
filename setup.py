@@ -40,7 +40,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.2a'
+PACKAGE_VERSION = '2.0.1'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
