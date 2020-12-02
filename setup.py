@@ -104,6 +104,8 @@ REMOTE_MAVEN_PACKAGES = [
     ('commons-logging', 'commons-logging', '1.1.3'),
     ('software.amazon.ion', 'ion-java', '1.0.2'),
     ('joda-time', 'joda-time', '2.8.1'),
+    ('com.amazonaws', 'aws-java-sdk-sts', '1.11.908'),
+    ('com.amazonaws', 'jmespath-java', '1.11.908'),
     ('ch.qos.logback', 'logback-classic', '1.2.3'),
     ('ch.qos.logback', 'logback-core', '1.2.3'),
     ('com.beust', 'jcommander', '1.72'),
