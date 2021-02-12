@@ -1,3 +1,4 @@
 boto
 argparse
 mock
+setuptools==51.1.1
