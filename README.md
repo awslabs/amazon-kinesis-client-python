@@ -144,7 +144,7 @@ all languages.
 
 ## Release Notes
 
-### Release 2.0.2 (June 3, 2021)
+### Release 2.0.2 (June 4, 2021)
 * Upgraded multiple dependencies in [PR #137](https://github.com/awslabs/amazon-kinesis-client-python/pull/137)
   * Amazon Kinesis Client Library 2.3.4
   * AWS SDK 2.16.75
