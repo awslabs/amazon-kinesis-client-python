@@ -144,6 +144,35 @@ all languages.
 
 ## Release Notes
 
+### Release 2.0.2 (June 3, 2021)
+* Upgraded multiple dependencies in [PR #137](https://github.com/awslabs/amazon-kinesis-client-python/pull/137)
+  * Amazon Kinesis Client Library 2.3.4
+  * AWS SDK 2.16.75
+  * AWS Java SDK 1.11.1031
+  * Amazon ion java 1.5.1
+  * Jackson 2.12.3
+  * io.netty 4.1.65.Final
+  * typeface netty 2.0.5
+  * reactivestreams 1.0.3
+  * guava 30.1.1-jre
+  * Error prone annotations 2.7.1
+  * j2objc annotations 2.7.1
+  * Animal sniffer annotations 1.20
+  * slf4j 1.7.30
+  * protobuf 3.17.1
+  * Joda time 2.10.10
+  * Apache httpclient 4.5.13
+  * Apache httpcore 4.4.14
+  * commons lang3 3.12.0
+  * commons logging 1.2
+  * commons beanutils 1.9.4
+  * commons codec 1.15
+  * commons collections4 4.4
+  * commons io 2.9.0
+  * jcommander 1.81
+  * rxjava 2.2.21
+* Added Amazon Glue schema registry 1.0.2
+
 ### Release 2.0.1 (February 27, 2019)
 * Updated to version 2.1.2 of the Amazon Kinesis Client Library for Java.  
   This update also includes version 2.4.0 of the AWS Java SDK.
