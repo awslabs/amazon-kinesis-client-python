@@ -1,23 +1,12 @@
 # Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#
-# Licensed under the Amazon Software License (the "License").
-# You may not use this file except in compliance with the License.
-# A copy of the License is located at
-#
-# http://aws.amazon.com/asl/
-#
-# or in the "license" file accompanying this file. This file is distributed
-# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-# express or implied. See the License for the specific language governing
-# permissions and limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 from __future__ import print_function
 
 import glob
-import sys
-
 import os
 import shutil
-from time import sleep
+import sys
+import time
 
 from setuptools import Command
 from setuptools import setup
@@ -54,7 +43,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.5'
+PACKAGE_VERSION = '2.0.3'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -62,68 +51,72 @@ PYTHON_REQUIREMENTS = [
 ]
 REMOTE_MAVEN_PACKAGES = [
     # (group id, artifact id, version),
-    ('software.amazon.kinesis', 'amazon-kinesis-client-multilang', '2.1.2'),
-    ('software.amazon.kinesis', 'amazon-kinesis-client', '2.1.2'),
-    ('software.amazon.awssdk', 'kinesis', '2.4.0'),
-    ('software.amazon.awssdk', 'aws-cbor-protocol', '2.4.0'),
-    ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.9.8'),
-    ('software.amazon.awssdk', 'aws-json-protocol', '2.4.0'),
-    ('software.amazon.awssdk', 'dynamodb', '2.4.0'),
-    ('software.amazon.awssdk', 'cloudwatch', '2.4.0'),
-    ('software.amazon.awssdk', 'netty-nio-client', '2.4.0'),
-    ('io.netty', 'netty-codec-http', '4.1.32.Final'),
-    ('io.netty', 'netty-codec-http2', '4.1.32.Final'),
-    ('io.netty', 'netty-codec', '4.1.32.Final'),
-    ('io.netty', 'netty-transport', '4.1.32.Final'),
-    ('io.netty', 'netty-resolver', '4.1.32.Final'),
-    ('io.netty', 'netty-common', '4.1.32.Final'),
-    ('io.netty', 'netty-buffer', '4.1.32.Final'),
-    ('io.netty', 'netty-handler', '4.1.32.Final'),
-    ('io.netty', 'netty-transport-native-epoll', '4.1.32.Final'),
-    ('io.netty', 'netty-transport-native-unix-common', '4.1.32.Final'),
-    ('com.typesafe.netty', 'netty-reactive-streams-http', '2.0.0'),
-    ('com.typesafe.netty', 'netty-reactive-streams', '2.0.0'),
-    ('org.reactivestreams', 'reactive-streams', '1.0.2'),
-    ('com.google.guava', 'guava', '26.0-jre'),
+    ('software.amazon.kinesis', 'amazon-kinesis-client-multilang', '2.3.4'),
+    ('software.amazon.kinesis', 'amazon-kinesis-client', '2.3.4'),
+    ('software.amazon.awssdk', 'kinesis', '2.16.75'),
+    ('software.amazon.awssdk', 'aws-cbor-protocol', '2.16.75'),
+    ('com.fasterxml.jackson.dataformat', 'jackson-dataformat-cbor', '2.12.3'),
+    ('software.amazon.awssdk', 'aws-json-protocol', '2.16.75'),
+    ('software.amazon.awssdk', 'dynamodb', '2.16.75'),
+    ('software.amazon.awssdk', 'cloudwatch', '2.16.75'),
+    ('software.amazon.awssdk', 'netty-nio-client', '2.16.75'),
+    ('io.netty', 'netty-codec-http', '4.1.65.Final'),
+    ('io.netty', 'netty-codec-http2', '4.1.65.Final'),
+    ('io.netty', 'netty-codec', '4.1.65.Final'),
+    ('io.netty', 'netty-transport', '4.1.65.Final'),
+    ('io.netty', 'netty-resolver', '4.1.65.Final'),
+    ('io.netty', 'netty-common', '4.1.65.Final'),
+    ('io.netty', 'netty-buffer', '4.1.65.Final'),
+    ('io.netty', 'netty-handler', '4.1.65.Final'),
+    ('io.netty', 'netty-transport-native-epoll', '4.1.65.Final'),
+    ('io.netty', 'netty-transport-native-unix-common', '4.1.65.Final'),
+    ('com.typesafe.netty', 'netty-reactive-streams-http', '2.0.5'),
+    ('com.typesafe.netty', 'netty-reactive-streams', '2.0.5'),
+    ('org.reactivestreams', 'reactive-streams', '1.0.3'),
+    ('com.google.guava', 'guava', '30.1.1-jre'),
     ('com.google.code.findbugs', 'jsr305', '3.0.2'),
     ('org.checkerframework', 'checker-qual', '2.5.2'),
-    ('com.google.errorprone', 'error_prone_annotations', '2.1.3'),
-    ('com.google.j2objc', 'j2objc-annotations', '1.1'),
-    ('org.codehaus.mojo', 'animal-sniffer-annotations', '1.14'),
-    ('com.google.protobuf', 'protobuf-java', '2.6.1'),
-    ('org.apache.commons', 'commons-lang3', '3.8.1'),
-    ('org.slf4j', 'slf4j-api', '1.7.25'),
-    ('io.reactivex.rxjava2', 'rxjava', '2.1.14'),
-    ('software.amazon.awssdk', 'sts', '2.4.0'),
-    ('software.amazon.awssdk', 'aws-query-protocol', '2.4.0'),
-    ('software.amazon.awssdk', 'protocol-core', '2.4.0'),
-    ('software.amazon.awssdk', 'profiles', '2.4.0'),
-    ('software.amazon.awssdk', 'sdk-core', '2.4.0'),
-    ('com.fasterxml.jackson.core', 'jackson-core', '2.9.8'),
-    ('com.fasterxml.jackson.core', 'jackson-databind', '2.9.8'),
-    ('software.amazon.awssdk', 'auth', '2.4.0'),
-    ('software.amazon', 'flow', '1.7'),
-    ('software.amazon.awssdk', 'http-client-spi', '2.4.0'),
-    ('software.amazon.awssdk', 'regions', '2.4.0'),
-    ('com.fasterxml.jackson.core', 'jackson-annotations', '2.9.0'),
-    ('software.amazon.awssdk', 'annotations', '2.4.0'),
-    ('software.amazon.awssdk', 'utils', '2.4.0'),
-    ('software.amazon.awssdk', 'aws-core', '2.4.0'),
-    ('software.amazon.awssdk', 'apache-client', '2.4.0'),
-    ('org.apache.httpcomponents', 'httpclient', '4.5.6'),
-    ('commons-codec', 'commons-codec', '1.10'),
-    ('org.apache.httpcomponents', 'httpcore', '4.4.10'),
-    ('com.amazonaws', 'aws-java-sdk-core', '1.11.477'),
-    ('commons-logging', 'commons-logging', '1.1.3'),
-    ('software.amazon.ion', 'ion-java', '1.0.2'),
-    ('joda-time', 'joda-time', '2.8.1'),
+    ('com.google.errorprone', 'error_prone_annotations', '2.7.1'),
+    ('com.google.j2objc', 'j2objc-annotations', '1.3'),
+    ('org.codehaus.mojo', 'animal-sniffer-annotations', '1.20'),
+    ('com.google.protobuf', 'protobuf-java', '3.17.1'),
+    ('org.apache.commons', 'commons-lang3', '3.12.0'),
+    ('org.slf4j', 'slf4j-api', '1.7.30'),
+    ('io.reactivex.rxjava2', 'rxjava', '2.2.21'),
+    ('software.amazon.awssdk', 'sts', '2.16.75'),
+    ('software.amazon.awssdk', 'aws-query-protocol', '2.16.75'),
+    ('software.amazon.awssdk', 'protocol-core', '2.16.75'),
+    ('software.amazon.awssdk', 'profiles', '2.16.75'),
+    ('software.amazon.awssdk', 'sdk-core', '2.16.75'),
+    ('com.fasterxml.jackson.core', 'jackson-core', '2.12.3'),
+    ('com.fasterxml.jackson.core', 'jackson-databind', '2.12.3'),
+    ('software.amazon.awssdk', 'auth', '2.16.75'),
+    ('software.amazon.eventstream', 'eventstream', '1.0.1'),
+    ('software.amazon.awssdk', 'http-client-spi', '2.16.75'),
+    ('software.amazon.awssdk', 'regions', '2.16.75'),
+    ('com.fasterxml.jackson.core', 'jackson-annotations', '2.12.3'),
+    ('software.amazon.awssdk', 'annotations', '2.16.75'),
+    ('software.amazon.awssdk', 'utils', '2.16.75'),
+    ('software.amazon.awssdk', 'aws-core', '2.16.75'),
+    ('software.amazon.awssdk', 'metrics-spi', '2.16.75'),
+    ('software.amazon.awssdk', 'apache-client', '2.16.75'),
+    ('org.apache.httpcomponents', 'httpclient', '4.5.13'),
+    ('commons-codec', 'commons-codec', '1.15'),
+    ('org.apache.httpcomponents', 'httpcore', '4.4.14'),
+    ('com.amazonaws', 'aws-java-sdk-core', '1.11.1031'),
+    ('commons-logging', 'commons-logging', '1.2'),
+    ('software.amazon.ion', 'ion-java', '1.5.1'),
+    ('joda-time', 'joda-time', '2.10.10'),
+    ('com.amazonaws', 'aws-java-sdk-sts', '1.11.1031'),
+    ('com.amazonaws', 'jmespath-java', '1.11.1031'),
     ('ch.qos.logback', 'logback-classic', '1.2.3'),
     ('ch.qos.logback', 'logback-core', '1.2.3'),
-    ('com.beust', 'jcommander', '1.72'),
-    ('commons-io', 'commons-io', '2.6'),
-    ('org.apache.commons', 'commons-collections4', '4.2'),
-    ('commons-beanutils', 'commons-beanutils', '1.9.3'),
-    ('commons-collections', 'commons-collections', '3.2.2')
+    ('com.beust', 'jcommander', '1.81'),
+    ('commons-io', 'commons-io', '2.9.0'),
+    ('org.apache.commons', 'commons-collections4', '4.4'),
+    ('commons-beanutils', 'commons-beanutils', '1.9.4'),
+    ('commons-collections', 'commons-collections', '3.2.2'),
+    ('software.amazon.glue', 'schema-registry-serde', '1.0.2')
 ]
 MAX_URL_DOWNLOAD_ATTEMPTS = 5
 
@@ -184,6 +177,7 @@ Which will download the required jars and rerun the install.
         """
         Downloads a file at the url to the destination.
         """
+        print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
             response = self.make_request_with_backoff(url)
 
@@ -212,10 +206,10 @@ Which will download the required jars and rerun the install.
                 if e.code == 429:
                     sleep_time = 2 ** attempt_number
                     print('"429 Too Many Requests" response received. Sleeping {} seconds and trying again.'.format(sleep_time))
-                    sleep(sleep_time)
+                    time.sleep(sleep_time)
                 else:
                     raise
-        
+
         raise Exception('"429 Too Many Requests" responses received.')
 
 
@@ -302,7 +296,7 @@ if __name__ == '__main__':
         name=PACKAGE_NAME,
         version=PACKAGE_VERSION,
         description='A python interface for the Amazon Kinesis Client Library MultiLangDaemon',
-        license='Amazon Software License',
+        license='Apache-2.0',
         packages=[PACKAGE_NAME, PACKAGE_NAME + "/v2", PACKAGE_NAME + "/v3", 'samples'],
         scripts=glob.glob('samples/*py'),
         package_data={
