@@ -144,6 +144,16 @@ all languages.
 
 ## Release Notes
 
+### Release 2.0.3 (October 31, 2021)
+* Upgraded multiple dependencies in [PR #142](https://github.com/awslabs/amazon-kinesis-client-python/pull/142)
+  * Amazon Kinesis Client Library 2.3.7
+  * AWS SDK 2.17.52
+  * AWS Java SDK 1.12.1
+  * AWS Glue 1.1.5
+  * Jackson 2.12.4
+  * io.netty 4.1.68.Final
+  * guava 31.0.1
+
 ### Release 2.0.2 (June 4, 2021)
 * Upgraded multiple dependencies in [PR #137](https://github.com/awslabs/amazon-kinesis-client-python/pull/137)
   * Amazon Kinesis Client Library 2.3.4
