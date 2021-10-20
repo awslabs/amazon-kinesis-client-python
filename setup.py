@@ -70,7 +70,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('com.typesafe.netty', 'netty-reactive-streams-http', '2.0.5'),
     ('com.typesafe.netty', 'netty-reactive-streams', '2.0.5'),
     ('org.reactivestreams', 'reactive-streams', '1.0.3'),
-    ('com.google.guava', 'guava', '31.0.1'),
+    ('com.google.guava', 'guava', '31.0.1-jre'),
     ('com.google.code.findbugs', 'jsr305', '3.0.2'),
     ('org.checkerframework', 'checker-qual', '2.5.2'),
     ('com.google.errorprone', 'error_prone_annotations', '2.7.1'),
