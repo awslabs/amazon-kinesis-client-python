@@ -152,7 +152,7 @@ all languages.
   * AWS Glue 1.1.5
   * Jackson 2.12.4
   * io.netty 4.1.68.Final
-  * guava 31.0.1
+  * guava 31.0.1-jre
 
 ### Release 2.0.2 (June 4, 2021)
 * Upgraded multiple dependencies in [PR #137](https://github.com/awslabs/amazon-kinesis-client-python/pull/137)
