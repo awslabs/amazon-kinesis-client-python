@@ -144,7 +144,15 @@ all languages.
 
 ## Release Notes
 
-### Release 2.0.3 (October 21, 2021)
+### Release 2.0.4 (October 26, 2021) 
+* Revert/downgrade multiple dependencies as KCL 2.3.7 contains breaking change [PR #145](https://github.com/awslabs/amazon-kinesis-client-python/pull/145)
+  * Amazon Kinesis Client Library 2.3.6
+  * AWS SDK 2.16.98
+* Upgraded dependencies
+  * jackson-dataformat-cbor 2.12.4
+  * AWS SDK 1.12.3
+
+### :warning: [BREAKING CHANGES] Release 2.0.3 (October 21, 2021)
 * Upgraded multiple dependencies in [PR #142](https://github.com/awslabs/amazon-kinesis-client-python/pull/142)
   * Amazon Kinesis Client Library 2.3.7
   * AWS SDK 2.17.52
