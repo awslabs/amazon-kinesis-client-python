@@ -1,5 +1,7 @@
 # Amazon Kinesis Client Library for Python
 
+[![Version](https://img.shields.io/pypi/v/amazon-kclpy.svg?style=flat)](https://pypi.org/project/amazon-kclpy/) [![UnitTestCoverage](https://github.com/awslabs/amazon-kinesis-client-python/actions/workflows/run-unit-tests.yml/badge.svg)](https://github.com/awslabs/amazon-kinesis-client-python/actions/workflows/run-unit-tests.yml)
+
 This package provides an interface to the Amazon Kinesis Client Library (KCL) MultiLangDaemon,
 which is part of the [Amazon KCL for Java][kinesis-github].
 Developers can use the [Amazon KCL][amazon-kcl] to build distributed applications that
