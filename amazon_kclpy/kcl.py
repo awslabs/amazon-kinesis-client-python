@@ -30,7 +30,7 @@ class _IOHandler(object):
 
     def write_line(self, line):
         """
-        Writes a line to the output file. The line is preceeded and followed by a new line because other libraries
+        Writes a line to the output file. The line is preceded and followed by a new line because other libraries
         could be writing to the output file as well (e.g. some libs might write debugging info to STDOUT) so we would
         like to prevent our lines from being interlaced with other messages so the MultiLangDaemon can understand them.
 
@@ -65,7 +65,7 @@ class _IOHandler(object):
             '{"action" : "initialize", "shardId" : "shardId-000001"}')
 
         :rtype: amazon_kclpy.messages.MessageDispatcher
-        :return: A callabe action class that contains the action presented in the line
+        :return: A callable action class that contains the action presented in the line
         """
         return json.loads(line, object_hook=dispatch.message_decode)
 

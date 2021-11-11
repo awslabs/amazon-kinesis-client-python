@@ -281,7 +281,7 @@ class ShardEndedInput(MessageDispatcher):
         """
         Dispatches the shard ended message to the record processor
 
-        :param checkpointer: the checkpointer to be used to officialy end processing on the shard
+        :param checkpointer: the checkpointer to be used to officially end processing on the shard
         :param record_processor: the record processor that will handle the shard end message
         """
         self._checkpointer = checkpointer
@@ -376,7 +376,7 @@ class CheckpointInput(object):
 
 class Record(object):
     """
-    Represents a single record as returned by Kinesis, or Deaggregated from the Kinesis Producer Library
+    Represents a single record as returned by Kinesis, or Disaggregated from the Kinesis Producer Library
     """
     def __init__(self, json_dict):
         """
@@ -428,7 +428,7 @@ class Record(object):
     @property
     def sub_sequence_number(self):
         """
-        The sub-sequence number of this record.  This is only populated when the record is a deaggregated
+        The sub-sequence number of this record.  This is only populated when the record is a disaggregated
         record produced by the `amazon-kinesis-producer-library <https://github.com/awslabs/amazon-kinesis-producer>`
 
         :return: the sub-sequence number
