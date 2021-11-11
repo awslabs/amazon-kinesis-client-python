@@ -146,6 +146,18 @@ all languages.
 
 ## Release Notes
 
+### Release 2.0.5 (November 11, 2021)
+* Upgraded multiple dependencies [PR #148](https://github.com/awslabs/amazon-kinesis-client-python/pull/148)
+  * Amazon Kinesis Client Library 2.3.8
+  * AWS SDK 2.17.52
+* Added dependencies 
+  * AWS SDK json-utils 2.17.52
+  * third-party-jackson-core 2.17.52
+  * third-party-jackson-dataformat-cbor 2.17.52
+* Updated samples/sample.properties reflecting support for InitialPositionInStreamExtended
+  * Related: [#804](https://github.com/awslabs/amazon-kinesis-client/pull/804) Allowing user to specify an initial timestamp in which daemon will process records.
+  * Feature released with previous [release 2.0.4](https://github.com/awslabs/amazon-kinesis-client-python/releases/tag/v2.0.4)
+
 ### Release 2.0.4 (October 26, 2021) 
 * Revert/downgrade multiple dependencies as KCL 2.3.7 contains breaking change [PR #145](https://github.com/awslabs/amazon-kinesis-client-python/pull/145)
   * Amazon Kinesis Client Library 2.3.6
