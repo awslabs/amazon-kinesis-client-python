@@ -105,7 +105,7 @@ def get_kcl_app_command(args, multi_lang_daemon_class, properties, log_configura
     return "{java} -cp {cp} {daemon} {props} {log_config}".format(java=args.java,
                                     cp = get_kcl_classpath(args.properties, paths),
                                     daemon = multi_lang_daemon_class,
-                                    # Just need the basename becasue the path is added to the classpath
+                                    # Just need the basename because the path is added to the classpath
                                     props = properties,
                                     log_config = log_configuration)
 

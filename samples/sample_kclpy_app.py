@@ -85,7 +85,7 @@ class RecordProcessor(processor.RecordProcessorBase):
         Called for each record that is passed to process_records.
 
         :param str data: The blob of data that was contained in the record.
-        :param str partition_key: The key associated with this recod.
+        :param str partition_key: The key associated with this record.
         :param int sequence_number: The sequence number associated with this record.
         :param int sub_sequence_number: the sub sequence number associated with this record.
         """

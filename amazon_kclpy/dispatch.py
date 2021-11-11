@@ -36,7 +36,7 @@ def message_decode(json_dict):
     :return: an object that can be used to dispatch the received JSON command
     :rtype: amazon_kclpy.messages.MessageDispatcher
 
-    :raises MalformedAction: if the JSON object is missing action, or an appropiate serializer for that
+    :raises MalformedAction: if the JSON object is missing action, or an appropriate serializer for that
         action can't be found
     """
     try:
