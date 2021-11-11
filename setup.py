@@ -72,7 +72,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('software.amazon.awssdk', 'utils', '2.17.52'),
     ('software.amazon.eventstream', 'eventstream', '1.0.1'),
     ('software.amazon.ion', 'ion-java', '1.5.1'),
-    ('software.amazon.glue', 'schema-registry-serde', '1.1.5')
+    ('software.amazon.glue', 'schema-registry-serde', '1.1.5'),
     ('software.amazon.kinesis', 'amazon-kinesis-client-multilang', '2.3.8'),
     ('software.amazon.kinesis', 'amazon-kinesis-client', '2.3.8'),
     ('com.amazonaws', 'aws-java-sdk-core', '1.12.3'),
@@ -116,7 +116,7 @@ REMOTE_MAVEN_PACKAGES = [
     ('commons-logging', 'commons-logging', '1.2'),
     ('ch.qos.logback', 'logback-classic', '1.2.3'),
     ('ch.qos.logback', 'logback-core', '1.2.3'),
-    ('joda-time', 'joda-time', '2.10.10'),
+    ('joda-time', 'joda-time', '2.10.10')
 ]
 
 
