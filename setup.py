@@ -40,7 +40,7 @@ else:
 
 PACKAGE_NAME = 'amazon_kclpy'
 JAR_DIRECTORY = os.path.join(PACKAGE_NAME, 'jars')
-PACKAGE_VERSION = '2.0.5'
+PACKAGE_VERSION = '2.0.6'
 PYTHON_REQUIREMENTS = [
     'boto',
     # argparse is part of python2.7 but must be declared for python2.6
@@ -73,8 +73,8 @@ REMOTE_MAVEN_PACKAGES = [
     ('software.amazon.eventstream', 'eventstream', '1.0.1'),
     ('software.amazon.ion', 'ion-java', '1.5.1'),
     ('software.amazon.glue', 'schema-registry-serde', '1.1.5'),
-    ('software.amazon.kinesis', 'amazon-kinesis-client-multilang', '2.3.8'),
-    ('software.amazon.kinesis', 'amazon-kinesis-client', '2.3.8'),
+    ('software.amazon.kinesis', 'amazon-kinesis-client-multilang', '2.3.9'),
+    ('software.amazon.kinesis', 'amazon-kinesis-client', '2.3.9'),
     ('com.amazonaws', 'aws-java-sdk-core', '1.12.3'),
     ('com.amazonaws', 'aws-java-sdk-sts', '1.12.3'),
     ('com.amazonaws', 'jmespath-java', '1.12.3'),
@@ -114,8 +114,8 @@ REMOTE_MAVEN_PACKAGES = [
     ('commons-collections', 'commons-collections', '3.2.2'),
     ('commons-io', 'commons-io', '2.9.0'),
     ('commons-logging', 'commons-logging', '1.2'),
-    ('ch.qos.logback', 'logback-classic', '1.2.3'),
-    ('ch.qos.logback', 'logback-core', '1.2.3'),
+    ('ch.qos.logback', 'logback-classic', '1.2.7'),
+    ('ch.qos.logback', 'logback-core', '1.2.7'),
     ('joda-time', 'joda-time', '2.10.10')
 ]
 
