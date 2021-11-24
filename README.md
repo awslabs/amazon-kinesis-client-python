@@ -146,6 +146,11 @@ all languages.
 
 ## Release Notes
 
+### Release 2.0.6 (November 23, 2021)
+* Upgraded multiple dependencies [PR #152](https://github.com/awslabs/amazon-kinesis-client-python/pull/152)
+  * Amazon Kinesis Client Library 2.3.9
+  * ch.qos.logback 1.2.7
+
 ### Release 2.0.5 (November 11, 2021)
 * Upgraded multiple dependencies [PR #148](https://github.com/awslabs/amazon-kinesis-client-python/pull/148)
   * Amazon Kinesis Client Library 2.3.8
