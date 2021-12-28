@@ -48,18 +48,15 @@ PYTHON_REQUIREMENTS = [
     # argparse is part of python2.7 but must be declared for python2.6
     'argparse',
 ]
-
-maven_pom_root = ET.parse('pom.xml').getroot()
-maven_pom_version = '{http://maven.apache.org/POM/4.0.0}'
-REMOTE_MAVEN_PACKAGES = [tuple(dep.find(maven_pom_version + attr).text for attr in ['groupId', 'artifactId', 'version'])
-                         for dep in maven_pom_root.iter(f'{maven_pom_version}dependency')]
+REMOTE_MAVEN_PACKAGES_FILE = 'pom.xml'
 
 class MavenJarDownloader:
 
-    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages=REMOTE_MAVEN_PACKAGES):
+    def __init__(self, on_completion, destdir=JAR_DIRECTORY, packages_file=REMOTE_MAVEN_PACKAGES_FILE):
         self.on_completion = on_completion
         self.destdir = destdir
-        self.packages = packages
+        self.packages_file = packages_file
+        self.packages = self.parse_packages_from_pom()
 
     def warning_string(self, missing_jars=[]):
         s = '''The following jars were not installed because they were not
@@ -79,15 +76,36 @@ Which will download the required jars and rerun the install.
 '''
         return s
 
+    def parse_packages_from_pom(self):
+        maven_root = ET.parse(self.packages_file).getroot()
+        maven_version = '{http://maven.apache.org/POM/4.0.0}'
+        # dictionary of common package versions encoded in `properties` section
+        properties = {f"${{{child.tag.replace(maven_version, '')}}}": child.text
+                    for child in maven_root.find(f'{maven_version}properties').iter() if 'version' in child.tag}
+        
+        packages = []
+        for dep in maven_root.iter(f'{maven_version}dependency'):
+            dependency = []
+            for attr in ['groupId', 'artifactId', 'version']:
+                val = dep.find(maven_version + attr).text
+                if val in properties:
+                    dependency.append(properties[val])
+                else:
+                    dependency.append(val)
+            packages.append(tuple(dependency))
+        
+        return packages
+
     def download_and_check(self):
+        packages = self.parse_packages_from_pom()
         self.download_files()
         self.on_completion()
         missing_jars = self.missing_jars()
         if len(missing_jars) > 0:
             raise RuntimeError(self.warning_string(missing_jars))
 
-    def package_destination(self, artifcat_id, version):
-        return '{artifcat_id}-{version}.jar'.format(artifcat_id=artifcat_id, version=version)
+    def package_destination(self, artifact_id, version):
+        return '{artifact_id}-{version}.jar'.format(artifact_id=artifact_id, version=version)
 
     def missing_jars(self):
         file_list = [os.path.join(self.destdir, self.package_destination(p[1], p[2])) for p in self.packages]
