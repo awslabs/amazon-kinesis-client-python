@@ -81,8 +81,8 @@ Which will download the required jars and rerun the install.
         maven_version = '{http://maven.apache.org/POM/4.0.0}'
         # dictionary of common package versions encoded in `properties` section
         properties = {f"${{{child.tag.replace(maven_version, '')}}}": child.text
-                    for child in maven_root.find(f'{maven_version}properties').iter() if 'version' in child.tag}
-        
+                      for child in maven_root.find(f'{maven_version}properties').iter() if 'version' in child.tag}
+
         packages = []
         for dep in maven_root.iter(f'{maven_version}dependency'):
             dependency = []
@@ -93,11 +93,10 @@ Which will download the required jars and rerun the install.
                 else:
                     dependency.append(val)
             packages.append(tuple(dependency))
-        
+
         return packages
 
     def download_and_check(self):
-        packages = self.parse_packages_from_pom()
         self.download_files()
         self.on_completion()
         missing_jars = self.missing_jars()
