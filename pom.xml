@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <awssdk.version>2.17.100</awssdk.version>
+        <awssdk.version>2.17.102</awssdk.version>
         <aws-java-sdk.version>1.12.3</aws-java-sdk.version>
         <netty.version>4.1.72.Final</netty.version>
         <fasterxml-jackson.version>2.13.1</fasterxml-jackson.version>
