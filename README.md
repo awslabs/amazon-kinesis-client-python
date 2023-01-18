@@ -146,6 +146,9 @@ all languages.
 
 ## Release Notes
 
+### Release 2.1.1 (January 17, 2023)
+* Include the pom file in MANIFEST
+
 ### Release 2.1.0 (January 12, 2023)
 * Upgraded to use version 2.4.4 of the [Amazon Kinesis Client library][kinesis-github]
 
