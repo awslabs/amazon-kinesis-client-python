@@ -15,10 +15,12 @@ from setuptools.command.install import install
 
 if sys.version_info[0] >= 3:
     # Python 3
+    from urllib.parse import urljoin
     from urllib.request import urlopen
 else:
     # Python 2
     from urllib2 import urlopen
+    from urlparse import urljoin
 
 #
 # This script modifies the basic setuptools by adding some functionality to the standard
@@ -38,6 +40,7 @@ else:
 #
 # Will retrieve the configured jars from maven and then advise the user
 # to rerun the install command.
+# To download the jars from a custom maven repository, set the env var `MAVEN_REPOSITORY`.
 #
 
 PACKAGE_NAME = 'amazon_kclpy'
@@ -49,6 +52,7 @@ PYTHON_REQUIREMENTS = [
     'argparse',
 ]
 REMOTE_MAVEN_PACKAGES_FILE = 'pom.xml'
+MAVEN_REPOSITORY = os.getenv('MAVEN_REPOSITORY', 'https://search.maven.org')
 
 class MavenJarDownloader:
 
@@ -115,7 +119,7 @@ Which will download the required jars and rerun the install.
         # Sample url:
         # https://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
         #
-        prefix = 'https://search.maven.org/remotecontent?filepath='
+        prefix = urljoin(MAVEN_REPOSITORY, 'remotecontent?filepath=')
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
                                         prefix=prefix,
                                         path='/'.join(group_id.split('.')),
