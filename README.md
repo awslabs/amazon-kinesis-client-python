@@ -146,6 +146,12 @@ all languages.
 
 ## Release Notes
 
+### Release 2.1.2 (June 29, 2023)
+* Added the ability to pass in streamArn to multilang Daemon [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/221)
+* Upgraded KCL and KCL-Multilang Dependencies from 2.4.4 to 2.5.1 [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/221)
+* Upgraded Google Guava dependency from 31.0.1-jre to 32.0.0-jre [PR #223](https://github.com/awslabs/amazon-kinesis-client-python/pull/223)
+* Added aws-java-sdk-sts dependency [PR #212](https://github.com/awslabs/amazon-kinesis-client-python/pull/212)
+
 ### Release 2.1.1 (January 17, 2023)
 * Include the pom file in MANIFEST
 
