@@ -146,6 +146,10 @@ all languages.
 
 ## Release Notes
 
+### Release 2.1.3 (August 8, 2023)
+* Added the ability to specify sts endpoint and region [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/230)
+* Upgraded KCL and KCL-Multilang Dependencies from 2.5.1 to 2.5.2 [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/230)
+
 ### Release 2.1.2 (June 29, 2023)
 * Added the ability to pass in streamArn to multilang Daemon [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/221)
 * Upgraded KCL and KCL-Multilang Dependencies from 2.4.4 to 2.5.1 [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/221)
