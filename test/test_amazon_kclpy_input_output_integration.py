@@ -60,7 +60,7 @@ test_output_messages = [
 
 
 def _strip_all_whitespace(s):
-    return re.sub('\s*', '', s)
+    return re.sub('\\s*', '', s)
 
 
 test_shard_id = "shardId-123"
