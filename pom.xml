@@ -307,7 +307,7 @@
             <version>${aws-java-sdk.version}</version>
         </dependency>
         <dependency>
-            <groupId>software.amazon.ion</groupId>
+            <groupId>com.amazon.ion</groupId>
             <artifactId>ion-java</artifactId>
             <version>1.11.4</version>
         </dependency>
