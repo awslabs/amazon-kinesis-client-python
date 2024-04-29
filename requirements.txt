@@ -1,2 +1,2 @@
-boto
+boto3
 argparse
