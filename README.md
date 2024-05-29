@@ -146,6 +146,13 @@ all languages.
 
 ## Release Notes
 
+### Release 2.1.5 (May 29, 2024)
+* Fixed CI due to different macOS architecture [PR #246](https://github.com/awslabs/amazon-kinesis-client-python/pull/246)
+* Added necessary Java SDKs to run sample [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
+* Upgraded boto dependency to boto3 [PR #245](https://github.com/awslabs/amazon-kinesis-client-python/pull/245)
+* Upgraded AWS SDK from 2.19.2 to 2.25.11 [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
+* Upgraded aws-java-sdk from 1.12.370 to 1.12.668 [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
+
 ### Release 2.1.4 (April 23, 2024)
 * Upgraded KCL and KCL-Multilang dependencies from 2.5.2 to 2.5.8 [PR #239](https://github.com/awslabs/amazon-kinesis-client-python/pull/239)
 * Upgraded ion-java from 1.5.1 to 1.11.4 [PR #243](https://github.com/awslabs/amazon-kinesis-client-python/pull/243)
