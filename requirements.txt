@@ -1,2 +1,2 @@
 boto3
-argparse
+argparse ; python_version <= "3.1"
