@@ -146,202 +146,39 @@ all languages.
 
 ## Release Notes
 
-### Release 2.1.5 (May 29, 2024)
-* Fixed CI due to different macOS architecture [PR #246](https://github.com/awslabs/amazon-kinesis-client-python/pull/246)
-* Added necessary Java SDKs to run sample [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
-* Upgraded boto dependency to boto3 [PR #245](https://github.com/awslabs/amazon-kinesis-client-python/pull/245)
-* Upgraded AWS SDK from 2.19.2 to 2.25.11 [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
-* Upgraded aws-java-sdk from 1.12.370 to 1.12.668 [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
-
-### Release 2.1.4 (April 23, 2024)
-* Upgraded KCL and KCL-Multilang dependencies from 2.5.2 to 2.5.8 [PR #239](https://github.com/awslabs/amazon-kinesis-client-python/pull/239)
-* Upgraded ion-java from 1.5.1 to 1.11.4 [PR #243](https://github.com/awslabs/amazon-kinesis-client-python/pull/243)
-* Upgraded logback version from 1.3.0 to 1.3.12 [PR #242](https://github.com/awslabs/amazon-kinesis-client-python/pull/242)
-* Upgraded io.netty dependency from 4.1.86.Final to 4.1.94.Final [PR #234](https://github.com/awslabs/amazon-kinesis-client-python/pull/234)
-* Upgraded Google Guava dependency from 32.0.0-jre to 32.1.1-jre [PR #234](https://github.com/awslabs/amazon-kinesis-client-python/pull/234)
-* Upgraded jackson-databind from 2.13.4 to 2.13.5 [PR #234](https://github.com/awslabs/amazon-kinesis-client-python/pull/234)
-* Upgraded protobuf-java from 3.21.5 to 3.21.7 [PR #234](https://github.com/awslabs/amazon-kinesis-client-python/pull/234)
-
-### Release 2.1.3 (August 8, 2023)
-* Added the ability to specify STS endpoint and region [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/230)
-* Upgraded KCL and KCL-Multilang Dependencies from 2.5.1 to 2.5.2 [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/230)
-
-### Release 2.1.2 (June 29, 2023)
-* Added the ability to pass in streamArn to multilang Daemon [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/221)
-* Upgraded KCL and KCL-Multilang Dependencies from 2.4.4 to 2.5.1 [PR #221](https://github.com/awslabs/amazon-kinesis-client-python/pull/221)
-* Upgraded Google Guava dependency from 31.0.1-jre to 32.0.0-jre [PR #223](https://github.com/awslabs/amazon-kinesis-client-python/pull/223)
-* Added aws-java-sdk-sts dependency [PR #212](https://github.com/awslabs/amazon-kinesis-client-python/pull/212)
-
-### Release 2.1.1 (January 17, 2023)
-* Include the pom file in MANIFEST
-
-### Release 2.1.0 (January 12, 2023)
-* Upgraded to use version 2.4.4 of the [Amazon Kinesis Client library][kinesis-github]
-
-### Release 2.0.6 (November 23, 2021)
-* Upgraded multiple dependencies [PR #152](https://github.com/awslabs/amazon-kinesis-client-python/pull/152)
-  * Amazon Kinesis Client Library 2.3.9
-  * ch.qos.logback 1.2.7
-
-### Release 2.0.5 (November 11, 2021)
-* Upgraded multiple dependencies [PR #148](https://github.com/awslabs/amazon-kinesis-client-python/pull/148)
-  * Amazon Kinesis Client Library 2.3.8
-  * AWS SDK 2.17.52
-* Added dependencies 
-  * AWS SDK json-utils 2.17.52
-  * third-party-jackson-core 2.17.52
-  * third-party-jackson-dataformat-cbor 2.17.52
-* Updated samples/sample.properties reflecting support for InitialPositionInStreamExtended
-  * Related: [#804](https://github.com/awslabs/amazon-kinesis-client/pull/804) Allowing user to specify an initial timestamp in which daemon will process records.
-  * Feature released with previous [release 2.0.4](https://github.com/awslabs/amazon-kinesis-client-python/releases/tag/v2.0.4)
-
-### Release 2.0.4 (October 26, 2021) 
-* Revert/downgrade multiple dependencies as KCL 2.3.7 contains breaking change [PR #145](https://github.com/awslabs/amazon-kinesis-client-python/pull/145)
-  * Amazon Kinesis Client Library 2.3.6
-  * AWS SDK 2.16.98
-* Upgraded dependencies
-  * jackson-dataformat-cbor 2.12.4
-  * AWS SDK 1.12.3
-
-### :warning: [BREAKING CHANGES] Release 2.0.3 (October 21, 2021)
-* Upgraded multiple dependencies in [PR #142](https://github.com/awslabs/amazon-kinesis-client-python/pull/142)
-  * Amazon Kinesis Client Library 2.3.7
-  * AWS SDK 2.17.52
-  * AWS Java SDK 1.12.1
-  * AWS Glue 1.1.5
-  * Jackson 2.12.4
-  * io.netty 4.1.68.Final
-  * guava 31.0.1-jre
-
-### Release 2.0.2 (June 4, 2021)
-* Upgraded multiple dependencies in [PR #137](https://github.com/awslabs/amazon-kinesis-client-python/pull/137)
-  * Amazon Kinesis Client Library 2.3.4
-  * AWS SDK 2.16.75
-  * AWS Java SDK 1.11.1031
-  * Amazon ion java 1.5.1
-  * Jackson 2.12.3
-  * io.netty 4.1.65.Final
-  * typeface netty 2.0.5
-  * reactivestreams 1.0.3
-  * guava 30.1.1-jre
-  * Error prone annotations 2.7.1
-  * j2objc annotations 2.7.1
-  * Animal sniffer annotations 1.20
-  * slf4j 1.7.30
-  * protobuf 3.17.1
-  * Joda time 2.10.10
-  * Apache httpclient 4.5.13
-  * Apache httpcore 4.4.14
-  * commons lang3 3.12.0
-  * commons logging 1.2
-  * commons beanutils 1.9.4
-  * commons codec 1.15
-  * commons collections4 4.4
-  * commons io 2.9.0
-  * jcommander 1.81
-  * rxjava 2.2.21
-* Added Amazon Glue schema registry 1.0.2
-
-### Release 2.0.1 (February 27, 2019)
-* Updated to version 2.1.2 of the Amazon Kinesis Client Library for Java.  
-  This update also includes version 2.4.0 of the AWS Java SDK.
-  * [PR #92](https://github.com/awslabs/amazon-kinesis-client-python/pull/92)
-
-### Release 2.0.0 (January 15, 2019)
-* Introducing support for Enhanced Fan-Out
-* Updated to version 2.1.0 of the Amazon Kinesis Client for Java
-  * Version 2.1.0 now defaults to using [`RegisterStreamConsumer` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_RegisterStreamConsumer.html), which provides dedicated throughput compared to `GetRecords`.
-  * Version 2.1.0 now defaults to using [`SubscribeToShard` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_SubscribeToShard.html), which provides lower latencies than `GetRecords`.
-  * __WARNING: `RegisterStreamConsumer` and `SubscribeToShard` are new APIs, and may require updating any explicit IAM policies__
-  * For more information about Enhaced Fan-Out and Polling with the KCL check out the [announcement](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout/) and [developer documentation](https://docs.aws.amazon.com/streams/latest/dev/introduction-to-enhanced-consumers.html).
-* Introducing version 3 of the `RecordProcessorBase` which supports the new `ShardRecordProcessor` interface
-  * The `shutdown` method from version 2 has been removed and replaced by `leaseLost` and `shardEnded` methods.
-  * Introducing `leaseLost` method, which takes `LeaseLostInput` object and is invoked when a lease is lost.
-  * Introducing `shardEnded` method, which takes `ShardEndedInput` object and is invoked when all records from a split/merge have been processed.
-* Updated AWS SDK version to 2.2.0
-* MultiLangDaemon now uses logging using logback
-  * MultiLangDaemon supports custom logback.xml file via the `--log-configuration` option.
-  * `amazon_kclpy_helper` script supports `--log-configuration` option for command generation.
-
-### Release 1.5.1 (January 2, 2019)
-* Updated to version 1.9.3 of the Amazon Kinesis Client Library for Java.
-  * [PR #87](https://github.com/awslabs/amazon-kinesis-client-python/pull/87)
-* Changed to now download jars from Maven using https.
-  * [PR #87](https://github.com/awslabs/amazon-kinesis-client-python/pull/87)
-* Changed to raise exception when downloading from Maven fails.
-  * [PR #80](https://github.com/awslabs/amazon-kinesis-client-python/pull/80)
-
-### Release 1.5.0 (February 7, 2018)
-* Updated to version 1.9.0 of the Amazon Kinesis Client Library for Java
-  * Version 1.9.0 now uses the [`ListShards` Kinesis API](https://docs.aws.amazon.com/kinesis/latest/APIReference/API_ListShards.html), which provides a higher call rate than `DescribeStream`.
-  * __WARNING: `ListShards` is a new API, and may require updating any explicit IAM policies__
-  * [PR #71](https://github.com/awslabs/amazon-kinesis-client-python/pull/71)
-
-### Release 1.4.5 (June 28, 2017)
-* Record processors can now be notified, and given a final opportunity to checkpoint, when the KCL is being shutdown.
-  * [PR #53](https://github.com/awslabs/amazon-kinesis-client-python/pull/53)
-  * [PR #56](https://github.com/awslabs/amazon-kinesis-client-python/pull/56)
-  * [PR #57](https://github.com/awslabs/amazon-kinesis-client-python/pull/57)
-
-  To use this feature the record processor must implement the `shutdown_requested` operation from the respective processor module.
-  See [v2/processor.py](https://github.com/awslabs/amazon-kinesis-client-python/blob/master/amazon_kclpy/v2/processor.py#L76) or [kcl.py](https://github.com/awslabs/amazon-kinesis-client-python/blob/master/amazon_kclpy/kcl.py#L223) for the required API.
-
-### Release 1.4.4 (April 7, 2017)
-* [PR #47](https://github.com/awslabs/amazon-kinesis-client-python/pull/47): Update to release 1.7.5 of the Amazon Kinesis Client.
-  * Additionally updated to version 1.11.115 of the AWS Java SDK.
-  * Fixes [Issue #43](https://github.com/awslabs/amazon-kinesis-client-python/issues/43).
-  * Fixes [Issue #27](https://github.com/awslabs/amazon-kinesis-client-python/issues/27).
-
-### Release 1.4.3 (January 3, 2017)
-* [PR #39](https://github.com/awslabs/amazon-kinesis-client-python/pull/39): Make record objects subscriptable for backwards compatibility.
-
-### Release 1.4.2 (November 21, 2016)
-* [PR #35](https://github.com/awslabs/amazon-kinesis-client-python/pull/35): Downloading JAR files now runs correctly.
-
-### Release 1.4.1 (November 18, 2016)
-* Installation of the library into a virtual environment on macOS, and Windows now correctly downloads the jar files.
-  * Fixes [Issue #33](https://github.com/awslabs/amazon-kinesis-client-python/issues/33)
-
-### Release 1.4.0 (November 9, 2016)
-* Added a new v2 record processor class that allows access to updated features.
-  * Record processor initialization
-    * The initialize method receives an InitializeInput object that provides shard id, and the starting sequence and sub sequence numbers.
-  * Process records calls
-    * The process_records calls now receives a ProcessRecordsInput object that, in addition to the records, now includes the millisBehindLatest for the batch of records
-    * Records are now represented as a Record object that adds new data, and includes some convenience methods
-      * Adds a `binary_data` method that handles the base 64 decode of the data.
-      * Includes the sub sequence number of the record.
-      * Includes the approximate arrival time stamp of the record.
-  * Record processor shutdown
-    * The method `shutdown` now receives a `ShutdownInput` object.
-* Checkpoint methods now accept a sub sequence number in addition to the sequence number.
-
-### Release 1.3.1
-* Version number increase to stay inline with PyPI.
-
-### Release 1.3.0
-* Updated dependency to Amazon KCL version 1.6.4
-
-### Release 1.2.0
-* Updated dependency to Amazon KCL version 1.6.1
-
-### Release 1.1.0 (January 27, 2015)
-* **Python 3 support** All Python files are compatible with Python 3
-
-### Release 1.0.0 (October 21, 2014)
-* **amazon_kclpy** module exposes an interface to allow implementation of record processor executables that are compatible with the MultiLangDaemon
-* **samples** module provides a sample putter application using [boto][boto] and a sample processing app using `amazon_kclpy`
-
-[amazon-kinesis-shard]: http://docs.aws.amazon.com/kinesis/latest/dev/key-concepts.html
-[amazon-kinesis-docs]: http://aws.amazon.com/documentation/kinesis/
-[amazon-kcl]: http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-record-processor-app.html
-[multi-lang-daemon]: https://github.com/awslabs/amazon-kinesis-client/blob/master/src/main/java/com/amazonaws/services/kinesis/multilang/package-info.java
-[kinesis]: http://aws.amazon.com/kinesis
-[amazon-kinesis-ruby-github]: https://github.com/awslabs/amazon-kinesis-client-ruby
-[kinesis-github]: https://github.com/awslabs/amazon-kinesis-client
-[boto]: http://boto.readthedocs.org/en/latest/
-[DefaultCredentialsProvider]: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/DefaultCredentialsProvider.html
-[kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
+### Release 3.0.0 (November 6, 2024)
+* New lease assignment / load balancing algorithm
+    * KCL 3.x introduces a new lease assignment and load balancing algorithm. It assigns leases among workers based on worker utilization metrics and throughput on each lease, replacing the previous lease count-based lease assignment algorithm.
+    * When KCL detects higher variance in CPU utilization among workers, it proactively reassigns leases from over-utilized workers to under-utilized workers for even load balancing. This ensures even CPU utilization across workers and removes the need to over-provision the stream processing compute hosts.
+* Optimized DynamoDB RCU usage
+    * KCL 3.x optimizes DynamoDB read capacity unit (RCU) usage on the lease table by implementing a global secondary index with leaseOwner as the partition key. This index mirrors the leaseKey attribute from the base lease table, allowing workers to efficiently discover their assigned leases by querying the index instead of scanning the entire table.
+    * This approach significantly reduces read operations compared to earlier KCL versions, where workers performed full table scans, resulting in higher RCU consumption.
+* Graceful lease handoff
+    * KCL 3.x introduces a feature called "graceful lease handoff" to minimize data reprocessing during lease reassignments. Graceful lease handoff allows the current worker to complete checkpointing of processed records before transferring the lease to another worker. For graceful lease handoff, you should implement checkpointing logic within the existing `shutdownRequested()` method.
+    * This feature is enabled by default in KCL 3.x, but you can turn off this feature by adjusting the configuration property `isGracefulLeaseHandoffEnabled`.
+    * While this approach significantly reduces the probability of data reprocessing during lease transfers, it doesn't completely eliminate the possibility. To maintain data integrity and consistency, it's crucial to design your downstream consumer applications to be idempotent. This ensures that the application can handle potential duplicate record processing without adverse effects.
+* New DynamoDB metadata management artifacts
+    * KCL 3.x introduces two new DynamoDB tables for improved lease management:
+        * Worker metrics table: Records CPU utilization metrics from each worker. KCL uses these metrics for optimal lease assignments, balancing resource utilization across workers. If CPU utilization metric is not available, KCL assigns leases to balance the total sum of shard throughput per worker instead.
+        * Coordinator state table: Stores internal state information for workers. Used to coordinate in-place migration from KCL 2.x to KCL 3.x and leader election among workers.
+    * Follow this [documentation](https://docs.aws.amazon.com/streams/latest/dev/kcl-migration-from-2-3.html#kcl-migration-from-2-3-IAM-permissions) to add required IAM permissions for your KCL application.
+* Other improvements and changes
+    * Dependency on the AWS SDK for Java 1.x has been fully removed.
+        * The Glue Schema Registry integration functionality no longer depends on AWS SDK for Java 1.x. Previously, it required this as a transient dependency.
+        * Multilangdaemon has been upgraded to use AWS SDK for Java 2.x. It no longer depends on AWS SDK for Java 1.x.
+    * `idleTimeBetweenReadsInMillis` (PollingConfig) now has a minimum default value of 200.
+        * This polling configuration property determines the [publishers](https://github.com/awslabs/amazon-kinesis-client/blob/master/amazon-kinesis-client/src/main/java/software/amazon/kinesis/retrieval/polling/PrefetchRecordsPublisher.java) wait time between GetRecords calls in both success and failure cases. Previously, setting this value below 200 caused unnecessary throttling. This is because Amazon Kinesis Data Streams supports up to five read transactions per second per shard for shared-throughput consumers.
+    * Shard lifecycle management is improved to deal with edge cases around shard splits and merges to ensure records continue being processed as expected.
+* Migration
+    * The programming interfaces of KCL 3.x remain identical with KCL 2.x for an easier migration. For detailed migration instructions, please refer to the [Migrate consumers from KCL 2.x to KCL 3.x](https://docs.aws.amazon.com/streams/latest/dev/kcl-migration-from-2-3.html) page in the Amazon Kinesis Data Streams developer guide.
+* Configuration properties
+    * New configuration properties introduced in KCL 3.x are listed in this [doc](https://github.com/awslabs/amazon-kinesis-client/blob/master/docs/kcl-configurations.md#new-configurations-in-kcl-3x).
+    * Deprecated configuration properties in KCL 3.x are listed in this [doc](https://github.com/awslabs/amazon-kinesis-client/blob/master/docs/kcl-configurations.md#discontinued-configuration-properties-in-kcl-3x). You need to keep the deprecated configuration properties during the migration from any previous KCL version to KCL 3.x.
+* Metrics
+    * New CloudWatch metrics introduced in KCL 3.x are explained in the [Monitor the Kinesis Client Library with Amazon CloudWatch](https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-kcl.html) in the Amazon Kinesis Data Streams developer guide. The following operations are newly added in KCL 3.x:
+        * `LeaseAssignmentManager`
+        * `WorkerMetricStatsReporter`
+        * `LeaseDiscovery`
 
 ## License
 
