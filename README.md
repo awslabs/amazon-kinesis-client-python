@@ -179,6 +179,19 @@ all languages.
         * `LeaseAssignmentManager`
         * `WorkerMetricStatsReporter`
         * `LeaseDiscovery`
+---
+For **2.x** and **1.x** release notes, please see [v2.x/README.md](https://github.com/awslabs/amazon-kinesis-client-python/blob/v2.x/README.md#release-notes)
+
+[amazon-kinesis-shard]: http://docs.aws.amazon.com/kinesis/latest/dev/key-concepts.html
+[amazon-kinesis-docs]: http://aws.amazon.com/documentation/kinesis/
+[amazon-kcl]: http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-record-processor-app.html
+[multi-lang-daemon]: https://github.com/awslabs/amazon-kinesis-client/blob/master/src/main/java/com/amazonaws/services/kinesis/multilang/package-info.java
+[kinesis]: http://aws.amazon.com/kinesis
+[amazon-kinesis-ruby-github]: https://github.com/awslabs/amazon-kinesis-client-ruby
+[kinesis-github]: https://github.com/awslabs/amazon-kinesis-client
+[boto]: http://boto.readthedocs.org/en/latest/
+[DefaultCredentialsProvider]: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/DefaultCredentialsProvider.html
+[kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
 
 ## License
 
