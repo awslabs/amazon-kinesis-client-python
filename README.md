@@ -146,7 +146,12 @@ all languages.
 
 ## Release Notes
 
+### Release 3.0.1 (November 6, 2024)
+* Fixes installation issue.
+
 ### Release 3.0.0 (November 6, 2024)
+
+**This release has been pulled from PyPI. The use of this release can cause downloads to fail. Downgrade to 2.x or upgrade to the next release 3.0.1.**
 * New lease assignment / load balancing algorithm
     * KCL 3.x introduces a new lease assignment and load balancing algorithm. It assigns leases among workers based on worker utilization metrics and throughput on each lease, replacing the previous lease count-based lease assignment algorithm.
     * When KCL detects higher variance in CPU utilization among workers, it proactively reassigns leases from over-utilized workers to under-utilized workers for even load balancing. This ensures even CPU utilization across workers and removes the need to over-provision the stream processing compute hosts.
