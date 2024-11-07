@@ -146,7 +146,7 @@ all languages.
 
 ## Release Notes
 
-### Release 3.0.0 (November 6, 2024)
+### Release 3.0.1 (November 6, 2024)
 * New lease assignment / load balancing algorithm
     * KCL 3.x introduces a new lease assignment and load balancing algorithm. It assigns leases among workers based on worker utilization metrics and throughput on each lease, replacing the previous lease count-based lease assignment algorithm.
     * When KCL detects higher variance in CPU utilization among workers, it proactively reassigns leases from over-utilized workers to under-utilized workers for even load balancing. This ensures even CPU utilization across workers and removes the need to over-provision the stream processing compute hosts.
@@ -179,6 +179,10 @@ all languages.
         * `LeaseAssignmentManager`
         * `WorkerMetricStatsReporter`
         * `LeaseDiscovery`
+### Release 3.0.0 (November 6, 2024)
+
+**We found an issue with the release 3.0.0 regarding the build failure. Please use the release 3.0.1 to use KCL 3.0.**
+
 ---
 For **2.x** and **1.x** release notes, please see [v2.x/README.md](https://github.com/awslabs/amazon-kinesis-client-python/blob/v2.x/README.md#release-notes)
 
