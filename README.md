@@ -146,6 +146,9 @@ all languages.
 
 ## Release Notes
 
+### Release 2.1.6 (January 22, 2025)
+* Updates KCL version to use KCL 2.6.1. Brings in [changes from the KCL 2.6.1 release][2.6.1 changelog]. 
+
 ### Release 2.1.5 (May 29, 2024)
 * Fixed CI due to different macOS architecture [PR #246](https://github.com/awslabs/amazon-kinesis-client-python/pull/246)
 * Added necessary Java SDKs to run sample [PR #248](https://github.com/awslabs/amazon-kinesis-client-python/pull/248)
@@ -342,6 +345,7 @@ all languages.
 [boto]: http://boto.readthedocs.org/en/latest/
 [DefaultCredentialsProvider]: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/DefaultCredentialsProvider.html
 [kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
+[2.6.1 changelog]: https://github.com/awslabs/amazon-kinesis-client/blob/v2.6.1/CHANGELOG.md#release-261-2024-12-13
 
 ## License
 
