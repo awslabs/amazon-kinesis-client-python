@@ -26,7 +26,6 @@ class RecordProcessor(processor.RecordProcessorBase):
         self._CHECKPOINT_RETRIES = 5
         self._CHECKPOINT_FREQ_SECONDS = 60
         self._largest_seq = (None, None)
-        self._largest_sub_seq = None
         self._last_checkpoint_time = None
 
     def log(self, message):
