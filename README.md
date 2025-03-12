@@ -160,6 +160,8 @@ all languages.
 * [#1444](https://github.com/awslabs/amazon-kinesis-client/pull/1444) Fully remove dependency on the AWS SDK for Java 1.x which will reach [end-of-support by December 31st, 2025](https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-aws-sdk-for-java-v1-x-on-december-31-2025/).
     * The Glue Schema Registry integration functionality no longer depends on AWS SDK for Java 1.x. Previously, it required this as a transient dependency.
     * Multilangdaemon has been upgraded to use AWS SDK for Java 2.x. It no longer depends on AWS SDK for Java 1.x.
+* [#89](https://github.com/awslabs/amazon-kinesis-client-ruby/pull/89) Upgrade logback.version from 1.3.14 to 1.5.16
+* [#89](https://github.com/awslabs/amazon-kinesis-client-ruby/pull/89) Upgrade netty.version from 4.1.108.Final to 4.1.118.Final
 
 ### Release 2.1.6 (January 22, 2025)
 * Updates KCL version to use KCL 2.6.1. Brings in [changes from the KCL 2.6.1 release][2.6.1 changelog]. 
