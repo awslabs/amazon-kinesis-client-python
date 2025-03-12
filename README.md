@@ -57,7 +57,7 @@ For questions regarding Amazon Kinesis Service and the client libraries please v
 
 ## 🚨Important: Migration to Python KCL 2.2.0 or later with MultiLangDaemon - Credential Provider Changes Required
 Java KCL version 2.7.0 and later uses AWS SDK for Java 2.x instead of AWS SDK for Java 1.x. For the KCL python 2.x versions,
-v2.2.0 is the first node release to use Java KCL 2.7.0. All MultiLangDaemon users upgrading from earlier versions must update
+v2.2.0 is the first Python release to use Java KCL 2.7.0. All MultiLangDaemon users upgrading from earlier versions must update
 their credential provider configuration in the `.properties` file to use credentials provider name for AWS SDK for Java 2.x.
 Failure to do this will cause your multilang KCL application to fail during startup with credential provider construction errors.
 Please check the following link for the credentials provider mapping and MultiLangDaemon credentials provider configuration guide
