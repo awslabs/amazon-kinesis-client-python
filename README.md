@@ -55,12 +55,12 @@ access.
 For questions regarding Amazon Kinesis Service and the client libraries please visit the
 [Amazon Kinesis Forums][kinesis-forum]
 
-## 🚨Important: Migration to KCL 2.7 or later with MultiLangDaemon - Credential Provider Changes Required
-KCL version 2.7.0 and later uses AWS SDK for Java 2.x instead of AWS SDK for Java 1.x. All MultiLangDaemon users
-upgrading from earlier versions must update their credential provider configuration in the `.properties` file to use
-credentials provider name for AWS SDK for Java 2.x. Failure to do this will cause your multilang KCL application to fail
-during startup with credential provider construction errors. Please check the following link for the credentials
-provider mapping and MultiLangDaemon credentials provider configuration guide.
+## 🚨Important: Migration to Python KCL 2.2.0 or later with MultiLangDaemon - Credential Provider Changes Required
+Java KCL version 2.7.0 and later uses AWS SDK for Java 2.x instead of AWS SDK for Java 1.x. For the KCL python 2.x versions,
+v2.2.0 is the first node release to use Java KCL 2.7.0. All MultiLangDaemon users upgrading from earlier versions must update
+their credential provider configuration in the `.properties` file to use credentials provider name for AWS SDK for Java 2.x.
+Failure to do this will cause your multilang KCL application to fail during startup with credential provider construction errors.
+Please check the following link for the credentials provider mapping and MultiLangDaemon credentials provider configuration guide
 
 - [AWS SDK for Java 1.x to 2.x Credentials Provider Mapping](aws.amazon.com/sdk-for-java/latest/developer-guide/migration-client-credentials.html#credentials-changes-mapping)
 - [KCL Multilang Credentials Provider Configuration Guide](https://github.com/aws/amazon-kinesis-client/blob/master/docs/multilang/configuring-credential-providers.md)
@@ -156,7 +156,7 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
-### Release 2.2.0 (2025-03-12)
+### Release 2.2.0 (2025-03-12) - IMPORTANT: See section ``Migration to Python  KCL 2.2.0`` to ensure upgrading does not break compatibility
 * [#1444](https://github.com/awslabs/amazon-kinesis-client/pull/1444) Fully remove dependency on the AWS SDK for Java 1.x which will reach [end-of-support by December 31st, 2025](https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-aws-sdk-for-java-v1-x-on-december-31-2025/).
     * The Glue Schema Registry integration functionality no longer depends on AWS SDK for Java 1.x. Previously, it required this as a transient dependency.
     * Multilangdaemon has been upgraded to use AWS SDK for Java 2.x. It no longer depends on AWS SDK for Java 1.x.
