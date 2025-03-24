@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <awssdk.version>2.25.64</awssdk.version>
-        <kcl.version>3.0.0</kcl.version>
+        <kcl.version>3.0.2</kcl.version>
         <netty.version>4.1.118.Final</netty.version>
         <netty-reactive.version>2.0.6</netty-reactive.version>
         <fasterxml-jackson.version>2.13.5</fasterxml-jackson.version>

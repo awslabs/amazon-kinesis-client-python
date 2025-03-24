@@ -145,6 +145,10 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 3.0.2 (March 24, 2025)
+* [KCL 3.0.2 Changelog](https://github.com/awslabs/amazon-kinesis-client/blob/5263b4227ce7210d52bec6817191d43f047cd1b2/CHANGELOG.md) Upgrade KCL and KCL-Multilang dependencies from 3.0.0 to 3.0.2
+* [#266](https://github.com/awslabs/amazon-kinesis-client-python/pull/266) Upgrade netty.version from 4.1.108.Final to 4.1.118.Final
+* [#265](https://github.com/awslabs/amazon-kinesis-client-python/pull/265) Upgrade logback.version from 1.3.14 to 1.5.16
 
 ### Release 3.0.1 (November 6, 2024)
 * New lease assignment / load balancing algorithm
