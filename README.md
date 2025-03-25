@@ -156,7 +156,11 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
-### Release 2.2.0 (2025-03-12) - IMPORTANT: See section ``Migration to Python KCL 2.2.0`` to ensure upgrading does not break compatibility
+### Release 2.2.1 (March 22, 2025)
+* Downgrade logback from 1.5.16 to 1.3.15 to maintain JDK 8 compatability
+
+### Release 2.2.0 (March 03, 2025) - IMPORTANT: See section ``Migration to Python KCL 2.2.0`` to ensure upgrading does not break compatibility
+#### :warning: [BREAKING CHANGES] - Not compatible with JDK 8
 * [#1444](https://github.com/awslabs/amazon-kinesis-client/pull/1444) Fully remove dependency on the AWS SDK for Java 1.x which will reach [end-of-support by December 31st, 2025](https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-aws-sdk-for-java-v1-x-on-december-31-2025/).
     * The Glue Schema Registry integration functionality no longer depends on AWS SDK for Java 1.x. Previously, it required this as a transient dependency.
     * Multilangdaemon has been upgraded to use AWS SDK for Java 2.x. It no longer depends on AWS SDK for Java 1.x.
