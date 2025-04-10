@@ -65,6 +65,11 @@ From the root of this repo, run:
     python setup.py download_jars
     python setup.py install
 
+If you'd like to override the default search location for the jars, you can set the `KCL_MVN_REPO_SEARCH_URL`
+environment variable to the location of the maven repository you'd like to use.
+
+    export KCL_MVN_REPO_SEARCH_URL=https://path/to/maven/repo
+
 Now the `amazon_kclpy` and [boto][boto] (used by the sample putter script) and required
 jars should be installed in your environment. To start the sample putter, run:
 
