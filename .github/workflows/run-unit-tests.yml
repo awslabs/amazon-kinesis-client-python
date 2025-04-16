@@ -34,7 +34,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_GHWF }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACTIONS_ACCOUNT_ID }}:role/${{ secrets.AWS_ACTIONS_ROLE }}
           role-session-name: myGitHubActions
 
       - name: Set up JDK 8
