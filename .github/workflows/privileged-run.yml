@@ -4,9 +4,9 @@
 name: Build Intensive
 on:
   push:
-    branches: [ master, v2.x ]
+    branches: [ master ]
   pull_request_target:
-    branches: [ master, v2.x ]
+    branches: [ master ]
 
 permissions:
   id-token: write
