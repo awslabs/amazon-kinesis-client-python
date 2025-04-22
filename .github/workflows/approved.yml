@@ -1,0 +1,12 @@
+
+name: Approved
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+ approved:
+   if: github.event.review.state == 'approved'
+   runs-on: ubuntu-latest
+   steps:
+     - run: echo 'PR has been approved'

@@ -4,8 +4,7 @@
 name: Build Intensive
 on:
   workflow_run:
-    workflows: [ Build Simple ]
-    branches: [ master, v2.x, security-test ]
+    workflows: [ "Approved" ]
     types: [ completed ]
 
 permissions:
@@ -14,6 +13,9 @@ permissions:
 
 jobs:
   build-intensive:
+    needs:
+    # if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.review.state == 'approved' && github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 8
     runs-on: ${{ matrix.os }}
     defaults:
