@@ -3,9 +3,10 @@
 
 name: Build Intensive
 on:
-  workflow_run:
-    workflows: [Approved]
-    types: [completed]
+  push:
+    branches: [ master, v2.x ]
+  pull_request_target:
+    branches: [ master, v2.x ]
 
 permissions:
   id-token: write
@@ -13,7 +14,6 @@ permissions:
 
 jobs:
   build-intensive:
-    # if: ${{ github.event.review.state == 'approved' && github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 8
     runs-on: ${{ matrix.os }}
     defaults:
@@ -54,6 +54,10 @@ jobs:
           pip install -r requirements.txt
           pip install -r test_requirements.txt
           pip install build
+
+      - name: Test with Pytest
+        run: |
+          python -m pytest
 
       - name: Install .jar files
         run: |
