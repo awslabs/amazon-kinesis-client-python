@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   build-intensive:
-    needs:
     if: ${{ github.event.review.state == 'approved' && github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 8
     runs-on: ${{ matrix.os }}
