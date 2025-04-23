@@ -54,7 +54,10 @@ def get_kcl_jar_path():
     :rtype: str
     :return: The absolute path of the KCL jar files needed to run the MultiLangDaemon.
     '''
-    return ':'.join(glob(os.path.join(get_kcl_dir(), 'jars', '*jar')))
+    if os.name == 'posix':
+        return ':'.join(glob(os.path.join(get_kcl_dir(), 'jars', '*jar')))
+    else:
+        return ';'.join(glob(os.path.join(get_kcl_dir(), 'jars', '*jar')))
 
 def get_kcl_classpath(properties=None, paths=[]):
     '''
@@ -81,7 +84,10 @@ def get_kcl_classpath(properties=None, paths=[]):
         # Add the dir that the props file is in
         dir_of_file = get_dir_of_file(properties)
         paths.append(dir_of_file)
-    return ":".join([p for p in paths if p != ''])
+    if os.name == 'posix':
+        return ":".join([p for p in paths if p != ''])
+    else:
+        return ";".join([p for p in paths if p != ''])
 
 def get_kcl_app_command(args, multi_lang_daemon_class, properties, log_configuration, paths=[]):
     '''
