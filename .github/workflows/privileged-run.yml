@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  sample_run:
+  sample-run:
     timeout-minutes: 8
     runs-on: ${{ matrix.os }}
     defaults:
@@ -82,12 +82,12 @@ jobs:
           brew install coreutils
           gtimeout 45 $(amazon_kclpy_helper.py --print_command --java $(which java) --properties samples/sample.properties) || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
 
-  auto-merge:
-    needs: [sample_run]
+  auto-merge-dependabot:
+    needs: [sample-run]
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
-      - name: Dependabot metadata
+      - name: Fetch Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2
         with:
