@@ -3,7 +3,7 @@
 # each of the 12 runs download the jars needed to run the KCL, run the sample_kinesis_wordputter.py, and use a timeout command to run the sample_kclpy_app.py
 # auto_merge uses GitHub events to check if dependabot is the pull requester, and if the request fits the criteria the PR is automatically merged
 
-name: Sample Run
+name: Sample Run and Dependabot Auto-merge
 on:
   push:
   pull_request_target:
