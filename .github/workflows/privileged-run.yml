@@ -1,19 +1,20 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+# This workflow will trigger on pushes, pull requests (to master branch), and manually from the GitHub Actions tab (when requested)
+# sample_run uses matrix to create 12 unique combinations of operating systems and python versions
+# each of the 12 runs download the jars needed to run the KCL, run the sample_kinesis_wordputter.py, and use a timeout command to run the sample_kclpy_app.py
+# auto_merge uses GitHub events to check if dependabot is the pull requester, and if the request fits the criteria the PR is automatically merged
 
-name: Build Intensive
+name: Sample Run and Dependabot Auto-merge
 on:
-  push:
-    branches: [ master ]
   pull_request_target:
     branches: [ master ]
+  workflow_dispatch:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
-  build-intensive:
+  sample-run:
     timeout-minutes: 8
     runs-on: ${{ matrix.os }}
     defaults:
@@ -24,6 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+        jdk-version: [ "8", "11", "17", "21", "24" ]
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
     steps:
@@ -37,10 +39,10 @@ jobs:
           role-to-assume: arn:aws:iam::751999266872:role/GitHubWorkflows
           role-session-name: myGitHubActions
 
-      - name: Set up JDK 8
+      - name: Set up JDK ${{ matrix.jdk-version }}
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: ${{ matrix.jdk-version }}
           distribution: 'corretto'
 
       - name: Set up Python ${{ matrix.python-version }}
@@ -79,3 +81,21 @@ jobs:
         run: |
           brew install coreutils
           gtimeout 45 $(amazon_kclpy_helper.py --print_command --java $(which java) --properties samples/sample.properties) || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
+
+  auto-merge-dependabot:
+    needs: [sample-run]
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          alert-lookup: true
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Enable auto-merge for Dependabot PRs
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}

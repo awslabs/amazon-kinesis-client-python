@@ -2,5 +2,12 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
+    open-pull-requests-limit: 2
     schedule: 
-      interval: "weekly"
+      interval: "daily"
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    open-pull-requests-limit: 2
+    schedule:
+      interval: "daily"
