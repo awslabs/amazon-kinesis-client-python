@@ -5,6 +5,8 @@
 
 name: Sample Run and Dependabot Auto-merge
 on:
+  push:
+    branches: [ master ]
   pull_request_target:
     branches: [ master ]
   workflow_dispatch:
@@ -36,7 +38,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::751999266872:role/GitHubWorkflows
+          role-to-assume: arn:aws:iam::751999266872:role/GitHubPython
           role-session-name: myGitHubActions
 
       - name: Set up JDK ${{ matrix.jdk-version }}
