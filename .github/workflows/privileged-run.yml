@@ -69,6 +69,7 @@ jobs:
 
       - name: Install .jar files
         run: |
+          export KCL_MVN_REPO_SEARCH_URL=https://repo1.maven.org/maven2/
           python -m build
           python setup.py download_jars
           python setup.py install
