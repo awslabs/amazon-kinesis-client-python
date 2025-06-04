@@ -123,7 +123,7 @@ Which will download the required jars and rerun the install.
                                         artifact_id=artifact_id,
                                         version=version,
                                         dest=self.package_destination(artifact_id, version))
-
+# defining download_file
     def download_file(self, url, dest):
         """
         Downloads a file at the url to the destination.
@@ -174,7 +174,7 @@ Which will finish the installation.
 
 
 class InstallThenCheckForJars(install):
-
+# defining do_install and run
     def do_install(self):
         install.run(self)
 
@@ -226,7 +226,7 @@ if __name__ == '__main__':
         commands['bdist_wheel'] = BdistWheelWithJars
     except NameError:
         pass
-
+    # Setup
     setup(
         name=PACKAGE_NAME,
         version=PACKAGE_VERSION,
