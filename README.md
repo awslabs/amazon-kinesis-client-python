@@ -150,6 +150,15 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 3.0.4 (June 6, 2025)
+* [#274](https://github.com/awslabs/amazon-kinesis-client-python/pull/274) Add ability to set mvn repo search URL with a unique ENV Variable
+* [#279](https://github.com/awslabs/amazon-kinesis-client-python/pull/279) Create sample KCL build tests
+* [#280](https://github.com/awslabs/amazon-kinesis-client-python/pull/280) Add dependabot auto-merge and workflow dispatch
+* [#283](https://github.com/awslabs/amazon-kinesis-client-python/pull/283) Update AWS credentials used for running sample workflow
+* [#287](https://github.com/awslabs/amazon-kinesis-client-python/pull/287) Upgrade org.checkerframework:checker-qual from 2.5.2 to 3.49.4
+* [#285](https://github.com/awslabs/amazon-kinesis-client-python/pull/285) Upgrade netty.version from 4.1.118.Final to 4.2.1.Final
+* [#284](https://github.com/awslabs/amazon-kinesis-client-python/pull/284) Upgrade commons-beanutils:commons-beanutils from 1.9.4 to 1.11.0
+
 ### Release 3.0.3 (March 25, 2025)
 * Downgrade logback from 1.5.16 to 1.3.15 to maintain JDK 8 compatability
 
