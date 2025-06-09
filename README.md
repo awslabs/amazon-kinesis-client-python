@@ -150,7 +150,7 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
-### Release 3.0.4 (June 6, 2025)
+### Release 3.0.5 (June 6, 2025)
 * [#274](https://github.com/awslabs/amazon-kinesis-client-python/pull/274) Add ability to set mvn repo search URL with a unique ENV Variable
 * [#279](https://github.com/awslabs/amazon-kinesis-client-python/pull/279) Create sample KCL build tests
 * [#280](https://github.com/awslabs/amazon-kinesis-client-python/pull/280) Add dependabot auto-merge and workflow dispatch
