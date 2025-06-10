@@ -7,9 +7,6 @@ name: Sample Run and Dependabot Auto-merge
 on:
   push:
     branches: [ master ]
-  pull_request_target:
-    branches: [ master ]
-  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -35,8 +32,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -102,12 +97,12 @@ jobs:
           alert-lookup: true
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Approve PR
-        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
-        run: gh pr review --approve "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#      - name: Approve PR
+#        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+#        run: gh pr review --approve "$PR_URL"
+#        env:
+#          PR_URL: ${{github.event.pull_request.html_url}}
+#          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 #      - name: Enable auto-merge for Dependabot PRs
 #        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
