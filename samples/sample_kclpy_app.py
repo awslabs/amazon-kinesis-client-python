@@ -24,7 +24,7 @@ class RecordProcessor(processor.RecordProcessorBase):
     def __init__(self):
         self._SLEEP_SECONDS = 5
         self._CHECKPOINT_RETRIES = 5
-        self._CHECKPOINT_FREQ_SECONDS = 10
+        self._CHECKPOINT_FREQ_SECONDS = 30
         self._largest_seq = (None, None)
         self._largest_sub_seq = None
         self._last_checkpoint_time = None
