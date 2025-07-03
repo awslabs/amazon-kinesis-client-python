@@ -166,7 +166,7 @@ jobs:
   auto-merge-dependabot:
     needs: [ sample-run ]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]' && github.event.pull_request.user.login == 'dependabot[bot]' }}
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     permissions:
       contents: read
       pull-requests: write
