@@ -66,6 +66,12 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.ref }}
 
+      - name: Validate os, python-version, and jdk-version
+        run: |
+          [[ "${{ matrix.os }}" =~ ^(ubuntu-latest|macOS-latest|windows-latest)$ ]] || exit 1
+          [[ "${{ matrix.python-version }}" =~ ^(3.9|3.11)$ ]] || exit 1
+          [[ "${{ matrix.jdk-version }}" =~ ^(8|11|17|21|24)$ ]] || exit 1
+
       # Configure AWS Credentials. Role session name is unique to avoid OIDC errors when running multiple tests concurrently
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
