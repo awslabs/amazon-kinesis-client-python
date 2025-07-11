@@ -150,6 +150,10 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 3.1.0 (July 10, 2025)
+* [KCL 3.1.1 Changelog](https://github.com/awslabs/amazon-kinesis-client/blob/v3.1.1/CHANGELOG.md) Upgrade KCL and KCL-Multilang dependencies from 3.0.3 to 3.1.1
+* [#301](https://github.com/awslabs/amazon-kinesis-client-python/pull/301) Add multi-lang support for leaseAssignmentIntervalMillis
+
 ### Release 3.0.5 (June 6, 2025)
 * [#274](https://github.com/awslabs/amazon-kinesis-client-python/pull/274) Add ability to set mvn repo search URL with a unique ENV Variable
 * [#279](https://github.com/awslabs/amazon-kinesis-client-python/pull/279) Create sample KCL build tests
