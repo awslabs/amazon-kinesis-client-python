@@ -12,8 +12,6 @@ import xml.etree.ElementTree as ET
 from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
-from setuptools.command.develop import develop
-from setuptools.command.bdist_egg import bdist_egg
 
 if sys.version_info[0] >= 3:
     # Python 3
