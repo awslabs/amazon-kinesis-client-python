@@ -115,7 +115,8 @@ Which will download the required jars and rerun the install.
         # Sample url:
         # https://search.maven.org/remotecontent?filepath=org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar
         #
-        prefix = 'https://search.maven.org/remotecontent?filepath='
+        # prefix = 'https://search.maven.org/remotecontent?filepath='
+        prefix = os.getenv("KCL_MVN_REPO_SEARCH_URL", 'https://repo1.maven.org/maven2/')
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
                                         prefix=prefix,
                                         path='/'.join(group_id.split('.')),
