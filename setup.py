@@ -12,6 +12,8 @@ import xml.etree.ElementTree as ET
 from setuptools import Command
 from setuptools import setup
 from setuptools.command.install import install
+from setuptools.command.develop import develop
+from setuptools.command.bdist_egg import bdist_egg
 
 if sys.version_info[0] >= 3:
     # Python 3
@@ -117,6 +119,7 @@ Which will download the required jars and rerun the install.
         #
         # prefix = 'https://search.maven.org/remotecontent?filepath='
         prefix = os.getenv("KCL_MVN_REPO_SEARCH_URL", 'https://repo1.maven.org/maven2/')
+        print(f"prefix: {prefix}")
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
                                         prefix=prefix,
                                         path='/'.join(group_id.split('.')),
@@ -139,6 +142,9 @@ Which will download the required jars and rerun the install.
             return
 
     def download_files(self):
+        # Ensure the jar directory exists
+        os.makedirs(self.destdir, exist_ok=True)
+        
         for package in self.packages:
             dest = os.path.join(self.destdir, self.package_destination(package[1], package[2]))
             if os.path.isfile(dest):
@@ -189,6 +195,32 @@ class InstallThenCheckForJars(install):
         downloader.download_and_check()
 
 
+class DevelopThenCheckForJars(develop):
+
+    def do_develop(self):
+        develop.run(self)
+
+    def run(self):
+        """
+        We override the develop command to also download jars during development installation.
+        """
+        downloader = MavenJarDownloader(self.do_develop)
+        downloader.download_and_check()
+
+
+class BdistEggThenCheckForJars(bdist_egg):
+
+    def do_bdist_egg(self):
+        bdist_egg.run(self)
+
+    def run(self):
+        """
+        We override the bdist_egg command to also download jars during egg building.
+        """
+        downloader = MavenJarDownloader(self.do_bdist_egg)
+        downloader.download_and_check()
+
+
 try:
     from wheel.bdist_wheel import bdist_wheel
 
@@ -215,6 +247,8 @@ if __name__ == '__main__':
     commands = {
         'download_jars': DownloadJarsCommand,
         'install': InstallThenCheckForJars,
+        'develop': DevelopThenCheckForJars,
+        'bdist_egg': BdistEggThenCheckForJars,
     }
     try:
         #
