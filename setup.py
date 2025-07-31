@@ -119,7 +119,7 @@ Which will download the required jars and rerun the install.
         #
         # prefix = 'https://search.maven.org/remotecontent?filepath='
         prefix = os.getenv("KCL_MVN_REPO_SEARCH_URL", 'https://repo1.maven.org/maven2/')
-        print(f"prefix: {prefix}")
+        print(f"prefix: {prefix}", file=sys.stderr)
         return '{prefix}{path}/{artifact_id}/{version}/{dest}'.format(
                                         prefix=prefix,
                                         path='/'.join(group_id.split('.')),
@@ -131,14 +131,14 @@ Which will download the required jars and rerun the install.
         """
         Downloads a file at the url to the destination.
         """
-        print('Attempting to retrieve remote jar {url}'.format(url=url))
+        print('Attempting to retrieve remote jar {url}'.format(url=url), file=sys.stderr)
         try:
             response = urlopen(url)
             with open(dest, 'wb') as dest_file:
                 shutil.copyfileobj(response, dest_file)
-            print('Saving {url} -> {dest}'.format(url=url, dest=dest))
+            print('Saving {url} -> {dest}'.format(url=url, dest=dest), file=sys.stderr)
         except Exception as e:
-            print('Failed to retrieve {url}: {e}'.format(url=url, e=e))
+            print('Failed to retrieve {url}: {e}'.format(url=url, e=e), file=sys.stderr)
             return
 
     def download_files(self):
@@ -148,7 +148,7 @@ Which will download the required jars and rerun the install.
         for package in self.packages:
             dest = os.path.join(self.destdir, self.package_destination(package[1], package[2]))
             if os.path.isfile(dest):
-                print('Skipping download of {dest}'.format(dest=dest))
+                print('Skipping download of {dest}'.format(dest=dest), file=sys.stderr)
             else:
                 url = self.package_url(package[0], package[1], package[2])
                 self.download_file(url, dest)
@@ -195,32 +195,6 @@ class InstallThenCheckForJars(install):
         downloader.download_and_check()
 
 
-class DevelopThenCheckForJars(develop):
-
-    def do_develop(self):
-        develop.run(self)
-
-    def run(self):
-        """
-        We override the develop command to also download jars during development installation.
-        """
-        downloader = MavenJarDownloader(self.do_develop)
-        downloader.download_and_check()
-
-
-class BdistEggThenCheckForJars(bdist_egg):
-
-    def do_bdist_egg(self):
-        bdist_egg.run(self)
-
-    def run(self):
-        """
-        We override the bdist_egg command to also download jars during egg building.
-        """
-        downloader = MavenJarDownloader(self.do_bdist_egg)
-        downloader.download_and_check()
-
-
 try:
     from wheel.bdist_wheel import bdist_wheel
 
@@ -247,8 +221,6 @@ if __name__ == '__main__':
     commands = {
         'download_jars': DownloadJarsCommand,
         'install': InstallThenCheckForJars,
-        'develop': DevelopThenCheckForJars,
-        'bdist_egg': BdistEggThenCheckForJars,
     }
     try:
         #
