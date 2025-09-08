@@ -150,6 +150,10 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 3.1.1 (September 8, 2025)
+* [#318](https://github.com/awslabs/amazon-kinesis-client-python/pull/318) Upgrade io.netty:netty-codec from 4.1.118.Final to 4.1.125.Final
+* [#304](https://github.com/awslabs/amazon-kinesis-client-python/pull/304) Upgrade com.fasterxml.jackson.core:jackson-core from 2.13.5 to 2.15.0
+
 ### Release 3.1.0 (July 10, 2025)
 * [KCL 3.1.1 Changelog](https://github.com/awslabs/amazon-kinesis-client/blob/v3.1.1/CHANGELOG.md) Upgrade KCL and KCL-Multilang dependencies from 3.0.3 to 3.1.1
 * [#301](https://github.com/awslabs/amazon-kinesis-client-python/pull/301) Add multi-lang support for leaseAssignmentIntervalMillis
