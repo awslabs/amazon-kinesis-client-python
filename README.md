@@ -156,6 +156,10 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 2.2.2 (September 10, 2025)
+* [#318](https://github.com/awslabs/amazon-kinesis-client-python/pull/318) Upgrade io.netty:netty-codec from 4.1.118.Final to 4.1.125.Final
+* [#304](https://github.com/awslabs/amazon-kinesis-client-python/pull/304) Upgrade com.fasterxml.jackson.core:jackson-core from 2.13.5 to 2.15.0
+
 ### Release 2.2.1 (March 22, 2025)
 * Downgrade logback from 1.5.16 to 1.3.15 to maintain JDK 8 compatability
 
