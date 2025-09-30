@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <awssdk.version>2.25.64</awssdk.version>
+        <awssdk.version>2.33.0</awssdk.version>
         <aws-java-sdk.version>1.12.668</aws-java-sdk.version>
-        <kcl.version>2.7.0</kcl.version>
-        <netty.version>4.1.125.Final</netty.version>
+        <kcl.version>2.7.2</kcl.version>
+        <netty.version>4.2.4.Final</netty.version>
         <netty-reactive.version>2.0.6</netty-reactive.version>
         <fasterxml-jackson.version>2.15.0</fasterxml-jackson.version>
         <!--do not upgrade to logback version 1.5.x, as this is not compatible with JDK 8-->
@@ -173,6 +173,16 @@
           <version>${awssdk.version}</version>
         </dependency>
         <dependency>
+          <groupId>software.amazon.awssdk</groupId>
+          <artifactId>retries-spi</artifactId>
+          <version>${awssdk.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>software.amazon.awssdk</groupId>
+          <artifactId>retries</artifactId>
+          <version>${awssdk.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http</artifactId>
             <version>${netty.version}</version>
@@ -185,6 +195,11 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-base</artifactId>
             <version>${netty.version}</version>
         </dependency>
         <dependency>
@@ -275,7 +290,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.14.0</version>
+            <version>3.18.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
