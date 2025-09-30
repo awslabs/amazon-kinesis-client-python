@@ -4,7 +4,7 @@
     <properties>
         <awssdk.version>2.25.64</awssdk.version>
         <aws-java-sdk.version>1.12.668</aws-java-sdk.version>
-        <kcl.version>2.7.0</kcl.version>
+        <kcl.version>2.7.2</kcl.version>
         <netty.version>4.1.125.Final</netty.version>
         <netty-reactive.version>2.0.6</netty-reactive.version>
         <fasterxml-jackson.version>2.15.0</fasterxml-jackson.version>
