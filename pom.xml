@@ -5,7 +5,7 @@
         <awssdk.version>2.33.0</awssdk.version>
         <aws-java-sdk.version>1.12.668</aws-java-sdk.version>
         <kcl.version>2.7.2</kcl.version>
-        <netty.version>4.1.125.Final</netty.version>
+        <netty.version>4.2.4.Final</netty.version>
         <netty-reactive.version>2.0.6</netty-reactive.version>
         <fasterxml-jackson.version>2.15.0</fasterxml-jackson.version>
         <!--do not upgrade to logback version 1.5.x, as this is not compatible with JDK 8-->
@@ -195,6 +195,11 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-base</artifactId>
             <version>${netty.version}</version>
         </dependency>
         <dependency>
