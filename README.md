@@ -150,6 +150,12 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+### Release 3.1.2 (October 1, 2025)
+* [#327](https://github.com/awslabs/amazon-kinesis-client-python/pull/327) Upgrade amazon-kinesis-client from 3.1.1 to 3.1.3
+* [#327](https://github.com/awslabs/amazon-kinesis-client-python/pull/327) Upgrade aws-sdk from 2.25.64 to 2.33.0
+* [#327](https://github.com/awslabs/amazon-kinesis-client-python/pull/327) Upgrade org.apache.commons:commons-lang3 from 3.14.0 to 3.18.0
+* [#327](https://github.com/awslabs/amazon-kinesis-client-python/pull/327) Upgrade netty.version from 4.1.125 to 4.2.4.Final
+
 ### Release 3.1.1 (September 8, 2025)
 * [#318](https://github.com/awslabs/amazon-kinesis-client-python/pull/318) Upgrade io.netty:netty-codec from 4.1.118.Final to 4.1.125.Final
 * [#304](https://github.com/awslabs/amazon-kinesis-client-python/pull/304) Upgrade com.fasterxml.jackson.core:jackson-core from 2.13.5 to 2.15.0
