@@ -150,6 +150,11 @@ all languages.
 * The [Amazon Kinesis Forum][kinesis-forum]
 
 ## Release Notes
+
+### Release 3.1.3 (October 29, 2025)
+* [#331](https://github.com/awslabs/amazon-kinesis-client-python/pull/331) Upgrade netty.version from 4.2.6.Final to 4.2.7.Final
+* [#333](https://github.com/awslabs/amazon-kinesis-client-python/pull/333) Only include argparse for python version 3.1 and below
+
 ### Release 3.1.2 (October 1, 2025)
 * [#327](https://github.com/awslabs/amazon-kinesis-client-python/pull/327) Upgrade amazon-kinesis-client from 3.1.1 to 3.1.3
 * [#327](https://github.com/awslabs/amazon-kinesis-client-python/pull/327) Upgrade aws-sdk from 2.25.64 to 2.33.0
