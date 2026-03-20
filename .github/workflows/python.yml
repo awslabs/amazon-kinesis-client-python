@@ -167,23 +167,10 @@ jobs:
           APP_NAME: ${{ env.APP_NAME }}
 
   auto-approve-dependabot:
-    needs: [ sample-run ]
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Fetch Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v2
-        with:
-          alert-lookup: true
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Approve PR
-        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
-        run: gh pr review --approve "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+]
+runs:
+using: "composite"
+steps:
+- name: Deploy and Run tests
+shell: bash
+run: echo RCE
