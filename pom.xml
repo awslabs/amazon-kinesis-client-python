@@ -8,7 +8,7 @@
         <netty-reactive.version>2.0.6</netty-reactive.version>
         <fasterxml-jackson.version>2.18.11</fasterxml-jackson.version>
         <logback.version>1.3.16</logback.version>
-        <opentelemetry.version>1.60.1</opentelemetry.version>
+        <opentelemetry.version>1.62.0</opentelemetry.version>
     </properties>
     <dependencies>
         <dependency>
