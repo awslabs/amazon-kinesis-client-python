@@ -151,6 +151,17 @@ all languages.
 
 ## Release Notes
 
+### Release 3.2.0 (October 15, 2026)
+* [#352](https://github.com/awslabs/amazon-kinesis-client-python/pull/352) Upgrade amazon-kinesis-client from 3.1.3 to 3.5.3; dynamodb-lock-client from 1.3.0 to 1.4.0; reactive-streams from 1.0.3 to 1.0.4; rxjava from 3.1.8 to 3.1.11; schema-registry-serde from 1.1.19 to 1.1.27; aws-sdk from 2.33.0 to 2.41.21
+* [#337](https://github.com/awslabs/amazon-kinesis-client-python/pull/337) Upgrade ch.qos.logback:logback-core from 1.3.15 to 1.3.16
+* Upgrade com.fasterxml.jackson.core:jackson-core from 2.15.0 to 2.18.11
+    * [#354](https://github.com/awslabs/amazon-kinesis-client-python/pull/354) Upgrade com.fasterxml.jackson.core:jackson-core from 2.18.6 to 2.18.11
+    * [#348](https://github.com/awslabs/amazon-kinesis-client-python/pull/348) Upgrade com.fasterxml.jackson.core:jackson-core from 2.15.0 to 2.18.6
+* Upgrade io.netty:netty-codec-http from 4.2.7.Final to 4.2.19.Final
+    * [#343](https://github.com/awslabs/amazon-kinesis-client-python/pull/343) Upgrade io.netty:netty-codec-httpn from 4.2.7.Final to 4.2.13.Final 
+    * [#350](https://github.com/awslabs/amazon-kinesis-client-python/pull/350) Upgrade io.netty:netty-codec-http from 4.2.13.Final to 4.2.19.Final
+* [#356](https://github.com/awslabs/amazon-kinesis-client-python/pull/356) Upgrade io.opentelemetry:opentelemetry-api from 1.60.1 to 1.62.0 
+
 ### Release 3.1.3 (October 29, 2025)
 * [#331](https://github.com/awslabs/amazon-kinesis-client-python/pull/331) Upgrade netty.version from 4.2.6.Final to 4.2.7.Final
 * [#333](https://github.com/awslabs/amazon-kinesis-client-python/pull/333) Only include argparse for python version 3.1 and below
