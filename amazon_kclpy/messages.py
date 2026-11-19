@@ -333,6 +333,7 @@ class CheckpointInput(object):
         * subSequenceNumber
 
         The provided dictionary can optionally contain:
+        * action
         * error
 
         :param dict json_dict:
@@ -340,6 +341,7 @@ class CheckpointInput(object):
         self._sequence_number = json_dict["sequenceNumber"]
         self._sub_sequence_number = json_dict["subSequenceNumber"]
         self._error = json_dict.get("error", None)
+        self._action = json_dict.get("action", "checkpoint")
 
     @property
     def sequence_number(self):
@@ -372,6 +374,16 @@ class CheckpointInput(object):
         :rtype: str or None
         """
         return self._error
+
+    @property
+    def action(self):
+        """
+        The action that spawned this message
+
+        :return: the original action value
+        :rtype: str
+        """
+        return self._action
 
 
 class Record(object):
