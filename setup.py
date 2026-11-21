@@ -4,6 +4,8 @@ from __future__ import print_function
 
 import glob
 import sys
+import tempfile
+from contextlib import closing
 
 import os
 import shutil
@@ -131,9 +133,13 @@ Which will download the required jars and rerun the install.
         """
         print('Attempting to retrieve remote jar {url}'.format(url=url))
         try:
-            response = urlopen(url)
-            with open(dest, 'wb') as dest_file:
-                shutil.copyfileobj(response, dest_file)
+            # Failed transfers must not appear as already-downloaded JARs.
+            with tempfile.TemporaryDirectory(prefix='.kcl-jar-', dir=os.path.dirname(dest) or '.') as temp_dir:
+                temp_dest = os.path.join(temp_dir, os.path.basename(dest))
+                with closing(urlopen(url)) as response:
+                    with open(temp_dest, 'wb') as dest_file:
+                        shutil.copyfileobj(response, dest_file)
+                os.replace(temp_dest, dest)
             print('Saving {url} -> {dest}'.format(url=url, dest=dest))
         except Exception as e:
             print('Failed to retrieve {url}: {e}'.format(url=url, e=e))
